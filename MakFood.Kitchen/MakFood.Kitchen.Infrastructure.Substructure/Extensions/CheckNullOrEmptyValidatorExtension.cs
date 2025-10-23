@@ -1,4 +1,4 @@
-﻿namespace MakFood.Kitchen.Infrastructure.Substructure
+﻿namespace MakFood.Kitchen.Infrastructure.Substructure.Extensions
 {
     public static class CheckNullOrEmptyValidatorExtension
     {
