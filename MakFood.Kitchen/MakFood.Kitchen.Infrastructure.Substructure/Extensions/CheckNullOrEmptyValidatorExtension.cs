@@ -23,6 +23,11 @@
             {
                 throw new ArgumentException("Uint argument is empty", pName);
             }
+
+            if(input is decimal des && des == 0)
+            {
+                throw new ArgumentException("Decimal argument is empty", pName);
+            }
             
         }
     }
