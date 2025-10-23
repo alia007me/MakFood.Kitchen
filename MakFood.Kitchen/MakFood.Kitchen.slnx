@@ -1,0 +1,20 @@
+<Solution>
+  <Folder Name="/Application/">
+    <Project Path="MakFood.Kitchen.Application.Command/MakFood.Kitchen.Application.Command.csproj" />
+    <Project Path="MakFood.Kitchen.Application.Query/MakFood.Kitchen.Application.Query.csproj" />
+  </Folder>
+  <Folder Name="/Domain/">
+    <Project Path="MakFood.Kitchen.Domain/MakFood.Kitchen.Domain.csproj" />
+  </Folder>
+  <Folder Name="/Infrastructure/">
+    <Project Path="MakFood.Kitchen.Infrastructure.DI/MakFood.Kitchen.Infrastructure.DI.csproj" />
+    <Project Path="MakFood.Kitchen.Infrastructure.Substructure/MakFood.Kitchen.Infrastructure.Substructure.csproj" />
+  </Folder>
+  <Folder Name="/Infrastructure/Persistence/">
+    <Project Path="MakFood.Kitchen.Infrastructure.Persistence.Context/MakFood.Kitchen.Infrastructure.Persistence.Context.csproj" />
+    <Project Path="MakFood.Kitchen.Infrastructure.Persistence.Repository/MakFood.Kitchen.Infrastructure.Persistence.Repository.csproj" />
+  </Folder>
+  <Folder Name="/Presentation/">
+    <Project Path="MakFood.Kitchen/MakFood.Kitchen.csproj" />
+  </Folder>
+</Solution>
