@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MakFood.Kitchen.Domain.DiscountPolicy
+namespace MakFood.Kitchen.Domain.DiscoudCode.DiscountPolicy
 {
     public enum DiscountPolicyType 
     {

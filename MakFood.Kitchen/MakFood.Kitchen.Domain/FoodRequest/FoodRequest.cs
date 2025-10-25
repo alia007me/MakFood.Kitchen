@@ -1,33 +1,57 @@
 ﻿using MakFood.Kitchen.Domain.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
+using MakFood.Kitchen.Infrastructure.Substructure.Extensions;
 
 namespace MakFood.Kitchen.Domain.FoodRequest
 {
-    public class FoodRequest : BaseEntity<TId>
+    /// <summary>
+    /// پیشنهاد غذا برای خاله
+    /// </summary>
+    public class FoodRequest : BaseEntity<Guid>
     {
+        /// <summary>
+        /// کانستراکتور کلاس فود ریکویست
+        /// </summary>
+        /// <param name="userId">ایدی یوزر</param>
+        /// <param name="productId">ایدی محصول</param>
+        /// <param name="targetDate">زمان مورد نظر</param>
         public FoodRequest(Guid userId, Guid productId, DateOnly targetDate)
         {
-            this.userId = userId;
+            DateValidator(targetDate);
+            IdValidation(userId);
+            IdValidation(productId);
+
+            Id = Guid.NewGuid();
+            UserId = userId;
             ProductId = productId;
             TargetDate = targetDate;
         }
 
-        public Guid userId { get; set; }
-        public Guid ProductId { get; set; }
-        public DateOnly TargetDate { get; set; }
+        public Guid UserId { get; private set; }
+        public Guid ProductId { get; private set; }
+        public DateOnly TargetDate { get; private set; }
 
-        #region CHECK VALIDATOR OF THE REQUEST DATE
-        public bool DateValidator(DateOnly dateOnly)
+        #region validtion 
+        /// <summary>
+        /// چک کردن نال نبودن زمان 
+        /// </summary>
+        /// <param name="dateOnly"></param>
+        /// <returns></returns>
+
+        public void DateValidator(DateOnly dateOnly)
         {
-            return dateOnly <= DateOnly.FromDateTime(DateTime.Now.AddDays(7));
+            dateOnly.CheckNullOrEmpty("target date");
 
         }
+        /// <summary>
+        /// چک کردن نال نبودن ایدی پروداکت
+        /// </summary>
+        /// <param name="id"></param>
+        public void IdValidation(Guid id)
+        {
+             id.CheckNullOrEmpty("ProductId");
+        }
         #endregion
+
     }
 }
 

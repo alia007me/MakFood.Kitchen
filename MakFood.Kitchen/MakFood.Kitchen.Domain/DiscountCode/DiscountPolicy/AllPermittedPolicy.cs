@@ -5,13 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MakFood.Kitchen.Domain.DiscountPolicy
+namespace MakFood.Kitchen.Domain.DiscoudCode.DiscountPolicy
 {
     public class AllPermittedPolicy :  DiscountPolicy 
     {
         public AllPermittedPolicy() 
         {
-            Type = DiscountPolicyType.AllPermitted;
+            var type = DiscountPolicyType.AllPermitted;
         }
         public override bool IsPermitted(Guid CamtomerId)=>true;
     }
