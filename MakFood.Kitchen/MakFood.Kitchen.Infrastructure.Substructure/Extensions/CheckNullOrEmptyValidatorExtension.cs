@@ -29,6 +29,11 @@
                 throw new ArgumentException("Decimal argument is empty", pName);
             }
             
+            if(input is List<T> li && li.Count == 0)
+            {
+                throw new ArgumentException("List argument is empty", pName);
+            }
+            
         }
     }
 }
