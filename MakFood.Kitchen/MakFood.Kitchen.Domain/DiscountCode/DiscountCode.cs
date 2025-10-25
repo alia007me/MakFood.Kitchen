@@ -92,7 +92,7 @@ namespace MakFood.Kitchen.Domain.NewFolder
         private void checkForCorrectMaximumAndMinimum(decimal maximum, decimal minimum)
         {
             if (maximum <= minimum)
-                throw new ArgumentException("The maximum must not be le");
+                throw new ArgumentException("The maximum must not be less than equal minimum");
 
         }
         private void CheckDesimalMaximumMinimum(decimal @decimal)
