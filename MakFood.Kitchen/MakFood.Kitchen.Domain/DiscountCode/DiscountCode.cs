@@ -20,8 +20,7 @@ namespace MakFood.Kitchen.Domain.NewFolder
             DiscountCodeEligibleCustomersValidation(eligibleCustomers);
             DiscountCodeDateTimeValidation(expiryDate);
             MaximumMinimumValibation(maximumBalance, minimumBalance);
-            CheckDesimalMaximumMinimum(minimumBalance);
-            CheckDesimalMaximumMinimum(maximumBalance);
+           
             Id = Guid.NewGuid();
             DiscoutCodeName = discoutCoteName;
             EligibleCustomers = eligibleCustomers;
@@ -42,6 +41,8 @@ namespace MakFood.Kitchen.Domain.NewFolder
             checkForCorrectMaximumAndMinimum(maximum, minimum);
             DiscountCodeDesimalMaximumValidation(maximum);
             DiscountCodeDesimalMinimumValidation(minimum);
+            CheckDesimalMaximumMinimum(minimum);
+            CheckDesimalMaximumMinimum(maximum);
         }
         /// <summary>
         /// چک کردن نال نبودن اسم کد تخفیف
@@ -109,7 +110,12 @@ namespace MakFood.Kitchen.Domain.NewFolder
         /// <param name="CustomerId"></param>
         public void AddUserToEligibleList(Guid CustomerId)
         {
-            EligibleCustomers.Add(CustomerId);
+            if (CustomerId != null)
+                if (EligibleCustomers.Contains(CustomerId))
+                {
+                    throw new ArgumentException("CustomerId already existed");
+                }
+                    EligibleCustomers.Add(CustomerId);
         }
         /// <summary>
         /// حذف کردن یوزر از لیست واجدین شرایط کد تخفیف
@@ -117,6 +123,11 @@ namespace MakFood.Kitchen.Domain.NewFolder
         /// <param name="CustomerId"></param>
         public void RemoveUserToEligibleList(Guid CustomerId)
         {
+            if(CustomerId != null )
+                if (!EligibleCustomers.Contains(CustomerId))
+                {
+                    throw new ArgumentException("CustomerId not fount");
+                }
             EligibleCustomers.Remove(CustomerId);
         }
         /// <summary>
