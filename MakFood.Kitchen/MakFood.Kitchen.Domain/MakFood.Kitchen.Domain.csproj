@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="ConstituentAggrigate\Order\Payment\PaymentState\PaymentStatus.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\MakFood.Kitchen.Infrastructure.Substructure\MakFood.Kitchen.Infrastructure.Substructure.csproj" />
   </ItemGroup>
 
