@@ -6,7 +6,7 @@
         {
             if (input == null)
             {
-                throw new ArgumentNullException(pName); 
+                throw new ArgumentNullException(pName);
             }
 
             if (input is string s && string.IsNullOrEmpty(s))
@@ -16,7 +16,7 @@
 
             if (input is DateOnly dt && dt == default)
             {
-                throw new ArgumentException("Date argument is empty",pName);
+                throw new ArgumentException("Date argument is empty", pName);
             }
 
             if (input is uint uin && uin == 0)
@@ -24,16 +24,21 @@
                 throw new ArgumentException("Uint argument is empty", pName);
             }
 
-            if(input is decimal des && des == 0)
+            if (input is decimal des && des == 0)
             {
                 throw new ArgumentException("Decimal argument is empty", pName);
             }
-            
-            if(input is List<T> li && li.Count == 0)
+
+            if (input is List<T> li && li.Count == 0)
             {
                 throw new ArgumentException("List argument is empty", pName);
             }
-            
+
+            if (input is Guid id && id == Guid.Empty)
+            {
+                throw new ArgumentException("Guid argument is empty", pName);
+            }
+
         }
     }
 }
