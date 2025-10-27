@@ -1,7 +1,7 @@
 ﻿using MakFood.Kitchen.Domain.Base;
-using MakFood.Kitchen.Domain.DiscountCodeAggrigate.Enum;
+using MakFood.Kitchen.Domain.DiscountAggrigate.Enum;
 
-namespace MakFood.Kitchen.Domain.DiscountCodeAggrigate.DiscountPolicyAggrigate
+namespace MakFood.Kitchen.Domain.DiscountAggrigate.DiscountPolicyAggrigate
 {
     public abstract class DiscountPolicy : BaseEntity<Guid>
     {

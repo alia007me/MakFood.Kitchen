@@ -1,7 +1,7 @@
-﻿using MakFood.Kitchen.Domain.DiscountCodeAggrigate.Enum;
+﻿using MakFood.Kitchen.Domain.DiscountAggrigate.Enum;
 using MakFood.Kitchen.Infrastructure.Substructure.Extensions;
 
-namespace MakFood.Kitchen.Domain.DiscountCodeAggrigate.DiscountPolicyAggrigate
+namespace MakFood.Kitchen.Domain.DiscountAggrigate.DiscountPolicyAggrigate
 {
     public class SpecifiedPermisionPolicy : DiscountPolicy
     {

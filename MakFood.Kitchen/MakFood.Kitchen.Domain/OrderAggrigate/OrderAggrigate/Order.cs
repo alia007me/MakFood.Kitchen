@@ -1,5 +1,5 @@
 ﻿using MakFood.Kitchen.Domain.Base;
-using MakFood.Kitchen.Domain.DiscountCodeAggrigate;
+using MakFood.Kitchen.Domain.DiscountAggrigate;
 using MakFood.Kitchen.Domain.OrderAggrigate.OrderAggrigate.OrederState;
 using MakFood.Kitchen.Domain.OrderAggrigate.OrderAggrigate.PaymentAggrigate;
 using MakFood.Kitchen.Infrastructure.Substructure.Extensions;

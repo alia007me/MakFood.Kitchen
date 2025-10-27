@@ -1,4 +1,4 @@
-﻿namespace MakFood.Kitchen.Domain.DiscountCodeAggrigate.Enum
+﻿namespace MakFood.Kitchen.Domain.DiscountAggrigate.Enum
 {
     public enum DiscountPolicyType 
     {

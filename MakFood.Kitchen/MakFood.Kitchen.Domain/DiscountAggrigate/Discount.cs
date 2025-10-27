@@ -1,10 +1,10 @@
 ﻿using MakFood.Kitchen.Domain.Base;
-using MakFood.Kitchen.Domain.DiscountCodeAggrigate.DiscountPolicyAggrigate;
+using MakFood.Kitchen.Domain.DiscountAggrigate.DiscountPolicyAggrigate;
 using MakFood.Kitchen.Infrastructure.Substructure.Extensions;
 using System.Text.RegularExpressions;
 
 
-namespace MakFood.Kitchen.Domain.DiscountCodeAggrigate
+namespace MakFood.Kitchen.Domain.DiscountAggrigate
 {
     /// <summary>
     /// مدل کد تخفیف که کد تخفیف مربوط به سفارش می باشد
