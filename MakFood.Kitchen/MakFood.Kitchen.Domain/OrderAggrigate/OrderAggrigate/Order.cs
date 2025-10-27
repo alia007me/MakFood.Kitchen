@@ -2,40 +2,39 @@
 using MakFood.Kitchen.Domain.DiscountCodeAggrigate;
 using MakFood.Kitchen.Domain.OrderAggrigate.OrderAggrigate.OrederState;
 using MakFood.Kitchen.Domain.OrderAggrigate.OrderAggrigate.PaymentAggrigate;
+using MakFood.Kitchen.Infrastructure.Substructure.Extensions;
+using Microsoft.AspNetCore.Authentication;
 
 namespace MakFood.Kitchen.Domain.OrderAggrigate.OrderAggrigate
 {
     public class Order : BaseEntity<Guid>
     {
         private List<OrderState> _stateHistory = new List<OrderState>();
-        private List<Constituent> _consistencies = new List<Constituent>();
+        private List<Constituent> _constituents = new List<Constituent>();
 
-        public Order(Guid customerId, DiscountCode discountCode,Payment payment)
+        public Order(Guid customerId, Discount discountCode,Payment payment,List<Constituent> constituents)
         {
             Id = Guid.NewGuid();
 
             CustomerId = customerId;
             DiscountCode = discountCode;
-            TotalPriceBeforeDiscount = CalculateTotalPriceBeforeDiscount();
-            DiscountPrice = CalculateDiscountPrice(DiscountCode, TotalPriceBeforeDiscount);
-            FinalTotalPrice = CalculateTotalPriceByDiscount(TotalPriceBeforeDiscount, DiscountPrice);
+            Price = CalculatePrice();
+            DiscountPrice = CalculateDiscountPrice(DiscountCode, Price);
+            Payable = CalculatePayable(Price, DiscountPrice);
             Payment = payment;
+
 
         }
 
-        public Guid CustomerId { get; set; }
-        public DiscountCode DiscountCode { get; set; }
+        public Guid CustomerId { get;private set; }
+        public Discount DiscountCode { get;private set; }
         public OrderState CurrentState => _stateHistory.OrderByDescending(c => c.CreationDateTime).First();
-        public decimal DiscountPrice { get; set; }
-        public decimal TotalPriceBeforeDiscount { get; set; }
-        public decimal FinalTotalPrice { get; set; }
-        public IEnumerable<Constituent> Consistencies => _consistencies.AsEnumerable();
+        public decimal DiscountPrice { get;private set; }
+        public decimal Price { get;private set; }
+        public decimal Payable { get;private set; }
+        public IEnumerable<Constituent> Consistencies => _constituents.AsEnumerable();
         public Payment Payment { get; private set; }
 
-        #region Behaviors
-
-
-        #endregion
 
         #region State
         public void Created()
@@ -54,10 +53,21 @@ namespace MakFood.Kitchen.Domain.OrderAggrigate.OrderAggrigate
         }
         #endregion
 
-        private decimal CalculateTotalPriceBeforeDiscount()
+        #region Validators
+
+        private void CheckConstituentsList(List<Constituent> constituents)
+        {
+            constituents.CheckNullOrEmpty("constituents List");
+        }
+
+        #endregion
+
+        #region CalculatePrice
+
+        private decimal CalculatePrice()
         {
             decimal total = 0;
-            foreach (var constituent in _consistencies)
+            foreach (var constituent in _constituents)
             {
                 total += constituent.Price;
             }
@@ -65,21 +75,19 @@ namespace MakFood.Kitchen.Domain.OrderAggrigate.OrderAggrigate
             return total;
         }
 
-        private decimal CalculateDiscountPrice(DiscountCode discount, decimal price)
+        private decimal CalculateDiscountPrice(Discount discount, decimal price)
         {
-            var discountAmount = ((discount.DiscountPercentage / 100) * price);
+            var discountAmount = ((discount.Percent / 100) * price);
             discountAmount = Math.Round(discountAmount, 2);
             DiscountPrice = discountAmount;
             return discountAmount;
 
         }
 
-        private decimal CalculateTotalPriceByDiscount(decimal total, decimal discountAmount)
+        private decimal CalculatePayable(decimal total, decimal discountAmount)
         {
             return total - discountAmount;
         }
-
-        #region DiscountValidator
 
         #endregion
     }

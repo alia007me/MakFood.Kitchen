@@ -9,7 +9,7 @@ namespace MakFood.Kitchen.Domain.DiscountCodeAggrigate
     /// <summary>
     /// مدل کد تخفیف که کد تخفیف مربوط به سفارش می باشد
     /// </summary>
-    public class DiscountCode : BaseEntity<Guid>
+    public class Discount : BaseEntity<Guid>
     {
         /// <summary>
         /// کانستراکتور کلاس دیسکانت کد با ورودی نام کد تخفیف برای 
@@ -18,27 +18,27 @@ namespace MakFood.Kitchen.Domain.DiscountCodeAggrigate
         /// <param name="expiryDate">تاریخ انقضا کد تخفیف</param>
         /// <param name="maximumBalance">ماکسیموم حق کد تخفیف</param>
         /// <param name="minimumBalance">مینیموم حق کد تخفیف</param>
-        public DiscountCode(string discoutCoteName,uint discountPercentage, DiscountPolicy policy,
+        public Discount(string discoutCoteName,uint discountPercentage, DiscountPolicy policy,
                             DateOnly expiryDate, decimal maximumBalance,
                             decimal minimumBalance)
         {
-            DiscountCodeNameValidation(discoutCoteName);
+            DiscountTitleValidation(discoutCoteName);
             DiscountPercentageValidation(discountPercentage);
-            DiscountCodeDateTimeValidation(expiryDate);
+            DiscountDateTimeValidation(expiryDate);
             MaximumMinimumBalanceValibation(maximumBalance, minimumBalance);
 
             Id = Guid.NewGuid();
-            DiscoutCodeName = discoutCoteName;
+            Title = discoutCoteName;
             DiscountPolicy = policy;
             ExpiryDate = expiryDate;
             MaximumBalance = maximumBalance;
             MinimumBalance = minimumBalance;
-            DiscountPercentage = discountPercentage;
+            Percent = discountPercentage;
 
         }
 
-        public string DiscoutCodeName { get; private set; }
-        public uint DiscountPercentage { get;private set; }
+        public string Title { get; private set; }
+        public Decimal Percent { get;private set; }
         public DateOnly ExpiryDate { get; private set; }
         public decimal MaximumBalance { get; private set; }
         public decimal MinimumBalance { get; private set; }
@@ -49,7 +49,7 @@ namespace MakFood.Kitchen.Domain.DiscountCodeAggrigate
         /// صحت سنجی مقدار درصد تخفیف
         /// </summary>
         /// <param name="percentage"></param>
-        private void DiscountPercentageValidation(uint percentage)
+        private void DiscountPercentageValidation(decimal percentage)
         {
             percentage.CheckNullOrEmpty("Discount percentage");
             const int minLimitValue = 0;
@@ -70,16 +70,16 @@ namespace MakFood.Kitchen.Domain.DiscountCodeAggrigate
         /// کف قیمت از سقف قیمت بیشتر نباشد</remarks>
         private void MaximumMinimumBalanceValibation(decimal maximum, decimal minimum)
         {
-            DiscountCodeDesimalMaximumValidation(maximum);
-            DiscountCodeDesimalMinimumValidation(minimum);
-            checkForCorrectMaximumAndMinimum(maximum, minimum);
+            DiscountDesimalMaximumValidation(maximum);
+            DiscountDesimalMinimumValidation(minimum);
+            CheckForCorrectMaximumAndMinimum(maximum, minimum);
         }
 
         /// <summary>
         /// صحت سنجی نام
         /// </summary>
         /// <param name="discoutCodeName"></param> 
-        private void DiscountCodeNameValidation(string discoutCodeName)
+        private void DiscountTitleValidation(string discoutCodeName)
         {
             discoutCodeName.CheckNullOrEmpty("discoutCodeName");
             var discountCodeRegexPattern = "([A-Za-z0-9])\\w";
@@ -87,18 +87,10 @@ namespace MakFood.Kitchen.Domain.DiscountCodeAggrigate
         }
 
         /// <summary>
-        /// صحت سنجی افراد مجاز استفاده از کد تخفیف
-        /// </summary>
-        /// <param name="eligibleCustomers">لیست آیدی افرادی که می توانند استفاده کنند</param>
-        private void DiscountCodeEligibleCustomersValidation(List<Guid> eligibleCustomers)
-        {
-            eligibleCustomers.CheckNullOrEmpty("Eligible Customers");
-        }
-        /// <summary>
         /// صحت سنجی تاریخ انقضای کد تخفیف
         /// </summary>
         /// <param name="ExpiryDate"></param>
-        private void DiscountCodeDateTimeValidation(DateOnly ExpiryDate)
+        private void DiscountDateTimeValidation(DateOnly ExpiryDate)
         {
             ExpiryDate.CheckNullOrEmpty("Expiry Date");
         }
@@ -107,7 +99,7 @@ namespace MakFood.Kitchen.Domain.DiscountCodeAggrigate
         /// صحت سنجی مقدار پایه تخفیف
         /// </summary>
         /// <param name="maximumBalance"></param>
-        private void DiscountCodeDesimalMaximumValidation(decimal maximumBalance)
+        private void DiscountDesimalMaximumValidation(decimal maximumBalance)
         {
             maximumBalance.CheckNullOrEmpty("maximumBalance");
             CheckDesimalMaximumMinimum(maximumBalance, "maximum");
@@ -116,7 +108,7 @@ namespace MakFood.Kitchen.Domain.DiscountCodeAggrigate
         /// صحت سنجی سقف تخفیف
         /// </summary>
         /// <param name="minimumBalance"></param>
-        private void DiscountCodeDesimalMinimumValidation(decimal minimumBalance)
+        private void DiscountDesimalMinimumValidation(decimal minimumBalance)
         {
             minimumBalance.CheckNullOrEmpty("minimumBalance");
             CheckDesimalMaximumMinimum(minimumBalance, "Minimum");
@@ -126,7 +118,7 @@ namespace MakFood.Kitchen.Domain.DiscountCodeAggrigate
         /// <summary>
         /// صحت سنجی بیشتر بودن سقف قیمت تخفیف از کف قیمت آن
         /// </summary>
-        private void checkForCorrectMaximumAndMinimum(decimal maximum, decimal minimum)
+        private void CheckForCorrectMaximumAndMinimum(decimal maximum, decimal minimum)
         {
             if (maximum <= minimum)
                 throw new ArgumentException("The maximum must not be less than equal minimum");
