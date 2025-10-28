@@ -1,4 +1,5 @@
 ﻿using MakFood.Kitchen.Domain.OrderAggrigate.OrderAggrigate.PaymentAggrigate.Enum;
+using MakFood.Kitchen.Domain.OrderAggrigate.OrderAggrigate.PaymentAggrigate.PaymentBase;
 
 namespace MakFood.Kitchen.Domain.OrderAggrigate.OrderAggrigate.PaymentAggrigate
 {

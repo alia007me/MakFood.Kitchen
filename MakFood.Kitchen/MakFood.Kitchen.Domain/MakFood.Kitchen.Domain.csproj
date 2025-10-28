@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="OrderAggrigate\OrderAggrigate\PaymentAggrigate\PaymentState\Enum\PaymentStatus.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\MakFood.Kitchen.Infrastructure.Substructure\MakFood.Kitchen.Infrastructure.Substructure.csproj" />
   </ItemGroup>
 

@@ -1,9 +1,8 @@
 ﻿using MakFood.Kitchen.Domain.Base;
 using MakFood.Kitchen.Domain.DiscountAggrigate;
 using MakFood.Kitchen.Domain.OrderAggrigate.OrderAggrigate.OrederState;
-using MakFood.Kitchen.Domain.OrderAggrigate.OrderAggrigate.PaymentAggrigate;
+using MakFood.Kitchen.Domain.OrderAggrigate.OrderAggrigate.PaymentAggrigate.PaymentBase;
 using MakFood.Kitchen.Infrastructure.Substructure.Extensions;
-using Microsoft.AspNetCore.Authentication;
 
 namespace MakFood.Kitchen.Domain.OrderAggrigate.OrderAggrigate
 {
@@ -22,7 +21,7 @@ namespace MakFood.Kitchen.Domain.OrderAggrigate.OrderAggrigate
             DiscountPrice = CalculateDiscountPrice(DiscountCode, Price);
             Payable = CalculatePayable(Price, DiscountPrice);
             Payment = payment;
-
+            _stateHistory.Add(CurrentState.Created());
 
         }
 
