@@ -30,9 +30,9 @@ namespace MakFood.Kitchen.Domain.OrderAggrigate
 
 
 
-        public string Name { get; set; }
-        public decimal Price { get; set; }
-        public Guid ProductId { get; set; }
+        public string Name { get; private set; }
+        public decimal Price { get; private set; }
+        public Guid ProductId { get; private set; }
 
         #region Validations
         private static void validateName(String name)

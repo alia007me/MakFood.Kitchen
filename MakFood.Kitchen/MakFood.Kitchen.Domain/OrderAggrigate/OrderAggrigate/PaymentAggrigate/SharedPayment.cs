@@ -22,11 +22,11 @@ namespace MakFood.Kitchen.Domain.OrderAggrigate.OrderAggrigate.PaymentAggrigate
             PartnerApproved = partnerApproved;
         }
 
-        public decimal PartnerAmount { get; set; }
-        public Guid PartnerId { get; set; }
-        public decimal PartnerPaidAmount { get; set; }
-        public PaymentMathods PartnerPaymentMethod { get; set; }
-        public bool PartnerApproved { get; set; }
+        public decimal PartnerAmount { get; private set; }
+        public Guid PartnerId { get; private set; }
+        public decimal PartnerPaidAmount { get; private set; }
+        public PaymentMathods PartnerPaymentMethod { get; private set; }
+        public bool PartnerApproved { get;private set; }
 
     }
 }

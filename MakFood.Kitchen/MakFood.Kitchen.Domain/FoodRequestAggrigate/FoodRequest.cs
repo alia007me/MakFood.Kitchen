@@ -1,5 +1,6 @@
 ﻿using MakFood.Kitchen.Domain.Base;
 using MakFood.Kitchen.Infrastructure.Substructure.Extensions;
+using MakFood.Kitchen.Domain.ProductAggrigate;
 
 namespace MakFood.Kitchen.Domain.FoodRequestAggrigate
 {
@@ -14,15 +15,15 @@ namespace MakFood.Kitchen.Domain.FoodRequestAggrigate
         /// <param name="userId">ایدی یوزر</param>
         /// <param name="productId">ایدی محصول</param>
         /// <param name="targetDate">تاریخ مورد نظر</param>
-        public FoodRequest(Guid userId, Guid productId, DateOnly targetDate)
+        public FoodRequest(Guid userId, Product productId, DateOnly targetDate)
         {
             DateValidator(targetDate);
             IdValidation(userId,"UserId");
-            IdValidation(productId,"ProductId");
+            IdValidation(productId.Id,"ProductId");
 
             Id = Guid.NewGuid();
             UserId = userId;
-            ProductId = productId;
+            ProductId = productId.Id;
             TargetDate = targetDate;
         }
 
@@ -52,6 +53,8 @@ namespace MakFood.Kitchen.Domain.FoodRequestAggrigate
         {
              id.CheckNullOrEmpty(pName);
         }
+
+
         #endregion
 
     }

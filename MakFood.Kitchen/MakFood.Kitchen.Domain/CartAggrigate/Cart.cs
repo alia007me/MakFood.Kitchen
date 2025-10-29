@@ -5,20 +5,27 @@ using MakFood.Kitchen.Infrastructure.Substructure.Extensions;
 
 public class Cart : BaseEntity<Guid>
 {
+    public Cart(List<CartItem> cartItems)
+    {
+        _cartItems = cartItems;
+    }
 
-    public Guid CustomerId { get; private set; }
+
     private List<CartItem> _cartItems = new List<CartItem>();
-    public IEnumerable<CartItem> MyProperty=>_cartItems.AsReadOnly();
+
+
+    public IEnumerable<CartItem> MyProperty => _cartItems.AsReadOnly();
 
 
     #region Behaviors
 
-    public void RemoveAllItems() 
+    public void RemoveAllItems()
     {
-    _cartItems.Clear();
+        _cartItems.Clear();
     }
     public void AddCartItem(CartItem cartItem)
     {
+        cartItem.CheckNullOrEmpty("cartItem");
         _cartItems.Add(cartItem);
     }
 

@@ -5,21 +5,39 @@ namespace MakFood.Kitchen.Domain.DiscountAggrigate.DiscountPolicyAggrigate
 {
     public class SpecifiedPermisionPolicy : DiscountPolicy
     {
+        private List<Guid> _customers = new List<Guid>();
         public SpecifiedPermisionPolicy(IEnumerable<Guid> customerIds) : base(DiscountPolicyType.SpecifiedPermision)
         {
-            
-            Customers = customerIds.ToList() ?? new List<Guid>();
+
+            _customers = customerIds.ToList() ?? new List<Guid>();
         }
 
-        public IEnumerable<Guid> Customers { get;private set; }
+        public IEnumerable<Guid> Customers => _customers.AsReadOnly();
         
         #region Behavior
-        public override bool IsPermitted(Guid CamtomerId)
+        public override bool IsPermitted(Guid customerId)
         {
-            return Customers.Contains(CamtomerId);
+            CustomeridValidator(customerId);
+            return Customers.Contains(customerId);
+        }
+
+        public void AddCustomers(Guid customerId)
+        {
+            CustomeridValidator(customerId);
+            _customers.Add(customerId);
         }
         #endregion
 
-         
+        #region Validations
+
+        private void CustomeridValidator(Guid customerId)
+        {
+            customerId.CheckNullOrEmpty("Customer Id");
+        }
+
+        #endregion
+
+
+
     }
 }

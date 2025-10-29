@@ -22,7 +22,7 @@ namespace MakFood.Kitchen.Domain.CategoryAggrigate
             Name = name;
         }
 
-        public string Name { get; set; }
+        public string Name { get; private set; }
 
 
         public IEnumerable<Subcategory> Subcategories => _subcategories.AsReadOnly();
@@ -34,6 +34,11 @@ namespace MakFood.Kitchen.Domain.CategoryAggrigate
             name.CheckNullOrEmpty("name");
             var nameRegexPattern = "([A-Za-z\\s]{0,25})";
             if (Regex.IsMatch(nameRegexPattern, name)) throw new Exception("Product name may have invalid characters or more than 25 characters");
+        }
+
+        private void CheckSubcategoryExist(Subcategory subcategory)
+        {
+            if (_subcategories.Contains(subcategory)) throw new Exception("SubCategory is already exist here");
         }
 
         #endregion
@@ -56,6 +61,7 @@ namespace MakFood.Kitchen.Domain.CategoryAggrigate
         /// <param name="subcategory">دسته بندی جزئی</param>
         public void AddSubcategory(Subcategory subcategory)
         {
+            CheckSubcategoryExist(subcategory);
             _subcategories.Add(subcategory);
         }
 

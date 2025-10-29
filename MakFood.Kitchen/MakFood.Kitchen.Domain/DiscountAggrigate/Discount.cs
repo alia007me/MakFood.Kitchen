@@ -14,21 +14,22 @@ namespace MakFood.Kitchen.Domain.DiscountAggrigate
         /// <summary>
         /// کانستراکتور کلاس دیسکانت کد با ورودی نام کد تخفیف برای 
         /// </summary>
-        /// <param name="discoutCoteName">اسم کد تخفیف</param>
+        /// <param name="Title">اسم کد تخفیف</param>
         /// <param name="expiryDate">تاریخ انقضا کد تخفیف</param>
         /// <param name="maximumBalance">ماکسیموم حق کد تخفیف</param>
         /// <param name="minimumBalance">مینیموم حق کد تخفیف</param>
-        public Discount(string discoutCoteName,uint discountPercentage, DiscountPolicy policy,
+        public Discount(string Title,uint discountPercentage, DiscountPolicy policy,
                             DateOnly expiryDate, decimal maximumBalance,
                             decimal minimumBalance)
         {
-            DiscountTitleValidation(discoutCoteName);
+            DiscountTitleValidation(Title);
             DiscountPercentageValidation(discountPercentage);
             DiscountDateTimeValidation(expiryDate);
             MaximumMinimumBalanceValibation(maximumBalance, minimumBalance);
+            DiscountPolicyValidator(policy);
 
             Id = Guid.NewGuid();
-            Title = discoutCoteName;
+            this.Title = Title;         
             DiscountPolicy = policy;
             ExpiryDate = expiryDate;
             MaximumBalance = maximumBalance;
@@ -38,7 +39,7 @@ namespace MakFood.Kitchen.Domain.DiscountAggrigate
         }
 
         public string Title { get; private set; }
-        public Decimal Percent { get;private set; }
+        public decimal Percent { get;private set; }
         public DateOnly ExpiryDate { get; private set; }
         public decimal MaximumBalance { get; private set; }
         public decimal MinimumBalance { get; private set; }
@@ -52,13 +53,7 @@ namespace MakFood.Kitchen.Domain.DiscountAggrigate
         private void DiscountPercentageValidation(decimal percentage)
         {
             percentage.CheckNullOrEmpty("Discount percentage");
-            const int minLimitValue = 0;
-            const int maxLimitValue = 100;
-
-            if (percentage > maxLimitValue || percentage < minLimitValue) throw new ArgumentOutOfRangeException("Discount percentage");
-
-
-
+            if (percentage > 0 || percentage < 100) throw new ArgumentOutOfRangeException("Discount percentage");
         }
 
         /// <summary>
@@ -102,7 +97,7 @@ namespace MakFood.Kitchen.Domain.DiscountAggrigate
         private void DiscountDesimalMaximumValidation(decimal maximumBalance)
         {
             maximumBalance.CheckNullOrEmpty("maximumBalance");
-            CheckDesimalMaximumMinimum(maximumBalance, "maximum");
+            ValidatePositiveBalance(maximumBalance, "maximum");
         }
         /// <summary>
         /// صحت سنجی سقف تخفیف
@@ -111,7 +106,7 @@ namespace MakFood.Kitchen.Domain.DiscountAggrigate
         private void DiscountDesimalMinimumValidation(decimal minimumBalance)
         {
             minimumBalance.CheckNullOrEmpty("minimumBalance");
-            CheckDesimalMaximumMinimum(minimumBalance, "Minimum");
+            ValidatePositiveBalance(minimumBalance, "Minimum");
 
         }
 
@@ -131,7 +126,7 @@ namespace MakFood.Kitchen.Domain.DiscountAggrigate
         /// <param name="balance"></param>
         /// <param name="mOM">این که ورودی ماکزیمم یا مینیمم (برای هندل کردن اکسپشن به نحو بهتر) می باشد</param>
         /// <exception cref="ArgumentException"></exception>
-        private void CheckDesimalMaximumMinimum(decimal balance, string mOM) //Maximum or minimum : mOM
+        private void ValidatePositiveBalance(decimal balance, string mOM) //Maximum or minimum : mOM
         {
             if (balance <= 0)
                 throw new ArgumentException($"{mOM} Balance can not to be Zero And Negative");
@@ -151,7 +146,7 @@ namespace MakFood.Kitchen.Domain.DiscountAggrigate
         /// <param name="CustomerId">آیدی کاستومر</param>
         /// <returns>اگر بتواند درست و اگر مجاز به استفاده نباشد غلط را بر میگرداند</returns>
         /// <remarks>این متد آیدی کاربر مورد نظر را گرفته و برسی می کند که کاربر حق استفاده از این کد تخفیف را دارد یا نه</remarks>
-        public bool CustomerCanUseIt(Guid CustomerId)
+        public bool AvailableForCustomer(Guid CustomerId)
         {
             return DiscountPolicy.IsPermitted(CustomerId);
         }
