@@ -4,28 +4,26 @@ using MakFood.Kitchen.Domain.Entities.ProductAggrigate.Contract;
 
 namespace MakFood.Kitchen.Domain.DomainServices
 {
-    public class FoodRequestCreationService
+    public class FoodRequestValidation : IFoodRequestValidation
     {
         private readonly IProductRepository _productRepository;
         private readonly IFoodRequestRepository _foodRequestRepository;
+        private readonly IFoodRequestValidation _foodRequestCreationService;
 
-        public FoodRequestCreationService(IProductRepository productRepository, IFoodRequestRepository foodRequestRepository)
+        public FoodRequestValidation(IProductRepository productRepository, IFoodRequestRepository foodRequestRepository, IFoodRequestValidation foodRequestCreationService)
         {
             _productRepository = productRepository;
             _foodRequestRepository = foodRequestRepository;
+            _foodRequestCreationService = foodRequestCreationService;
         }
 
-        public async Task<FoodRequest> CreationRequest(Guid userId,Guid productId,DateOnly targetdate)
+        public async Task Validation(Guid userId, Guid productId, DateOnly targetdate)
         {
             var targetFood = await _productRepository.IsExistByIdAsync(userId);
             if (!targetFood) throw new Exception("Product not found!");
 
             var FoodRequestIsAlreadyExist = await _foodRequestRepository.IsAlreadyExistAsync(userId,productId,targetdate);
-            if(FoodRequestIsAlreadyExist) throw new Exception("Food request is already exist");
-
-            var newFoodRequest = new FoodRequest(userId, productId, targetdate);
-
-            return newFoodRequest;
+            if (FoodRequestIsAlreadyExist) throw new Exception("Food request is already exist");
 
         }
     }
