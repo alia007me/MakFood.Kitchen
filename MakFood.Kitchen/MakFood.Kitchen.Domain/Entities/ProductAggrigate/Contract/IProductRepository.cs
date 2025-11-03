@@ -2,6 +2,6 @@
 {
     public interface IProductRepository
     {
-        Task<bool> IsExistByIdAsync(Guid productId);
+        Task<bool> IsExistByIdAsync(Guid productId,CancellationToken ct);
     } 
 }
