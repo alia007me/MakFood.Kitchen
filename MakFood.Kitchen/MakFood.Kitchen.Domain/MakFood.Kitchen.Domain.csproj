@@ -10,8 +10,4 @@
     <ProjectReference Include="..\MakFood.Kitchen.Infrastructure.Substructure\MakFood.Kitchen.Infrastructure.Substructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="DomainServices\" />
-  </ItemGroup>
-
 </Project>
