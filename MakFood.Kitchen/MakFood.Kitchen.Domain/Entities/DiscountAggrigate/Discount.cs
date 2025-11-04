@@ -11,6 +11,10 @@ namespace MakFood.Kitchen.Domain.Entities.DiscountAggrigate
     /// </summary>
     public class Discount : BaseEntity<Guid>
     {
+        private Discount()
+        {
+            
+        }
         /// <summary>
         /// کانستراکتور کلاس دیسکانت کد با ورودی نام کد تخفیف برای 
         /// </summary>

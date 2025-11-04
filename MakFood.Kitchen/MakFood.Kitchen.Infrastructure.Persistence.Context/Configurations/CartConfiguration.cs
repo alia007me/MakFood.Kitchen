@@ -13,16 +13,15 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Context.Configurations
     {
         public void Configure(EntityTypeBuilder<Cart> builder)
         {
-            builder.HasKey (c => c.Id);
+            builder.HasKey(c => c.Id);
             builder.Property(C => C.Id).ValueGeneratedNever();
 
-            builder.HasMany(c => c.MyProperty)
+            builder.HasMany(c => c.CartItems)
                    .WithOne()
-                   .HasForeignKey("CartId")
+                   .HasForeignKey(c=>c.ProductId)
                    .OnDelete(DeleteBehavior.Cascade);
 
             builder.Property(c => c.CreationDateTime).IsRequired();
-
         }
     }
 }

@@ -9,12 +9,16 @@ public class Cart : BaseEntity<Guid>
     {
         _cartItems = cartItems;
     }
+    private Cart() //ef
+    {
+        
+    }
 
 
     private List<CartItem> _cartItems = new List<CartItem>();
 
 
-    public IEnumerable<CartItem> MyProperty => _cartItems.AsReadOnly();
+    public IEnumerable<CartItem> CartItems => _cartItems.AsReadOnly();
 
 
     #region Behaviors

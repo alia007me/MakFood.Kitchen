@@ -29,8 +29,7 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Context.Configurations
             builder.HasOne(o => o.DiscountCode)
                .WithOne()
                .HasForeignKey<Order>("DiscountCodeId")
-               .IsRequired(false)
-               .OnDelete(DeleteBehavior.SetNull);
+               .IsRequired(false);
 
             builder.HasOne(o => o.Payment)
                .WithOne()
@@ -43,11 +42,10 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Context.Configurations
                    .HasForeignKey("OrderId")
                    .OnDelete(DeleteBehavior.Cascade);
 
-            builder.HasMany<OrderState>("_stateHistory")
-                .WithOne()
-                .HasForeignKey("OrderId")
-                .OnDelete(DeleteBehavior.Cascade);
-
+            builder.HasMany(o => o.Consistencies)
+                   .WithOne()
+                   .HasForeignKey("OrderId")
+                   .OnDelete(DeleteBehavior.Cascade);
         }
 
 

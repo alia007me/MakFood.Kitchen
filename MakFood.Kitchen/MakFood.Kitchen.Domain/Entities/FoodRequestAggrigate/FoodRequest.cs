@@ -10,6 +10,10 @@ namespace MakFood.Kitchen.Domain.Entities.FoodRequestAggrigate
     /// </summary>
     public class FoodRequest : BaseEntity<Guid>
     {
+        private FoodRequest()
+        {
+            
+        }
         /// <summary>
         /// کانستراکتور کلاس فود ریکویست
         /// </summary>

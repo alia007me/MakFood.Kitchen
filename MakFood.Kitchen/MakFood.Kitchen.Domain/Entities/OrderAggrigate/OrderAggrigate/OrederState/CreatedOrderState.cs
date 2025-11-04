@@ -9,6 +9,10 @@ namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.OrederSt
 {
     public sealed class CreatedOrderState : OrderState
     {
+        private CreatedOrderState()
+        {
+
+        }
         public override OrderStatus Status => OrderStatus.Created;
         public override MiseOnPlaceOrderState MiseOnPlace()
         {

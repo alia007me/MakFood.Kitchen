@@ -7,6 +7,7 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Context.Configurations
 {
     public class FoodRequestConfiguration : IEntityTypeConfiguration<FoodRequest>
     {
+
         public void Configure(EntityTypeBuilder<FoodRequest> builder)
         {
             builder.HasKey(f => f.Id);

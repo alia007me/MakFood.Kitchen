@@ -5,6 +5,10 @@ namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentA
 {
     public class SingelePayment : Payment
     {
+        private SingelePayment()
+        {
+            
+        }
         public SingelePayment(decimal totalAmount, decimal reminingAmount, PaymentMathods ownerPaymentMethod, decimal ownerAmount,
             decimal ownerPaidAmount) : base(totalAmount, reminingAmount, ownerPaymentMethod, ownerAmount, ownerPaidAmount)
         {

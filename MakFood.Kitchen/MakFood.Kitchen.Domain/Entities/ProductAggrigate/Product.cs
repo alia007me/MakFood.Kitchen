@@ -40,7 +40,10 @@ namespace MakFood.Kitchen.Domain.Entities.ProductAggrigate
             SubCategoryName = productCategory.Name;
             increaseQuantityValidator(availableQuantity);
         }
-
+        private Product() //ef
+        {
+            
+        }
         public string Name { get; private set; }
         public decimal Price { get; private set; }
         public string Description { get; private set; }

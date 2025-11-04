@@ -6,6 +6,7 @@ namespace MakFood.Kitchen.Domain.Entities.DiscountAggrigate.DiscountPolicyAggrig
     public class SpecifiedPermisionPolicy : DiscountPolicy
     {
         private List<Guid> _customers = new List<Guid>();
+        private SpecifiedPermisionPolicy() : base(DiscountPolicyType.SpecifiedPermision) { }
         public SpecifiedPermisionPolicy(IEnumerable<Guid> customerIds) : base(DiscountPolicyType.SpecifiedPermision)
         {
 

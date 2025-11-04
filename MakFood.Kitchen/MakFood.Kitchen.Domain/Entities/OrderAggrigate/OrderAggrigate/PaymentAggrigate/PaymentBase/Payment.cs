@@ -17,6 +17,10 @@ namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentA
             OwnerPaidAmount = ownerPaidAmount;
             _PaymentHistory.Add(new CreatedPaymentState());
         }
+        protected Payment() //ef
+        {
+            
+        }
 
         public decimal TotalAmount { get; protected set; }
         public PaymentState CurrentState => _PaymentHistory.OrderByDescending(c => c.CreationDateTime).First();

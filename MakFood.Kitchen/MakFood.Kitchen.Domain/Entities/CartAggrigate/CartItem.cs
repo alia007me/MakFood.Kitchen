@@ -8,6 +8,10 @@ namespace MakFood.Kitchen.Domain.Entities.CartAggrigate
 {
     public class CartItem : BaseEntity<Guid>
     {
+        private CartItem() //ef
+        {
+            
+        }
         public CartItem(string prodoctName, string prodoctThumbnailPath, Guid productId, uint quantity)
         {
             validateName(prodoctName);

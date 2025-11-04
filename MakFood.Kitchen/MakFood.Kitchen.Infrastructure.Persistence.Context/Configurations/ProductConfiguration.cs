@@ -18,23 +18,22 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Context.Configurations
 
             builder.Property(p => p.Id).ValueGeneratedNever();
 
-            builder.Property(p => p.Name).IsRequired().HasMaxLength(25);
+            builder.Property(p => p.Name).IsRequired()
+                                         .HasMaxLength(25);
 
-            builder.Property(p => p.Description).IsRequired().HasMaxLength(150);
+            builder.Property(p => p.Description).IsRequired()
+                                                .HasMaxLength(150);
 
             builder.Property(p => p.ThumbnailPath).IsRequired();
 
             builder.Property(p => p.AvailableQuantity).IsRequired();
 
-            builder.Property(p => p.Price).IsRequired().HasColumnType("decimal(18,2)");
+            builder.Property(p => p.Price).HasColumnType("decimal(18,2)")
+                                          .IsRequired();
 
             builder.Property(p => p.SubCategoryId).IsRequired();
 
             builder.Property(p => p.SubCategoryName).IsRequired();
-
-            builder.HasIndex(p => p.SubCategoryId);
-            builder.HasIndex(p =>p.SubCategoryName);
-            builder.HasIndex(p => p.Name);
 
         }
 

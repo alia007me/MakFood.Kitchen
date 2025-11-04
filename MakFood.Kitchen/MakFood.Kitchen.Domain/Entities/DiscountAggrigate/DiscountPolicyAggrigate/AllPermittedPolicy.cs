@@ -4,9 +4,10 @@ namespace MakFood.Kitchen.Domain.Entities.DiscountAggrigate.DiscountPolicyAggrig
 {
     public class AllPermittedPolicy :  DiscountPolicy 
     {
-        public AllPermittedPolicy() : base(DiscountPolicyType.AllPermitted)
+        private AllPermittedPolicy() : base(DiscountPolicyType.AllPermitted)
         {
         }
+        
 
         public override bool IsPermitted(Guid CamtomerId)=>true;
     }

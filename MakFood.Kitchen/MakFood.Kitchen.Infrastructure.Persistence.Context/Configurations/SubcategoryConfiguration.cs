@@ -13,8 +13,7 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Context.Configurations
             builder.Property(s => s.Id).ValueGeneratedNever();
             builder.Property(s => s.Name)
                    .IsRequired()
-                   .HasMaxLength (25);
-            builder.Property(s => s.CategoryId)
+                   .HasMaxLength(25);
         }
     }
 }

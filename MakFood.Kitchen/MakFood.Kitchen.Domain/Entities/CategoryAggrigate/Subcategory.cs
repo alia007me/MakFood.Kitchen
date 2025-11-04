@@ -19,6 +19,10 @@ namespace MakFood.Kitchen.Domain.Entities.CategoryAggrigate
             NameValidation(name);
             Name = name;
         }
+        private Subcategory() //ef
+        {
+            
+        }
 
         public string Name { get; set; }
 
