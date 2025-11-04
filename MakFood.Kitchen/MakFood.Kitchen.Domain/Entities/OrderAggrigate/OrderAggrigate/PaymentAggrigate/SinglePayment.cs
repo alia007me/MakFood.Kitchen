@@ -3,13 +3,13 @@ using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentAggri
 
 namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentAggrigate
 {
-    public class SingelePayment : Payment
+    public class SinglePayment : Payment
     {
-        private SingelePayment()
+        private SinglePayment()
         {
             
         }
-        public SingelePayment(decimal totalAmount, decimal reminingAmount, PaymentMathods ownerPaymentMethod, decimal ownerAmount,
+        public SinglePayment(decimal totalAmount, decimal reminingAmount, PaymentMathods ownerPaymentMethod, decimal ownerAmount,
             decimal ownerPaidAmount) : base(totalAmount, reminingAmount, ownerPaymentMethod, ownerAmount, ownerPaidAmount)
         {
             TotalAmount = totalAmount;

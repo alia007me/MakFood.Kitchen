@@ -1,11 +1,7 @@
-﻿using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentAggrigate.PaymentBase;
+﻿using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentAggrigate;
+using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentAggrigate.PaymentBase;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MakFood.Kitchen.Infrastructure.Persistence.Context.Configurations
 {
@@ -40,6 +36,9 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Context.Configurations
                 .WithOne()
                 .OnDelete(DeleteBehavior.Cascade);
 
+            builder.HasDiscriminator<string>("PaymentType")
+                .HasValue<SinglePayment>(nameof(SinglePayment))
+                .HasValue<SharedPayment>(nameof(SharedPayment));
 
         }
     }

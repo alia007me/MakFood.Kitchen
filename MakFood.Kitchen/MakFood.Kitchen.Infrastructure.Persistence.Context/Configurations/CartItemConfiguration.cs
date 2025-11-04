@@ -23,7 +23,6 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Context.Configurations
             builder.Property(ci => ci.ProdoctThumbnailPath).IsRequired();
 
             builder.Property(ci => ci.Quantity).IsRequired();
-
         }
     }
 }

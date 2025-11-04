@@ -18,7 +18,7 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Context.Configurations
 
             builder.HasMany(c => c.CartItems)
                    .WithOne()
-                   .HasForeignKey(c=>c.ProductId)
+                   .HasForeignKey("CartId")
                    .OnDelete(DeleteBehavior.Cascade);
 
             builder.Property(c => c.CreationDateTime).IsRequired();

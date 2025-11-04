@@ -9,7 +9,8 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Context.Configurations
         {
             builder.HasKey(p => p.Id);
             builder.Property(p => p.Id).ValueGeneratedNever();
-            builder.HasDiscriminator()
+
+            builder.HasDiscriminator<string>("OrderState")
                    .HasValue<CancelledOrderState>(nameof(CancelledOrderState))
                    .HasValue<CreatedOrderState>(nameof(CreatedOrderState))
                    .HasValue<MiseOnPlaceOrderState>(nameof(MiseOnPlaceOrderState));
