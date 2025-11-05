@@ -4,6 +4,7 @@ namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentA
 {
     public sealed class CancelledPaymentState : PaymentState
     {
+        internal CancelledPaymentState() { }//ef
         public override PaymentStatus Status => PaymentStatus.Cancelled;
     }
 }

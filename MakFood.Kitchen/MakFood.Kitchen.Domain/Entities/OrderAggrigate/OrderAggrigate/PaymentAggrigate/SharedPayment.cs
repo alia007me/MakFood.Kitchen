@@ -5,10 +5,7 @@ namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentA
 {
     public class SharedPayment : Payment
     {
-        private SharedPayment()
-        {
-            
-        }
+        private SharedPayment() {}//ef
         public SharedPayment(decimal totalAmount, decimal reminingAmount,
             PaymentMathods ownerPaymentMethod, decimal ownerAmount, decimal ownerPaidAmount,
             decimal partnerAmount, Guid partnerId, decimal partnerPaidAmount, PaymentMathods partnerPaymentMethod, bool partnerApproved)

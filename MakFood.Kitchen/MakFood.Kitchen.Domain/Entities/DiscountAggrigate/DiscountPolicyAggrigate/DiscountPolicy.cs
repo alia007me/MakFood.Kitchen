@@ -6,6 +6,7 @@ namespace MakFood.Kitchen.Domain.Entities.DiscountAggrigate.DiscountPolicyAggrig
     public abstract class DiscountPolicy : BaseEntity<Guid>
     {
         public DiscountPolicyType Type { get; private set; }
+        protected DiscountPolicy() { }//ef
 
         protected DiscountPolicy(DiscountPolicyType type)
         {

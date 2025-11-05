@@ -4,6 +4,7 @@ namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentA
 {
     public class CreatedPaymentState : PaymentState
     {
+        internal CreatedPaymentState() { }//ef
         public override PaymentStatus Status => PaymentStatus.Created;
 
         public override PaidPaymentState Paid()

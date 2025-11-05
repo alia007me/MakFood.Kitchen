@@ -4,7 +4,7 @@ namespace MakFood.Kitchen.Domain.Entities.DiscountAggrigate.DiscountPolicyAggrig
 {
     public class AllPermittedPolicy :  DiscountPolicy 
     {
-        private AllPermittedPolicy() : base(DiscountPolicyType.AllPermitted)
+        public AllPermittedPolicy() : base(DiscountPolicyType.AllPermitted)
         {
         }
         

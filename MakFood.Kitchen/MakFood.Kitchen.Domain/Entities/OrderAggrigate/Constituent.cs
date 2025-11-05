@@ -7,10 +7,7 @@ namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate
 {
     public class Constituent : BaseEntity<Guid>
     {
-        public Constituent()
-        {
-            
-        }
+        private Constituent() { }//ef
         public Constituent(string name, decimal price, Guid productId)
         {
 
