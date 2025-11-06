@@ -1,5 +1,4 @@
 ﻿using MakFood.Kitchen.Domain.Entities.DiscountAggrigate.Enum;
-using MakFood.Kitchen.Infrastructure.Substructure.Extensions;
 
 namespace MakFood.Kitchen.Domain.Entities.DiscountAggrigate.DiscountPolicyAggrigate
 {
@@ -17,25 +16,16 @@ namespace MakFood.Kitchen.Domain.Entities.DiscountAggrigate.DiscountPolicyAggrig
         #region Behavior
         public override bool IsPermitted(Guid customerId)
         {
-            CustomeridValidator(customerId);
             return Customers.Contains(customerId);
         }
 
         public void AddCustomers(Guid customerId)
         {
-            CustomeridValidator(customerId);
             _customers.Add(customerId);
         }
         #endregion
 
-        #region Validations
-
-        private void CustomeridValidator(Guid customerId)
-        {
-            customerId.CheckNullOrEmpty("Customer Id");
-        }
-
-        #endregion
+        
 
 
 

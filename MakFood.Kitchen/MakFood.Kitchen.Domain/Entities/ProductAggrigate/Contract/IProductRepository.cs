@@ -2,6 +2,16 @@
 {
     public interface IProductRepository
     {
-        Task<bool> IsExistByIdAsync(Guid productId,CancellationToken ct);
+        /// <summary>
+        /// برسی می کند آیا محصول وجود دارد یا خیر
+        /// </summary>
+        /// <param name="productId">آیدی محصول</param>
+        /// <returns>
+        /// درست => در صورتی که محصول وجود داشته باشد/\
+        /// نادرست => در صورتی که محصول وجود نداشته باشد
+        /// </returns>
+        Task<bool> IsExistByIdAsync(Guid productId);
+        Task<bool> IsExistByIdNameThumbnailPathAsync(Guid productId,string productName,string productThumbnailPath);
+        Task<bool> IsExistByIdNamePriceAsync(Guid productId, string productName, decimal price);
     } 
 }

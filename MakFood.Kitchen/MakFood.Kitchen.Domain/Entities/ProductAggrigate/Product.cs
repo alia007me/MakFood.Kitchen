@@ -1,6 +1,6 @@
-﻿using MakFood.Kitchen.Domain.Entities.Base;
+﻿using MakFood.Kitchen.Domain.BussinesRules;
+using MakFood.Kitchen.Domain.Entities.Base;
 using MakFood.Kitchen.Domain.Entities.CategoryAggrigate;
-using MakFood.Kitchen.Infrastructure.Substructure.Extensions;
 using System.Text.RegularExpressions;
 
 
@@ -24,10 +24,11 @@ namespace MakFood.Kitchen.Domain.Entities.ProductAggrigate
         public Product(string name, decimal price, string description,
             string thumbnailPath, Subcategory productCategory , uint availableQuantity)
         {
-            NameValidation(name);
-            PriceValidation(price);
-            DescriptionValidation(description);
-            ThumbnailPathValidation(thumbnailPath);
+            Check(new NameMustContainOnlyValidCharactersBR(name));
+            Check(new PriceMustBePositiveBR(price));
+
+            Check(new ProductDescriptionCanNotBeWhitespaceBR(description));
+            Check(new DiscountTitleMustHaveBetweenFourAndTwentyFourValidCharactersBR(thumbnailPath));
             
 
 
@@ -51,32 +52,12 @@ namespace MakFood.Kitchen.Domain.Entities.ProductAggrigate
 
         #region Validations
 
-        private void NameValidation(string name)
-        {
-            name.CheckNullOrEmpty("name");
-            var nameRegexPattern = "([A-Za-z\\s]{0,25})";
-            if (Regex.IsMatch(nameRegexPattern, name)) throw new Exception("Product name may have invalid characters or more than 25 characters");
-        }
-        private void PriceValidation(decimal price)
-        {
-            price.CheckNullOrEmpty("price");
-            if (Price < 0) throw new Exception("The product amount cannot be less than zero");
-        }
-        private void DescriptionValidation(string description)
-        {
-            description.CheckNullOrEmpty("description");
-            var descriptionRegexPattern = "([A-Za-z\\s]{0,150})";
-            if (!Regex.IsMatch(descriptionRegexPattern, description)) throw new Exception("The thumbnail path may contain invalid characters or exceed 150 characters");
 
-        }
-        private void ThumbnailPathValidation(string thumbnailPath)
-        {
-            thumbnailPath.CheckNullOrEmpty("thumbnailPath");
-        }
         private void increaseQuantityValidator(decimal quantityToIncrease)
         {
             if (quantityToIncrease < 0) throw new Exception("The quantity to increase cannot be less than zero");
         }
+
         private void DecreaseQuantityValidator(decimal quantityToDecrease)
         {
             if (quantityToDecrease > AvailableQuantity) throw new Exception("The quantity to decrease exceeds the available quantity");
@@ -94,7 +75,7 @@ namespace MakFood.Kitchen.Domain.Entities.ProductAggrigate
         /// <param name="newName">نام جدید پروداکت</param>
         public void UpdateProductName(string newName)
         {
-            NameValidation(newName);
+            Check(new NameMustContainOnlyValidCharactersBR(newName));
             Name = newName;
         }
 
@@ -104,7 +85,6 @@ namespace MakFood.Kitchen.Domain.Entities.ProductAggrigate
         /// <param name="newDescription">توضیحات محصول</param>
         public void UpdateDescription(string newDescription)
         {
-            DescriptionValidation(newDescription);
             Description = newDescription;
         }
 
@@ -114,7 +94,6 @@ namespace MakFood.Kitchen.Domain.Entities.ProductAggrigate
         /// <param name="thumbnailPath">مسیر تصویر محصول</param>
         public void UpdateThumbnailPath(string thumbnailPath)
         {
-            ThumbnailPathValidation(thumbnailPath);
             ThumbnailPath = thumbnailPath;
         }
 
@@ -134,7 +113,7 @@ namespace MakFood.Kitchen.Domain.Entities.ProductAggrigate
         /// <param name="newPrice">قیمت جدید محصول</param>
         public void UpdatePrice(decimal newPrice)
         {
-            PriceValidation(Price);
+            Check(new PriceMustBePositiveBR(newPrice));
             Price = newPrice;
         }
 
