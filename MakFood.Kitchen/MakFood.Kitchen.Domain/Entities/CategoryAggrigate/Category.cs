@@ -9,6 +9,10 @@ namespace MakFood.Kitchen.Domain.Entities.CategoryAggrigate
     /// </summary>
     public class Category : BaseEntity<Guid>
     {
+        private Category()
+        {
+            
+        }
         private List<Subcategory> _subcategories = new List<Subcategory>();
 
         /// <summary>

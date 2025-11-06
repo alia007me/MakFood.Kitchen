@@ -7,6 +7,7 @@ namespace MakFood.Kitchen.Domain.Entities.DiscountAggrigate.DiscountPolicyAggrig
         public AllPermittedPolicy() : base(DiscountPolicyType.AllPermitted)
         {
         }
+        
 
         public override bool IsPermitted(Guid CamtomerId)=>true;
     }

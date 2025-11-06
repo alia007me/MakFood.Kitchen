@@ -19,10 +19,10 @@ namespace MakFood.Kitchen.Domain.Entities.ProductAggrigate
         /// <param name="price">قیمت محصول</param>
         /// <param name="description">توضیحات محصول</param>
         /// <param name="thumbnailPath">آدرس تصویر محصول</param>
-        /// <param name="productCategory">دسته بندی محصول</param>
+        /// <param name="subcategory">دسته بندی محصول</param>
         /// <param name="availableQuantity">مقدار موجود از محصول</param>
         public Product(string name, decimal price, string description,
-            string thumbnailPath, Subcategory productCategory , uint availableQuantity)
+            string thumbnailPath, Subcategory subcategory , uint availableQuantity)
         {
             Check(new NameMustContainOnlyValidCharactersBR(name));
             Check(new PriceMustBePositiveBR(price));
@@ -37,11 +37,14 @@ namespace MakFood.Kitchen.Domain.Entities.ProductAggrigate
             Price = price;
             Description = description;
             ThumbnailPath = thumbnailPath;
-            SubCategoryId = productCategory.Id;
-            SubCategoryName = productCategory.Name;
+            SubCategoryId = subcategory.Id;
+            SubCategoryName = subcategory.Name;
             increaseQuantityValidator(availableQuantity);
         }
-
+        private Product() //ef
+        {
+            
+        }
         public string Name { get; private set; }
         public decimal Price { get; private set; }
         public string Description { get; private set; }

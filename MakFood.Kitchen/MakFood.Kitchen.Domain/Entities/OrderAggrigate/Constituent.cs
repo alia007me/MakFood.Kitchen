@@ -8,6 +8,7 @@ namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate
 {
     public class Constituent : BaseEntity<Guid>
     {
+        private Constituent() { }//ef
         public Constituent(string name, decimal price, Guid productId)
         {
             Check(new NameMustContainOnlyValidCharactersBR(name));

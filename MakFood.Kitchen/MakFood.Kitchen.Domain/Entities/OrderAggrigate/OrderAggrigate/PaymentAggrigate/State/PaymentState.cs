@@ -6,7 +6,7 @@ namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentA
 {
     public abstract class PaymentState : BaseEntity<Guid>
     {
-        public PaymentState()
+        protected PaymentState()
         {
             Id = Guid.NewGuid();
         }

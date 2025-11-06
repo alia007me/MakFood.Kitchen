@@ -10,6 +10,13 @@ public class Cart : BaseEntity<Guid>
     {
         _cartItems = cartItems;
     }
+    private Cart() //ef
+    {
+        
+    }
+
+
+    public IEnumerable<CartItem> CartItems => _cartItems.AsReadOnly();
 
 
     public IEnumerable<CartItem> CartItems => _cartItems.AsReadOnly();

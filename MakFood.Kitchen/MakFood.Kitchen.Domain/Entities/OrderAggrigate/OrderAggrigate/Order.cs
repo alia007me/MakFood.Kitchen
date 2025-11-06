@@ -23,6 +23,10 @@ namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate
             _stateHistory.Add(CurrentState.Created());
 
         }
+        private Order() //ef
+        {
+            
+        }
 
         public Guid CustomerId { get;private set; }
         public Discount DiscountCode { get;private set; }

@@ -19,6 +19,10 @@ namespace MakFood.Kitchen.Domain.Entities.CategoryAggrigate
             Id = Guid.NewGuid();
             Name = name;
         }
+        private Subcategory() //ef
+        {
+            
+        }
 
         public string Name { get; set; }
 

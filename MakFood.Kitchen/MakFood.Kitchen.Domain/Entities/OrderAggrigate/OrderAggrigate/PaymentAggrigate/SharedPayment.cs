@@ -3,8 +3,9 @@ using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentAggri
 
 namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentAggrigate
 {
-    internal class SharedPayment : Payment
+    public class SharedPayment : Payment
     {
+        private SharedPayment() {}//ef
         public SharedPayment(decimal totalAmount, decimal reminingAmount,
             PaymentMathods ownerPaymentMethod, decimal ownerAmount, decimal ownerPaidAmount,
             decimal partnerAmount, Guid partnerId, decimal partnerPaidAmount, PaymentMathods partnerPaymentMethod, bool partnerApproved)

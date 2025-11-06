@@ -6,7 +6,8 @@ namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentA
 {
     public abstract class Payment : BaseEntity<Guid>
     {
-        private List<PaymentState> _PaymentHistory = new List<PaymentState>();
+        protected Payment() { } //ef
+        protected List<PaymentState> _PaymentHistory = new List<PaymentState>();
         protected Payment(decimal totalAmount, decimal reminingAmount, PaymentMathods ownerPaymentMethod,
             decimal ownerAmount, decimal ownerPaidAmount)
         {
@@ -17,7 +18,6 @@ namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentA
             OwnerPaidAmount = ownerPaidAmount;
             _PaymentHistory.Add(new CreatedPaymentState());
         }
-
         public decimal TotalAmount { get; protected set; }
         public PaymentState CurrentState => _PaymentHistory.OrderByDescending(c => c.CreationDateTime).First();
         public decimal ReminingAmount { get; protected set; }
@@ -27,17 +27,7 @@ namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentA
         public IEnumerable<PaymentState> PaymentLog => _PaymentHistory.AsEnumerable();
 
 
-        #region Behaviors
-        private void Paid()
-        {
-            _PaymentHistory.Add(CurrentState.Paid());
-        }
-        
-        private void Cancelled()
-        {
-            _PaymentHistory.Add(CurrentState.Cancelled());
-        }
-        #endregion
+         
 
     }
 }
