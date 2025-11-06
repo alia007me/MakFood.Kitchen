@@ -1,9 +1,7 @@
 ﻿using MakFood.Kitchen.Domain.Entities.Base;
 using MakFood.Kitchen.Domain.Entities.DiscountAggrigate;
-using MakFood.Kitchen.Domain.Entities.OrderAggrigate;
 using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.OrederState;
 using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentAggrigate.PaymentBase;
-using MakFood.Kitchen.Infrastructure.Substructure.Extensions;
 
 namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate
 {
@@ -55,15 +53,6 @@ namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate
         {
             _stateHistory.Add(CurrentState.Cancelled());
         }
-        #endregion
-
-        #region Validators
-
-        private void CheckConstituentsList(List<Constituent> constituents)
-        {
-            constituents.CheckNullOrEmpty("constituents List");
-        }
-
         #endregion
 
         #region CalculatePrice
