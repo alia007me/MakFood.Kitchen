@@ -46,17 +46,17 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Context.Migrations
                     b.Property<DateTime>("CreationDateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("ProdoctName")
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ProductName")
                         .IsRequired()
                         .HasMaxLength(25)
                         .HasColumnType("nvarchar(25)");
 
-                    b.Property<string>("ProdoctThumbnailPath")
+                    b.Property<string>("ProductThumbnailPath")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("ProductId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<long>("Quantity")
                         .HasColumnType("bigint");
@@ -215,6 +215,9 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Context.Migrations
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<long>("Quantity")
+                        .HasColumnType("bigint");
+
                     b.HasKey("Id");
 
                     b.HasIndex("OrderId");
@@ -268,12 +271,17 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Context.Migrations
                     b.Property<DateTime>("CreationDateTime")
                         .HasColumnType("datetime2");
 
+                    b.Property<Guid?>("OrderId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("OrderState")
                         .IsRequired()
                         .HasMaxLength(21)
                         .HasColumnType("nvarchar(21)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
 
                     b.ToTable("OrderState");
 
@@ -523,6 +531,14 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Context.Migrations
                     b.Navigation("Payment");
                 });
 
+            modelBuilder.Entity("MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.OrederState.OrderState", b =>
+                {
+                    b.HasOne("MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.Order", null)
+                        .WithMany("StateHistory")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentAggrigate.State.PaymentState", b =>
                 {
                     b.HasOne("MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentAggrigate.PaymentBase.Payment", null)
@@ -544,6 +560,8 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Context.Migrations
             modelBuilder.Entity("MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.Order", b =>
                 {
                     b.Navigation("Consistencies");
+
+                    b.Navigation("StateHistory");
                 });
 
             modelBuilder.Entity("MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentAggrigate.PaymentBase.Payment", b =>

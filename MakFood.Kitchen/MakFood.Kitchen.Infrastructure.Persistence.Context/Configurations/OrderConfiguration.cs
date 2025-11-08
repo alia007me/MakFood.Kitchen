@@ -42,9 +42,8 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Context.Configurations
                    .HasForeignKey("OrderId")
                    .OnDelete(DeleteBehavior.Cascade);
 
-            builder.HasMany(o => o.Consistencies)
+            builder.HasMany(j => j.StateHistory)
                    .WithOne()
-                   .HasForeignKey("OrderId")
                    .OnDelete(DeleteBehavior.Cascade);
         }
 
