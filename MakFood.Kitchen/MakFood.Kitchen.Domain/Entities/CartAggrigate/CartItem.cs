@@ -11,7 +11,7 @@ namespace MakFood.Kitchen.Domain.Entities.CartAggrigate
         {
             
         }
-        public CartItem(string prodoctName, string prodoctThumbnailPath, Guid productId, uint quantity)
+        public CartItem(string productName, string productThumbnailPath, Guid productId, uint quantity)
         {
             Check(new ProductIdCannotBeEmptyBR(productId));
             Check(new NameMustContainOnlyValidCharactersBR(productName));

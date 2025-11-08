@@ -7,6 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="12.1.0" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.1" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.0" />
+    <PackageReference Include="MediatR" Version="13.1.0" />
+    <PackageReference Include="MediatR.Contracts" Version="2.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\MakFood.Kitchen.Infrastructure.Persistence.Repository\MakFood.Kitchen.Infrastructure.Persistence.Repository.csproj" />
     <ProjectReference Include="..\MakFood.Kitchen.Infrastructure.Substructure\MakFood.Kitchen.Infrastructure.Substructure.csproj" />
   </ItemGroup>
