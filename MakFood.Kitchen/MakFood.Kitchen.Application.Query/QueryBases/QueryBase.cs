@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MakFood.Kitchen.Application.Query
+namespace MakFood.Kitchen.Application.Query.QueryBases
 {
     public abstract class QueryBase
     {
