@@ -8,20 +8,21 @@ using System.Threading.Tasks;
 
 namespace MakFood.Kitchen.Domain.BussinesRules
 {
-    public class CategoryMustNotHaveProductsToBR : IAsyncBaseBusinessRule
+    public class CategoryMustNotHaveProductsBR : IBaseBusinessRule
     {
         private readonly bool _hasproducts;
         private readonly string _categoryName;
 
-        public CategoryMustNotHaveProductsToBR(bool hasProducts , string categoryName)
+        public CategoryMustNotHaveProductsBR(bool hasProducts , string categoryName)
         {
             _hasproducts = hasProducts;
             _categoryName = categoryName;
         }
 
-        public   Task<bool> Check (CancellationToken ct)
+        public bool Check ()
         {
-           return Task.FromResult(!_hasproducts);
+
+           return _hasproducts;
         }
         public Exception Throws()
         {

@@ -3,21 +3,21 @@ using MakFood.Kitchen.Domain.SharedKarnel;
 
 namespace MakFood.Kitchen.Domain.BussinesRules
 {
-    public class SubcategoryMustNotHaveProductsToBR : IAsyncBaseBusinessRule
+    public class SubcategoryMustNotHaveProductsBR : IBaseBusinessRule
     {
         private readonly bool _hasproducts;
         private readonly string _subcategoryName;
 
-        public SubcategoryMustNotHaveProductsToBR(bool hasProducts, string subcategoryName)
+        public SubcategoryMustNotHaveProductsBR(bool hasProducts, string subcategoryName)
         {
             _hasproducts = hasProducts;
             _subcategoryName = subcategoryName;
         }
 
-        public Task<bool> Check(CancellationToken ct)
+        public bool Check()
         {
             
-            return Task.FromResult(!_hasproducts);
+            return !_hasproducts;
         }
 
         public Exception Throws()

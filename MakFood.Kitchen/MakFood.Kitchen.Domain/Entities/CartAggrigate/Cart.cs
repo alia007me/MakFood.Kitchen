@@ -19,7 +19,7 @@ public class Cart : BaseEntity<Guid>
     public IEnumerable<CartItem> CartItems => _cartItems.AsReadOnly();
 
 
-    public IEnumerable<CartItem> CartItems => _cartItems.AsReadOnly();
+ 
 
 
     #region Behaviors
