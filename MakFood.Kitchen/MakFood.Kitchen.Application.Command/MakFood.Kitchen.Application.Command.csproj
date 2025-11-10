@@ -21,8 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="SubcategoryCommands\CreateSubcategory\" />
-    <Folder Include="SubcategoryCommands\RemoveSubcategory\" />
     <Folder Include="SubcategoryCommands\UpdateSubcategory\" />
   </ItemGroup>
 

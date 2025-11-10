@@ -15,11 +15,11 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Repository
             _context = context;
         }
 
-        public async Task<Category> GetByIdAsync(Guid id, CancellationToken ct)
+        public async Task<Category?> GetByIdAsync(Guid Id, CancellationToken ct)
         {
             return await _context.Categories
                  .Include(c => c.Subcategories)
-                .SingleOrDefaultAsync(c => c.Id == id, ct);
+                .SingleOrDefaultAsync(c => c.Id == Id, ct);
         }
         public async Task<bool> ExistNameAsync(string name, CancellationToken ct)
         {

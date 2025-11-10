@@ -23,7 +23,7 @@ namespace MakFood.Kitchen.Application.Command.CategoriesCommand.UpdateCategory
                 throw new Exception($"Category with Id '{request.Id}' not found.");
 
             
-            bool exists = await _categoryRepository.ExistNameAsync(request.NewName, ct);
+            bool exists = await _categoryRepository.ExistNameAsync(request.NewName,request.Id, ct);
             if (exists)
                 throw new Exception($"Category with name '{request.NewName}' already exists.");
 

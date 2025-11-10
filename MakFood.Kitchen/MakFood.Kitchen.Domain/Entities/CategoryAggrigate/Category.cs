@@ -82,6 +82,8 @@ namespace MakFood.Kitchen.Domain.Entities.CategoryAggrigate
         public void CheckCanBeRemoved(bool hasProducts)
         {
      
+            //if(!Subcategories.Any()) throw new IsAlreadyExistException();
+
             Check(new CategoryMustNotHaveProductsBR(hasProducts, Name));
 
         }
