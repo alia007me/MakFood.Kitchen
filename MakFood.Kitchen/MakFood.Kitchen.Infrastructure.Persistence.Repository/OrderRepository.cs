@@ -29,10 +29,21 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Repository
                                  .Include(x => x.DiscountCode)
                                  .ThenInclude(p => p.DiscountPolicy)
                                  .Include(x => x.Payment)
-                                 .ThenInclude( p => p.PaymentLog)
+                                 .ThenInclude(p => p.PaymentLog)
                                  .Where(c => c.StateHistory.OfType<MiseOnPlaceOrderState>().Any())
                                  .ToListAsync(ct);
+        }
 
+        public async Task<Order?> GetOrderByIdAsync(Guid orderId, CancellationToken ct)
+        {
+            return await _context.Orders
+                .Include(x => x.StateHistory)
+                .Include(x => x.Consistencies)
+                .Include(x => x.DiscountCode)
+                    .ThenInclude(p => p.DiscountPolicy)
+                .Include(x => x.Payment)
+                    .ThenInclude(p => p.PaymentLog)
+                .FirstOrDefaultAsync(x => x.Id == orderId, ct);
 
         }
     }

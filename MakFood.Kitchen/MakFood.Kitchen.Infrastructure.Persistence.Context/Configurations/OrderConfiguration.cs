@@ -1,5 +1,4 @@
 ﻿using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate;
-using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.OrederState;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

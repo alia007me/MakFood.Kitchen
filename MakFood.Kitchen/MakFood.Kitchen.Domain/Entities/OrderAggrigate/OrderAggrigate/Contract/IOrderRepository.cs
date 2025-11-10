@@ -3,5 +3,6 @@
     public interface IOrderRepository
     {
         public Task<IEnumerable<Order>> GetOrderByDateRangeAsync(DateOnly FromDate,DateOnly ToDate,CancellationToken ct);
+        public Task<Order?> GetOrderByIdAsync(Guid orderId,CancellationToken ct);
     }
 }

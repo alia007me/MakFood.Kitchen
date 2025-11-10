@@ -2,7 +2,7 @@
 {
     public sealed class MiseOnPlaceOrderState : OrderState
     {
-        internal MiseOnPlaceOrderState() { }
+        internal MiseOnPlaceOrderState() { } //ef
         public override OrderStatus Status => OrderStatus.MiseOnPlace;
 
     }

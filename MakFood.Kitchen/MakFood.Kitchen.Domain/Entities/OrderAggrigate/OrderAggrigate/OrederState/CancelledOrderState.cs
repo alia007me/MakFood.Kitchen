@@ -2,7 +2,7 @@
 {
     public sealed class CancelledOrderState : OrderState
     {
-        internal CancelledOrderState() { }
+        internal CancelledOrderState() {} //ef
         public override OrderStatus Status => OrderStatus.Cancelled;
 
     }
