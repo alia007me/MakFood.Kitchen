@@ -28,6 +28,13 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddControllers();
 
+builder.Services.AddSwaggerGen();
+
+builder.Services.AddMediatR(cfg =>
+{
+    
+});
+
 
 
 var app = builder.Build();
@@ -35,6 +42,11 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 
 app.UseAuthorization();
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
 app.MapControllers();
 

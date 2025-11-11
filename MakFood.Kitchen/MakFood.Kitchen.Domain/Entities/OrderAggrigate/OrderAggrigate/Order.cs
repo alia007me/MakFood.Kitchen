@@ -31,6 +31,7 @@ namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate
         public Guid CustomerId { get;private set; }
         public Discount DiscountCode { get;private set; }
         public OrderState CurrentState => _stateHistory.OrderByDescending(c => c.CreationDateTime).First();
+        public IReadOnlyList<OrderState> StateHistory => _stateHistory.AsReadOnly();
         public decimal DiscountPrice { get;private set; }
         public decimal Price { get;private set; }
         public decimal Payable { get;private set; }
