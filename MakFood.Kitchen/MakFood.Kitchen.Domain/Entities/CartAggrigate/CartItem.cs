@@ -62,17 +62,15 @@ namespace MakFood.Kitchen.Domain.Entities.CartAggrigate
         #endregion
 
         #region Behaviors
-        public void IncreaseQuantity(uint quantityToIncrease)
+        public void IncreaseQuantity()
         {
-            quantityToIncrease.CheckNullOrEmpty("quantityToIncrease");
-            Quantity += quantityToIncrease;
+            Quantity += 1;
         }
 
-        public void DecreaseQuantity(uint quantityToDecrease)
+        public void DecreaseQuantity()
         {
-            quantityToDecrease.CheckNullOrEmpty("quantityToDecrease");
-            if (quantityToDecrease > Quantity) { throw new Exception($"you can't do this, is more then your Quantity {Quantity}"); }
-            Quantity -= quantityToDecrease;
+            if (1 > Quantity) { throw new Exception($"you can't do this, is more then your Quantity {Quantity}"); }
+            Quantity -= 1;
         }
         #endregion
     }

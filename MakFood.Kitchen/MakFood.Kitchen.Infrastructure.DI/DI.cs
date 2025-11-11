@@ -1,0 +1,24 @@
+﻿using MakFood.Kitchen.Domain.Entities.CartAggrigate.Contract;
+using MakFood.Kitchen.Domain.Entities.ProductAggrigate.Contract;
+using MakFood.Kitchen.Infrastructure.Persistence.Context;
+using MakFood.Kitchen.Infrastructure.Persistence.Repository.Repository;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace MakFood.Kitchen.Infrastructure.DI
+{
+    public static class DI
+    {
+        public static IServiceCollection ConfigureDI(this IServiceCollection services)
+        {
+            //repo
+            services.AddScoped<ICartRepository, CartRepository>();
+            services.AddScoped<IProductRepository, ProductRepository>();
+
+            //unit of work
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+
+            return services;
+        }
+    }
+}

@@ -5,9 +5,9 @@ using MakFood.Kitchen.Infrastructure.Substructure.Extensions;
 
 public class Cart : BaseEntity<Guid>
 {
-    public Cart(List<CartItem> cartItems)
+    public Cart(Guid Id)
     {
-        _cartItems = cartItems;
+        this.Id = Id;
     }
     private Cart() //ef
     {
@@ -33,11 +33,11 @@ public class Cart : BaseEntity<Guid>
         _cartItems.Add(cartItem);
     }
 
-    public void RemoveCartItem(Guid cartItemId)
+    public void RemoveCartItem(Guid ProductId)
     {
-        CartItemValidation(cartItemId);
+        CartItemValidation(ProductId);
 
-        var target = FindCartItem(cartItemId);
+        var target = FindCartItem(ProductId);
 
         _cartItems.Remove(target);
 
@@ -52,10 +52,10 @@ public class Cart : BaseEntity<Guid>
         cartItemId.CheckNullOrEmpty("cartItemId");
     }
 
-    private CartItem FindCartItem(Guid cartItemId)
+    private CartItem FindCartItem(Guid productId)
     {
-        var target = _cartItems.FirstOrDefault(x => x.Id == cartItemId);
-        if (target != null) throw new Exception("There is no item card with this ID in your shopping cart");
+        var target = _cartItems.SingleOrDefault(x => x.ProductId == productId);
+        if (target == null) throw new Exception("There is no item card with this ID in your shopping cart");
 
         return target!;
     }
