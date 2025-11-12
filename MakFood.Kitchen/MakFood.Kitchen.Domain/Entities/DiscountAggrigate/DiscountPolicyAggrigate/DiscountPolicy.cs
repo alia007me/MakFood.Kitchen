@@ -15,8 +15,9 @@ namespace MakFood.Kitchen.Domain.Entities.DiscountAggrigate.DiscountPolicyAggrig
 
         #region behavior
         public abstract bool IsPermitted(Guid CamtomerId);
+        public abstract void UseDiscount(Guid CastomerId);
         #endregion
-      
-        
+
+
     }
 }

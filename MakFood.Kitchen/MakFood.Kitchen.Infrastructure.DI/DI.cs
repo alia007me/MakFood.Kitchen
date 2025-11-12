@@ -1,4 +1,6 @@
 ﻿using MakFood.Kitchen.Domain.Entities.CartAggrigate.Contract;
+using MakFood.Kitchen.Domain.Entities.DiscountAggrigate.Contract;
+using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.Contract;
 using MakFood.Kitchen.Domain.Entities.ProductAggrigate.Contract;
 using MakFood.Kitchen.Infrastructure.Persistence.Context;
 using MakFood.Kitchen.Infrastructure.Persistence.Repository.Repository;
@@ -13,6 +15,8 @@ namespace MakFood.Kitchen.Infrastructure.DI
             //repo
             services.AddScoped<ICartRepository, CartRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<IDiscountCodeRepository, DiscountCodeRepository>();
 
             //unit of work
             services.AddScoped<IUnitOfWork, UnitOfWork>();

@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace MakFood.Kitchen.Application.Command.UpdateCart
+namespace MakFood.Kitchen.Application.Command.UpdateCart.RemoveItemFromCart
 {
     public class RemoveFromCartComandValidator : AbstractValidator<RemoveFromCartComand>
     {
