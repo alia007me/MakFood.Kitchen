@@ -22,7 +22,7 @@ namespace MakFood.Kitchen.Domain.BussinesRules
         public bool Check ()
         {
 
-           return _hasproducts;
+           return !_hasproducts;
         }
         public Exception Throws()
         {

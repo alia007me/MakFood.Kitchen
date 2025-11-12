@@ -14,13 +14,13 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Context.Configurations
             builder.Property(ci => ci.Id)
                    .ValueGeneratedNever();
 
-            builder.Property(ci => ci.ProdoctName)
+            builder.Property(ci => ci.ProductName)
                    .IsRequired()
                    .HasMaxLength(25);
 
             builder.Property(ci => ci.ProductId).IsRequired();
 
-            builder.Property(ci => ci.ProdoctThumbnailPath).IsRequired();
+            builder.Property(ci => ci.ProductThumbnailPath).IsRequired();
 
             builder.Property(ci => ci.Quantity).IsRequired();
         }

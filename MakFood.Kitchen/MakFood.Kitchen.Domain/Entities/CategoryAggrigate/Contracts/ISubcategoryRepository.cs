@@ -8,6 +8,6 @@
         Task AddAsync(Subcategory subcategory, CancellationToken ct);
         void Update(Subcategory subcategory);
         void Remove(Subcategory subcategory);
-        Task<Subcategory> GetByIdAsync(Guid? id);
+        
     }
 }

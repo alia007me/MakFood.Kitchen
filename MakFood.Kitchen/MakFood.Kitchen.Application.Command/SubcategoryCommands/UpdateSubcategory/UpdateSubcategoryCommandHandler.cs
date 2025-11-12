@@ -7,8 +7,7 @@ namespace MakFood.Kitchen.Application.Command.SubcategoryCommands.UpdateSubcateg
 {
     public partial class UpdateSubcategoryCommandValidator
     {
-        public class UpdateSubcategoryCommandHandler
-        : IRequestHandler<UpdateSubcategoryCommand, UpdateSubcategoryCommandResponse>
+        public class UpdateSubcategoryCommandHandler : IRequestHandler<UpdateSubcategoryCommand, UpdateSubcategoryCommandResponse>
         {
             private readonly ISubcategoryRepository _subcategoryRepository;
             private readonly IUnitOfWork _unitOfWork;

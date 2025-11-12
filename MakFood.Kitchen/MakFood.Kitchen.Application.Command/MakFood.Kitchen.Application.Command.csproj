@@ -16,12 +16,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MakFood.Kitchen.Domain\MakFood.Kitchen.Domain.csproj" />
     <ProjectReference Include="..\MakFood.Kitchen.Infrastructure.Persistence.Repository\MakFood.Kitchen.Infrastructure.Persistence.Repository.csproj" />
     <ProjectReference Include="..\MakFood.Kitchen.Infrastructure.Substructure\MakFood.Kitchen.Infrastructure.Substructure.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="SubcategoryCommands\UpdateSubcategory\" />
   </ItemGroup>
 
 </Project>

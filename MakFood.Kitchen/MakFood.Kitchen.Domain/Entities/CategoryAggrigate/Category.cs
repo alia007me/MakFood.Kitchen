@@ -84,7 +84,7 @@ namespace MakFood.Kitchen.Domain.Entities.CategoryAggrigate
      
             //if(!Subcategories.Any()) throw new IsAlreadyExistException();
 
-            Check(new CategoryMustNotHaveProductsBR(hasProducts, Name));
+            Check(new CategoryMustNotHaveProductsBR(hasProducts, this.Name));
 
         }
 

@@ -14,7 +14,7 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Repository
         {
             _context = context;
         }
-
+        
         public async Task<Subcategory?> GetByIdAsync(Guid id, CancellationToken ct)
         {
             return await _context.Subcategories
