@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MakFood.Kitchen.Domain\MakFood.Kitchen.Domain.csproj" />
     <ProjectReference Include="..\MakFood.Kitchen.Infrastructure.Persistence.Context\MakFood.Kitchen.Infrastructure.Persistence.Context.csproj" />
     <ProjectReference Include="..\MakFood.Kitchen.Infrastructure.Substructure\MakFood.Kitchen.Infrastructure.Substructure.csproj" />
   </ItemGroup>

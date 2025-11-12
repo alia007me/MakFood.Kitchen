@@ -11,7 +11,7 @@ namespace MakFood.Kitchen.Domain.Entities.CategoryAggrigate
     {
         private Category()
         {
-            
+
         }
         private List<Subcategory> _subcategories = new List<Subcategory>();
 
@@ -34,7 +34,7 @@ namespace MakFood.Kitchen.Domain.Entities.CategoryAggrigate
 
 
         #region Validators
-        
+
 
         private void CheckSubcategoryExist(Subcategory subcategory)
         {
@@ -75,9 +75,23 @@ namespace MakFood.Kitchen.Domain.Entities.CategoryAggrigate
             _subcategories.Remove(target);
         }
 
+        /// <summary>
+        /// قانون کسب و کار: اگر محصولی در این دسته بندی وجود داشته باشد، امکان حذف ندارد.
+        /// </summary>
+        /// <param name="hasProducts">وضعیت وجود محصول در این دسته بندی</param>
+        public void CheckCanBeRemoved(bool hasProducts)
+        {
+     
+            //if(!Subcategories.Any()) throw new IsAlreadyExistException();
+
+            Check(new CategoryMustNotHaveProductsBR(hasProducts, this.Name));
+
+        }
+
 
         #endregion
 
     }
-
 }
+
+
