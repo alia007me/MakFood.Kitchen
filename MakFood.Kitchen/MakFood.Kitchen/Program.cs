@@ -5,7 +5,8 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using MakFood.Kitchen.Infrastructure.DI;
 using System.Reflection;
-using MakFood.Kitchen.Application.Command.UpdateCart;
+using MakFood.Kitchen.Application.Command.UpdateCart.AddItemToCart;
+using MakFood.Kitchen.Application.Command.UpdateCart.RemoveItemFromCart;
 
 
 

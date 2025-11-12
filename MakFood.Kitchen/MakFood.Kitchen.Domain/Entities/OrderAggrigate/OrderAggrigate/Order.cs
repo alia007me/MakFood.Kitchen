@@ -12,7 +12,7 @@ namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate
         private List<OrderState> _stateHistory = new List<OrderState>();
         private List<Constituent> _constituents = new List<Constituent>();
 
-        public Order(Guid customerId, Discount discountCode,Payment payment,List<Constituent> constituents)
+        public Order(Guid customerId, Discount discountCode, Payment payment, List<Constituent> constituents)
         {
             Id = Guid.NewGuid();
 
@@ -25,13 +25,26 @@ namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate
             _stateHistory.Add(CurrentState.Created());
 
         }
+        public Order(Guid customerId, Payment payment, List<Constituent> constituents)
+        {
+            Id = Guid.NewGuid();
+
+            CustomerId = customerId;
+            DiscountCode = null;
+            Price = CalculatePrice();
+            DiscountPrice = decimal.Zero;
+            Payable = Price;
+            Payment = payment;
+            _stateHistory.Add(CurrentState.Created());
+
+        }
         private Order() //ef
         {
             
         }
 
         public Guid CustomerId { get;private set; }
-        public Discount DiscountCode { get;private set; }
+        public Discount? DiscountCode { get;private set; }
         public OrderState CurrentState => _stateHistory.OrderByDescending(c => c.CreationDateTime).First();
         public decimal DiscountPrice { get;private set; }
         public decimal Price { get;private set; }
@@ -70,7 +83,7 @@ namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate
 
         private decimal CalculatePrice()
         {
-            decimal total = 0;
+            decimal total = decimal.Zero;
             foreach (var constituent in _constituents)
             {
                 total += constituent.Price;

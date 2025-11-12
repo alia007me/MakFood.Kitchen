@@ -1,4 +1,5 @@
 ﻿using MakFood.Kitchen.Domain.Entities.Base;
+using MakFood.Kitchen.Domain.Entities.CartAggrigate;
 using MakFood.Kitchen.Domain.Entities.ProductAggrigate;
 using MakFood.Kitchen.Infrastructure.Substructure.Extensions;
 using System.Text.RegularExpressions;
@@ -19,7 +20,8 @@ namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate
             this.ProductId = productId;
         }
 
-        public Constituent(Product product)
+
+        public Constituent(Product product, CartItem cartItem)
         {
             validateName(product.Name);
             validatePrice(product.Price);
@@ -27,14 +29,16 @@ namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate
             Name = product.Name;
             Price = product.Price;
             ProductId = product.Id;
+            Quantity = cartItem.Quantity;
         }
+
 
 
 
         public string Name { get; private set; }
         public decimal Price { get; private set; }
         public Guid ProductId { get; private set; }
-
+        public uint Quantity { get;private init; }
         #region Validations
         private static void validateName(String name)
         {
