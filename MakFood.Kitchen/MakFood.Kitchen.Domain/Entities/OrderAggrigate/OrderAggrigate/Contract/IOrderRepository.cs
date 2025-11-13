@@ -1,0 +1,7 @@
+﻿namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.Contract
+{
+    public interface IOrderRepository
+    {
+        public Task<IEnumerable<Order>> GetOrderByDateRangeAsync(DateOnly FromDate,DateOnly ToDate,CancellationToken ct);
+    }
+}
