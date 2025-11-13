@@ -4,6 +4,6 @@ namespace MakFood.Kitchen.Application.Command.UpdateCart
 {
     public class AddItemToCartComandRespnse
     {
-        public GetCartDTO items { get; set; }
+        public GetCartDTO Items { get; set; }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace MakFood.Kitchen.Application.Command.UpdateCart
 {
-    public class AddItemToCartComandValidator : AbstractValidator<AddItemToCartComand>
+    public class AddItemToCartComandValidator : AbstractValidator<AddItemToCartCommand>
     {
         public AddItemToCartComandValidator()
         {

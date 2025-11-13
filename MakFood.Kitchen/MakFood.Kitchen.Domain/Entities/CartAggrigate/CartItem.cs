@@ -7,8 +7,9 @@ namespace MakFood.Kitchen.Domain.Entities.CartAggrigate
 {
     public class CartItem : BaseEntity<Guid>
     {
-        const int DefaultCartItemQuantity = 1;
-        private CartItem () {} //ef
+        private const int DefaultCartItemQuantity = 1;
+
+        private CartItem() { } //ef
         public CartItem(Product product)
         {
             Check(new ProductIdCannotBeEmptyBR(product.Id));
@@ -26,16 +27,18 @@ namespace MakFood.Kitchen.Domain.Entities.CartAggrigate
         public Guid ProductId { get; private init; }
         public uint Quantity { get; private set; }
 
+        public bool IsAvailable => Quantity > DefaultCartItemQuantity;
+
         #region Behaviors
         public void IncreaseQuantity()
         {
-            Quantity ++;
+            Quantity++;
         }
 
         public void DecreaseQuantity()
         {
             Check(new QuantityCannotBeDecreasedBeyondAvailableBR(Quantity));
-            Quantity --;
+            Quantity--;
         }
         #endregion
     }

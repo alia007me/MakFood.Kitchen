@@ -10,11 +10,9 @@ public class Cart : BaseEntity<Guid>
     {
         Id = cartId;
     }
-    private Cart() {} //ef
-
+    private Cart() { } //ef
 
     public IEnumerable<CartItem> CartItems => _cartItems.AsReadOnly();
-
 
     #region Behaviors
 
@@ -22,6 +20,7 @@ public class Cart : BaseEntity<Guid>
     {
         _cartItems.Clear();
     }
+
     public void AddCartItem(CartItem cartItem)
     {
         _cartItems.Add(cartItem);
@@ -33,10 +32,8 @@ public class Cart : BaseEntity<Guid>
         _cartItems.Remove(cartItem);
     }
 
+    public CartItem? GetItemById(Guid id)
+        => CartItems.SingleOrDefault(x => x.ProductId == id);
 
     #endregion
-
-    
-
-
 }

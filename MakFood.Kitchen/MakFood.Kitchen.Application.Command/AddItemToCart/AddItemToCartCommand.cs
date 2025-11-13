@@ -3,7 +3,7 @@ using MediatR;
 
 namespace MakFood.Kitchen.Application.Command.UpdateCart
 {
-    public class AddItemToCartComand : ComandBase, IRequest<AddItemToCartComandRespnse>
+    public class AddItemToCartCommand : ComandBase, IRequest<AddItemToCartComandRespnse>
     {
         public Guid CartId { get; set; }
         public Guid ItemId { get; set; }
