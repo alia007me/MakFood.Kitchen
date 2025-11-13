@@ -19,7 +19,7 @@ namespace MakFood.Kitchen.Controllers
             _mediator = mediator;
         }
 
-        [HttpGet("Mise-On-Place")]
+        [HttpGet("State/Mise-On-Place")]
         public async Task<IActionResult> GetAllMiseOnPlaceOrdersByDateRange(DateOnly fromDate,DateOnly ToDate)
         {
             var getAllMiseOnPlaceOrdersByDateRangeQuery = new GetAllMiseOnPlaceOrdersByDateRangeQuery{FromDate = fromDate,ToDate = ToDate };
@@ -29,7 +29,7 @@ namespace MakFood.Kitchen.Controllers
             return Ok(result);
         }
 
-        [HttpGet("product-counts")]
+        [HttpGet("Product/Count")]
         public async Task<IActionResult> GetProductOrderCountsByDateRange(DateOnly fromDate, DateOnly ToDate)
         {
             var GetProductOrderCountsByDateRangeQuery = new GetProductOrderCountsByDateRangeQuery { FromDate = fromDate, ToDate = ToDate };
@@ -39,7 +39,7 @@ namespace MakFood.Kitchen.Controllers
             return Ok(result);
         }
 
-        [HttpGet("sales-total")]
+        [HttpGet("Sold/Amount")]
         public async Task<IActionResult> GetTotalSalesByDateRange(DateOnly fromDate, DateOnly ToDate)
         {
             var GetTotalSalesByDateRangeQuery = new GetTotalSalesByDateRangeQuery { FromDate = fromDate, ToDate = ToDate };
