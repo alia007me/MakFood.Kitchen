@@ -1,5 +1,4 @@
 ﻿using MakFood.Kitchen.Application.Command.Base;
-using MakFood.Kitchen.Application.Query.GetCart;
 using MediatR;
 
 namespace MakFood.Kitchen.Application.Command.UpdateCart
@@ -13,9 +12,5 @@ namespace MakFood.Kitchen.Application.Command.UpdateCart
         {
             new RemoveFromCartComandValidator().Validate(this).ThrowIfNeeded();
         }
-    }
-    public class RemoveFromCartComandRespnse
-    {
-        public GetCartDTO items { get; set; }
     }
 }
