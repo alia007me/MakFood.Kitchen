@@ -39,7 +39,6 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddMediatR(cfg =>
 {
-    cfg.RegisterServicesFromAssembly(typeof(CreateCategoryCommand).Assembly);
     cfg.RegisterServicesFromAssembly(typeof(CreateCategoryCommandHandler).Assembly);
 });
 

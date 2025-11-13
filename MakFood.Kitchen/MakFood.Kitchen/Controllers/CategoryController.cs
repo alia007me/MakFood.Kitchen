@@ -18,9 +18,9 @@ namespace MakFood.Kitchen.Controllers
             _mediator = mediator;
         }
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateCategoryCommand command)
+        public async Task<IActionResult> Create([FromBody] CreateCategoryCommand command ,CancellationToken ct)
         {
-            var result = await _mediator.Send(command);
+            var result = await _mediator.Send(command, ct);
             return Ok (result);
         }
         

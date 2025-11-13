@@ -34,9 +34,9 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Repository
                 .ToListAsync(ct);
         }
 
-        public async Task AddAsync(Category category, CancellationToken ct)
+        public void Add(Category category)
         {
-            await _context.Categories.AddAsync(category, ct);
+             _context.Categories.AddAsync(category);
         }
 
         public void Update(Category category)
