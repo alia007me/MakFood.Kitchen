@@ -4,9 +4,10 @@ namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.OrederSt
 {
     public abstract class OrderState : BaseEntity<Guid>
     {
-        
-        public Guid Id { get; set; }
-        public DateTime CreationDateTime { get; private set; }
+        protected OrderState()
+        {
+            Id = Guid.NewGuid();
+        }
         public abstract OrderStatus Status { get; }
         public virtual CreatedOrderState Created()
         {
