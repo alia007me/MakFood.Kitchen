@@ -7,7 +7,8 @@ namespace MakFood.Kitchen.Domain.Entities.CartAggrigate
 {
     public class CartItem : BaseEntity<Guid>
     {
-        private CartItem() { } //ef
+        const int DefaultCartItemQuantity = 1;
+        private CartItem () {} //ef
         public CartItem(Product product)
         {
             Check(new ProductIdCannotBeEmptyBR(product.Id));
@@ -17,7 +18,7 @@ namespace MakFood.Kitchen.Domain.Entities.CartAggrigate
             ProductName = product.Name;
             ProductThumbnailPath = product.ThumbnailPath;
             ProductId = product.Id;
-            Quantity = 1;
+            Quantity = DefaultCartItemQuantity;
         }
 
         public string ProductName { get; private init; }

@@ -1,4 +1,5 @@
-﻿using MakFood.Kitchen.Application.Query.GetAllMiseOnPlaceOrderByDateRange;
+﻿using MakFood.Kitchen.Application.Command.CancelOrder;
+using MakFood.Kitchen.Application.Query.GetAllMiseOnPlaceOrderByDateRange;
 using MakFood.Kitchen.Application.Query.GetProductOrderCountsByDateRange;
 using MakFood.Kitchen.Application.Query.GetTotalSalesByDateRange;
 using MediatR;
@@ -47,6 +48,17 @@ namespace MakFood.Kitchen.Controllers
 
             return Ok(result);
         }
+
+        [HttpPatch("{orderId}/Cancel")]
+        public async Task<IActionResult> CancelOrder(Guid orderId, Guid customerId)
+        {
+            var CancelOrderCommand = new CancelOrderCommand(customerId,orderId);
+
+            var result = await _mediator.Send(CancelOrderCommand);
+
+            return Ok(result);
+        }
+
 
 
     }

@@ -5,8 +5,13 @@ using MakFood.Kitchen.Application.Query.GetByDateRageBase;
 
 namespace MakFood.Kitchen.Application.Query.GetTotalSalesByDateRange
 {
-    public class GetTotalSalesByDateRangeValidation : GetByDateRangeValidationBase
+    public class GetTotalSalesByDateRangeValidation : AbstractValidator<GetTotalSalesByDateRangeQuery>
     {
+        public GetTotalSalesByDateRangeValidation()
+        {
+            Include(new GetByDateRangeValidationBase());
+        }
     }
+
 
 }
