@@ -3,6 +3,7 @@ using MakFood.Kitchen.Domain.Entities.CartAggrigate;
 using MakFood.Kitchen.Domain.Entities.CartAggrigate.Contract;
 using MakFood.Kitchen.Domain.Entities.ProductAggrigate.Contract;
 using MakFood.Kitchen.Infrastructure.Persistence.Context;
+using MakFood.Kitchen.Infrastructure.Persistence.Context.Transactions;
 using MediatR;
 
 namespace MakFood.Kitchen.Application.Command.UpdateCart
@@ -30,7 +31,7 @@ namespace MakFood.Kitchen.Application.Command.UpdateCart
                 var cartItem = new CartItem(await _productRepository.GetProductTracked(cartComand.ItemId, ct));
                 cart.AddCartItem(cartItem);
             }
-            await _UnitOfWork.Commit(ct);
+            await _UnitOfWork.commit(ct);
             var items = new GetCartDTO(cart.CartItems);
             var respon = new AddItemToCartComandRespnse() { items = items };
             return respon;

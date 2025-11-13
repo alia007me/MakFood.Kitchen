@@ -27,16 +27,15 @@ namespace MakFood.Kitchen.Domain.Entities.CartAggrigate
         public uint Quantity { get; private set; }
 
         #region Behaviors
-        public void IncreaseQuantity(uint quantityToIncrease)
+        public void IncreaseQuantity()
         {
-            Check(new IncreaseQuantityMustBeGreaterThanZeroBR(quantityToIncrease));
-            Quantity += quantityToIncrease;
+            Quantity ++;
         }
 
-        public void DecreaseQuantity(uint quantityToDecrease)
+        public void DecreaseQuantity()
         {
-            Check(new QuantityCannotBeDecreasedBeyondAvailableBR(Quantity,quantityToDecrease));
-            Quantity -= quantityToDecrease;
+            Check(new QuantityCannotBeDecreasedBeyondAvailableBR(Quantity));
+            Quantity --;
         }
         #endregion
     }
