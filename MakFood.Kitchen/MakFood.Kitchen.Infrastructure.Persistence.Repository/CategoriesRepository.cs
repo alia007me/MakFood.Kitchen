@@ -21,7 +21,7 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Repository
                  .Include(c => c.Subcategories)
                 .SingleOrDefaultAsync(c => c.Id == Id, ct);
         }
-        public async Task<bool> ExistNameAsync(string name, CancellationToken ct)
+        public async Task<bool> CheckIsExistByNameAsync(string name, CancellationToken ct)
         {
             return await _context.Categories.AnyAsync(c => c.Name == name, ct);
         }

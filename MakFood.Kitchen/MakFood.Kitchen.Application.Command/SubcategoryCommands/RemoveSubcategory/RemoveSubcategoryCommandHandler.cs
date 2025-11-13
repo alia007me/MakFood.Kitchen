@@ -1,6 +1,8 @@
-﻿using MediatR;
+﻿using MakFood.Kitchen.Domain.BussinesRules.Exceptions;
 using MakFood.Kitchen.Domain.Entities.CategoryAggrigate.Contracts;
+using MakFood.Kitchen.Domain.Entities.ProductAggrigate.Contract;
 using MakFood.Kitchen.Infrastructure.Persistence.Context.Transactions;
+using MediatR;
 
 namespace MakFood.Kitchen.Application.Command.SubcategoryCommands.RemoveSubcategory
 {
@@ -21,9 +23,9 @@ namespace MakFood.Kitchen.Application.Command.SubcategoryCommands.RemoveSubcateg
         {
             var subcategory = await _subcategoryRepository.GetByIdAsync(request.Id ,ct  );
             if (subcategory == null)
-                throw new Exception($"Subcategory with Id '{request.Id}' not found.");
+                throw new EntityNotFoundException($"Subcategory with Id '{request.Id}' not found.");
 
-            bool hasProducts = false;
+            bool hasProducts = await _productRepository.AnyAsync(p => p.SubcategoryId == subcategory.Id, ct);
             subcategory.CheckCanBeRemoved(hasProducts);
 
             _subcategoryRepository.Remove(subcategory);

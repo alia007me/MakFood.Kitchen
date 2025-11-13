@@ -2,6 +2,7 @@
 using MakFood.Kitchen.Domain.Entities.CategoryAggrigate.Contracts;
 using MakFood.Kitchen.Infrastructure.Persistence.Context.Transactions;
 using MakFood.Kitchen.Domain.Entities.CategoryAggrigate;
+using MakFood.Kitchen.Domain.BussinesRules.Exceptions;
 
 namespace MakFood.Kitchen.Application.Command.CategoriesCommand.RemoveCategory
 {
@@ -19,7 +20,7 @@ namespace MakFood.Kitchen.Application.Command.CategoriesCommand.RemoveCategory
         {
             var Category = await _categoryRepository.GetByIdAsync(request.Id ,ct);
             if (Category == null)
-                throw new Exception($"Category with Id '{request.Id}' not found.");
+                throw new EntityNotFoundException($"Category with Id '{request.Id}' not found.");
 
             bool hasProdct = false;
             Category.CheckCanBeRemoved(hasProdct);

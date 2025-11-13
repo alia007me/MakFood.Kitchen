@@ -1,4 +1,5 @@
 ﻿using MakFood.Kitchen.Domain.BussinesRules;
+using MakFood.Kitchen.Domain.BussinesRules.Exceptions;
 using MakFood.Kitchen.Domain.Entities.Base;
 using MakFood.Kitchen.Infrastructure.Substructure.Exceptions;
 
@@ -81,11 +82,10 @@ namespace MakFood.Kitchen.Domain.Entities.CategoryAggrigate
         /// <param name="hasProducts">وضعیت وجود محصول در این دسته بندی</param>
         public void CheckCanBeRemoved(bool hasProducts)
         {
-     
-            //if(!Subcategories.Any()) throw new IsAlreadyExistException();
-
-            Check(new CategoryMustNotHaveProductsBR(hasProducts, this.Name));
-
+            if (hasProducts)
+                throw new EntityHasRelatedItemsException(
+            $"Category '{this.Name}' (ID: {this.Id}) cannot be removed because it has related products.");
+            
         }
 
 

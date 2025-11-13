@@ -1,4 +1,5 @@
-﻿using MakFood.Kitchen.Domain.Entities.CategoryAggrigate.Contracts;
+﻿using MakFood.Kitchen.Domain.BussinesRules.Exceptions;
+using MakFood.Kitchen.Domain.Entities.CategoryAggrigate.Contracts;
 using MakFood.Kitchen.Infrastructure.Persistence.Context.Transactions;
 using MediatR;
 
@@ -24,11 +25,11 @@ namespace MakFood.Kitchen.Application.Command.SubcategoryCommands.UpdateSubcateg
             {
                 var subcategory = await _subcategoryRepository.GetByIdAsync(request.Id, ct);
                 if (subcategory == null)
-                    throw new Exception($"Subcategory with Id '{request.Id}' not found.");
+                    throw new EntityNotFoundException($"Subcategory with Id '{request.Id}' not found.");
 
-                bool exists = await _subcategoryRepository.ExistNameAsync(request.NewName, ct);
+                bool exists = await _subcategoryRepository.CheckIsExistByNameAsync(request.NewName, ct);
                 if (exists)
-                    throw new Exception($"Subcategory with name '{request.NewName}' already exists.");
+                    throw new NameAlreadyInUseException($"Subcategory with name '{request.NewName}' already exists.");
 
                 subcategory.updateSubcategoryName(request.NewName);
                 _subcategoryRepository.Update(subcategory);

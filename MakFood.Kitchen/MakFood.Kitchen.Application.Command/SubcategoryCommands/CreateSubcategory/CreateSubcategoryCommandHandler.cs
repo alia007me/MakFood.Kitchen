@@ -24,7 +24,7 @@ namespace MakFood.Kitchen.Application.Command.SubcategoryCommands.CreateSubcateg
                 throw new Exception($"Category with Id '{request.CategoryId}' not found.");
 
             
-            bool exists = await _subcategoryRepository.ExistNameAsync(request.Name, ct);
+            bool exists = await _subcategoryRepository.CheckIsExistByNameAsync(request.Name, ct);
             if (exists)
                 throw new Exception($"Subcategory with name '{request.Name}' already exists.");
 

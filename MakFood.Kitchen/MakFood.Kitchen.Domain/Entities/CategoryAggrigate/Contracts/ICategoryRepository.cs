@@ -10,7 +10,7 @@ namespace MakFood.Kitchen.Domain.Entities.CategoryAggrigate.Contracts
     {
         Task<Category?> GetByIdAsync(Guid id, CancellationToken ct);
         Task<List<Category>> GetAllAsync(CancellationToken ct);
-        Task<bool> ExistNameAsync(string name , CancellationToken ct);
+        Task<bool> CheckIsExistByNameAsync(string name , CancellationToken ct);
         Task AddAsync(Category category, CancellationToken ct);
         void Update(Category category);
         void Remove (Category category);
