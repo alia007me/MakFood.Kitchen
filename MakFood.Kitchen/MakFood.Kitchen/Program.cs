@@ -48,8 +48,7 @@ builder.Services.AddMediatR(cfg =>
 builder.Services.AddValidatorsFromAssemblies(new[]
 {
     typeof(GetAllMiseOnPlaceOrdersByDateRangeValidation).Assembly,
-    typeof(CancelOrderValidation).Assembly,
-    typeof(GetTotalSalesByDateRangeValidation).Assembly
+    typeof(CancelOrderValidation).Assembly
 });
 
 
