@@ -1,12 +1,20 @@
-using MakFood.Kitchen.Application.Query.GetCart;
+using FluentValidation;
+using MakFood.Kitchen.Application.Query.Behavior;
+using MakFood.Kitchen.Application.Query.GetAllMiseOnPlaceOrderByDateRange;
+using MakFood.Kitchen.Application.Query.GetTotalSalesByDateRange;
+using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.Contract;
 using MakFood.Kitchen.Infrastructure.Persistence.Context;
+using MakFood.Kitchen.Infrastructure.Persistence.Context.Transactions;
+using MakFood.Kitchen.Infrastructure.Persistence.Repository;
 using MakFood.Kitchen.Infrastructure.Substructure.Settings;
+using MediatR;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using MakFood.Kitchen.Infrastructure.DI;
 using System.Reflection;
-using MakFood.Kitchen.Application.Command.UpdateCart.AddItemToCart;
-using MakFood.Kitchen.Application.Command.UpdateCart.RemoveItemFromCart;
+using MakFood.Kitchen.Application.Command.UpdateCart;
+using MakFood.Kitchen.Application.Query.GetCart;
+using MakFood.Kitchen.Application.Command.CancelOrder;
 
 
 
@@ -36,10 +44,31 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddControllers();
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(GetCartQueryHandler).Assembly));
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(AddItemToCartComandHandler).Assembly));
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(AddItemToCartCommandHandler).Assembly));
 
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(RemoveFromCartComandHandler).Assembly));
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddMediatR(cfg =>
+{
+    cfg.RegisterServicesFromAssembly(typeof(GetAllMiseOnPlaceOrdersByDateRangeHandler).Assembly);
+    cfg.RegisterServicesFromAssembly(typeof(CancelOrderCommandHandler).Assembly);
+});
+
+builder.Services.AddValidatorsFromAssemblies(new[]
+{
+    typeof(GetAllMiseOnPlaceOrdersByDateRangeValidation).Assembly,
+    typeof(CancelOrderValidation).Assembly,
+    typeof(GetTotalSalesByDateRangeValidation).Assembly
+});
+
+
+builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+
+
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+
 var app = builder.Build();
 if (app.Environment.IsDevelopment()) {
     app.UseSwagger();
@@ -51,6 +80,13 @@ if (app.Environment.IsDevelopment()) {
 // Configure the HTTP request pipeline.
 
 app.UseAuthorization();
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
 
 app.MapControllers();
 

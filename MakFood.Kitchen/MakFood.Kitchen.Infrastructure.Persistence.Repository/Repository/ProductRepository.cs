@@ -1,14 +1,7 @@
-﻿using MakFood.Kitchen.Domain.Entities.CartAggrigate;
-using MakFood.Kitchen.Domain.Entities.ProductAggrigate;
+﻿using MakFood.Kitchen.Domain.Entities.ProductAggrigate;
 using MakFood.Kitchen.Domain.Entities.ProductAggrigate.Contract;
 using MakFood.Kitchen.Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MakFood.Kitchen.Infrastructure.Persistence.Repository.Repository
 {
@@ -19,14 +12,11 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Repository.Repository
         {
             _applicationDbContext = context;
         }
-        public async Task<Product> GetProductTracked(Guid prodactId, CancellationToken ct)
+        public async Task<Product> GetProduct(Guid prodactId, CancellationToken ct, bool needToTrack = true)
         {
-            var Product = await _applicationDbContext.Products.SingleOrDefaultAsync(x => x.Id == prodactId);
-            return Product;
-        }
-        public async Task<Product> GetProduct(Guid prodactId, CancellationToken ct)
-        {
-            var Product = await _applicationDbContext.Products.AsNoTracking().SingleOrDefaultAsync(x => x.Id == prodactId);
+            var Products = _applicationDbContext.Products.AsQueryable();
+            Products = needToTrack ? Products : Products.AsNoTracking();
+            var Product = await Products.SingleOrDefaultAsync(x => x.Id == prodactId);
             return Product;
         }
     }

@@ -1,4 +1,5 @@
-﻿using MakFood.Kitchen.Domain.Entities.CartAggrigate.Contract;
+﻿using MakFood.Kitchen.Application.Command.Helper.CartHelper;
+using MakFood.Kitchen.Domain.Entities.CartAggrigate.Contract;
 using MediatR;
 
 namespace MakFood.Kitchen.Application.Query.GetCart
@@ -14,8 +15,9 @@ namespace MakFood.Kitchen.Application.Query.GetCart
         #region getCartItems
         public async Task<GetCartDTO> Handle(GetCartQuery getCartQuery, CancellationToken ct)
         {
-            var Cart = await _CartRepo.GetCartById(getCartQuery.CartId, ct);
-            var resualt = new GetCartDTO(Cart.CartItems);
+            var Cart = await _CartRepo.GetCartById(getCartQuery.CartId, ct, false);
+            var CartItemsDTO = Cart.CartItems.Select(c => new GetCartItemDTO(c.ProductName,c.ProductThumbnailPath,c.ProductId,c.Quantity));
+            var resualt = new GetCartDTO(CartItemsDTO);
             return resualt;
         }
         #endregion

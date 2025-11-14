@@ -24,16 +24,16 @@ namespace MakFood.Kitchen.Controllers
             return Ok(result);
         }
         [HttpPut("{userId}/Product/{ProductId}/Add")]
-        public async Task<IActionResult> RemoveCartItem([FromRoute] Guid userId, [FromRoute] Guid ProductId)
+        public async Task<IActionResult> AddCartItem([FromRoute] Guid userId, [FromRoute] Guid ProductId)
         {
-            var command = new AddItemToCartComand { ItemId = ProductId, CartId = userId };
+            var command = new AddItemToCartCommand { ItemId = ProductId, CartId = userId };
             var result = await _mediator.Send(command);
             return Ok(result);
         }
         [HttpPut("{userId}/Product/{ProductId}")]
-        public async Task<IActionResult> AddCartItem([FromRoute] Guid userId, [FromRoute] Guid ProductId)
+        public async Task<IActionResult> RemoveCartItem([FromRoute] Guid userId, [FromRoute] Guid ProductId)
         {
-            var command = new RemoveFromCartComand { ItemId = ProductId, CartId = userId };
+            var command = new RemoveFromCartCommand { ItemId = ProductId, CartId = userId };
             var result = await _mediator.Send(command);
             return Ok(result);
         }

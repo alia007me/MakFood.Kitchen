@@ -30,7 +30,6 @@ namespace MakFood.Kitchen.Domain.Entities.DiscountAggrigate.DiscountPolicyAggrig
 
         public void AddCustomers(Guid customerId)
         {
-            CustomeridValidator(customerId);
             _customers.Add(customerId);
         }
         public override void UseDiscount(Guid CastomerId)

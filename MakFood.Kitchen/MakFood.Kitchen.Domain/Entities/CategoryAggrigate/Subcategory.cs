@@ -1,6 +1,5 @@
-﻿using MakFood.Kitchen.Domain.Entities.Base;
-using MakFood.Kitchen.Infrastructure.Substructure.Extensions;
-using System.Text.RegularExpressions;
+﻿using MakFood.Kitchen.Domain.BussinesRules;
+using MakFood.Kitchen.Domain.Entities.Base;
 
 namespace MakFood.Kitchen.Domain.Entities.CategoryAggrigate
 {
@@ -15,8 +14,9 @@ namespace MakFood.Kitchen.Domain.Entities.CategoryAggrigate
         /// <param name="name">نام دسته بندی جزئی</param>
         public Subcategory(string name)
         {
+            Check(new NameMustContainOnlyValidCharactersBR(name));
+
             Id = Guid.NewGuid();
-            NameValidation(name);
             Name = name;
         }
         private Subcategory() //ef
@@ -26,19 +26,6 @@ namespace MakFood.Kitchen.Domain.Entities.CategoryAggrigate
 
         public string Name { get; set; }
 
-
-
-
-        #region Validators
-        private void NameValidation(string name)
-        {
-            name.CheckNullOrEmpty("name");
-            var nameRegexPattern = "([A-Za-z\\s]{0,25})";
-            if (Regex.IsMatch(nameRegexPattern, name)) throw new Exception("Product name may have invalid characters or more than 25 characters");
-        }
-
-        #endregion
-
         #region Behaviors
         /// <summary>
         /// نام دسته بندی جزئی را آپدیت می کند
@@ -46,7 +33,7 @@ namespace MakFood.Kitchen.Domain.Entities.CategoryAggrigate
         /// <param name="newName">نام جدید دسته بندی جزئی</param>
         public void updateSubcategoryName(string newName)
         {
-            NameValidation(newName);
+            Check(new NameMustContainOnlyValidCharactersBR(newName));
             Name = newName;
         }
         #endregion

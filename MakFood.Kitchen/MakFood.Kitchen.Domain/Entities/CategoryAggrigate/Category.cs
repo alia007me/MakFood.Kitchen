@@ -1,6 +1,6 @@
-﻿using MakFood.Kitchen.Domain.Entities.Base;
-using MakFood.Kitchen.Infrastructure.Substructure.Extensions;
-using System.Text.RegularExpressions;
+﻿using MakFood.Kitchen.Domain.BussinesRules;
+using MakFood.Kitchen.Domain.Entities.Base;
+using MakFood.Kitchen.Infrastructure.Substructure.Exceptions;
 
 namespace MakFood.Kitchen.Domain.Entities.CategoryAggrigate
 {
@@ -21,8 +21,9 @@ namespace MakFood.Kitchen.Domain.Entities.CategoryAggrigate
         /// <param name="name">نام دسته بندی کلی</param>
         public Category(string name)
         {
+            Check(new NameMustContainOnlyValidCharactersBR(name));
+
             Id = Guid.NewGuid();
-            NameValidation(name);
             Name = name;
         }
 
@@ -33,16 +34,11 @@ namespace MakFood.Kitchen.Domain.Entities.CategoryAggrigate
 
 
         #region Validators
-        private void NameValidation(string name)
-        {
-            name.CheckNullOrEmpty("name");
-            var nameRegexPattern = "([A-Za-z\\s]{0,25})";
-            if (Regex.IsMatch(nameRegexPattern, name)) throw new Exception("Product name may have invalid characters or more than 25 characters");
-        }
+        
 
         private void CheckSubcategoryExist(Subcategory subcategory)
         {
-            if (_subcategories.Contains(subcategory)) throw new Exception("SubCategory is already exist here");
+            if (_subcategories.Contains(subcategory)) throw new IsAlreadyExistException();
         }
 
         #endregion
@@ -55,7 +51,7 @@ namespace MakFood.Kitchen.Domain.Entities.CategoryAggrigate
         /// <param name="newName">نام جدید دسته بندی کلی</param>
         public void UpdateCategoryName(string newName)
         {
-            NameValidation(newName);
+            Check(new NameMustContainOnlyValidCharactersBR(newName));
             Name = newName;
         }
 

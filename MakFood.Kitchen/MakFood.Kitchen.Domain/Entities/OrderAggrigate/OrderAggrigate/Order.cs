@@ -1,9 +1,7 @@
 ﻿using MakFood.Kitchen.Domain.Entities.Base;
 using MakFood.Kitchen.Domain.Entities.DiscountAggrigate;
-using MakFood.Kitchen.Domain.Entities.OrderAggrigate;
 using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.OrederState;
 using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentAggrigate.PaymentBase;
-using MakFood.Kitchen.Infrastructure.Substructure.Extensions;
 
 namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate
 {
@@ -46,6 +44,7 @@ namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate
         public Guid CustomerId { get;private set; }
         public Discount? DiscountCode { get;private set; }
         public OrderState CurrentState => _stateHistory.OrderByDescending(c => c.CreationDateTime).First();
+        public IReadOnlyList<OrderState> StateHistory => _stateHistory.AsReadOnly();
         public decimal DiscountPrice { get;private set; }
         public decimal Price { get;private set; }
         public decimal Payable { get;private set; }
@@ -68,15 +67,6 @@ namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate
         {
             _stateHistory.Add(CurrentState.Cancelled());
         }
-        #endregion
-
-        #region Validators
-
-        private void CheckConstituentsList(List<Constituent> constituents)
-        {
-            constituents.CheckNullOrEmpty("constituents List");
-        }
-
         #endregion
 
         #region CalculatePrice

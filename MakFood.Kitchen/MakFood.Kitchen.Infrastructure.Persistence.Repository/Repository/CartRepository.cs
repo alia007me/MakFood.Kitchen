@@ -1,6 +1,7 @@
 ﻿using MakFood.Kitchen.Domain.Entities.CartAggrigate.Contract;
 using MakFood.Kitchen.Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace MakFood.Kitchen.Infrastructure.Persistence.Repository.Repository
 {
@@ -11,15 +12,11 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Repository.Repository
         {
             _applicationDbContext = context;
         }
-        public async Task<Cart> GetCartById(Guid Id, CancellationToken ct)
+        public async Task<Cart> GetCartById(Guid Id, CancellationToken ct, bool needToTrack = true)
         {
-            var cart = await _applicationDbContext.Carts.AsNoTracking().Include(c => c.CartItems).SingleOrDefaultAsync(c => c.Id == Id);
-            return cart;
-        }
-        public async Task<Cart> GetCartByIdTracked(Guid Id, CancellationToken ct)
-        {
-            var cart = await _applicationDbContext.Carts.Include(c => c.CartItems).SingleOrDefaultAsync(c => c.Id == Id);
-            return cart;
+            var cart = _applicationDbContext.Carts.Include(c => c.CartItems).AsQueryable();
+            cart = needToTrack ? cart : cart.AsNoTracking();  
+            return await cart.SingleAsync(c => c.Id == Id);
         }
         public void AddNewCart(Guid id)
         {
