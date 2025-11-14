@@ -19,7 +19,7 @@ namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentA
             _PaymentHistory.Add(new CreatedPaymentState());
         }
         public decimal TotalAmount { get; protected set; }
-        public PaymentState CurrentState => _PaymentHistory.OrderByDescending(c => c.CreationDateTime).First();
+        //public PaymentState CurrentState => _PaymentHistory.OrderByDescending(c => c.CreationDateTime).First();
         public decimal ReminingAmount { get; protected set; }
         public PaymentMathods OwnerPaymentMethod { get; protected set; }
         public decimal OwnerAmount { get; protected set; }

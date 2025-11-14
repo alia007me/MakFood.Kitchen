@@ -66,19 +66,6 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Context.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "OrderState",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreationDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    OrderState = table.Column<string>(type: "nvarchar(21)", maxLength: 21, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_OrderState", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Payments",
                 columns: table => new
                 {
@@ -125,8 +112,8 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Context.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ProdoctName = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: false),
-                    ProdoctThumbnailPath = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ProductName = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: false),
+                    ProductThumbnailPath = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Quantity = table.Column<long>(type: "bigint", nullable: false),
                     CartId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
@@ -258,6 +245,26 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Context.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "OrderState",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreationDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    OrderId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    OrderState = table.Column<string>(type: "nvarchar(21)", maxLength: 21, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrderState", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_OrderState_Orders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Orders",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_CartItem_CartId",
                 table: "CartItem",
@@ -286,6 +293,11 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Context.Migrations
                 table: "Orders",
                 column: "PaymentId",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderState_OrderId",
+                table: "OrderState",
+                column: "OrderId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PaymentState_PaymentId",

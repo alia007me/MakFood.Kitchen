@@ -26,3 +26,4 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Context.Configurations
         }
     }
 }
+

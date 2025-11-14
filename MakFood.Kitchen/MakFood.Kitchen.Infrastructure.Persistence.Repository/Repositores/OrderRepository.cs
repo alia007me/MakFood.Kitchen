@@ -20,8 +20,15 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Repository.Repositores
         public async Task<List<Order>> GetOrderByCustomerIdAsyncs(Guid CustomerId, DateTime StartDateTime, DateTime EndDateTime)
         {
             return await _context.Orders
-                .Where(w => w.CustomerId == CustomerId && w.CreationDateTime >= StartDateTime && w.CreationDateTime <= EndDateTime && w.StateHistory.OfType<MiseOnPlaceOrderState>().Any())
+                .Where(w => w.CustomerId == CustomerId)
+                .Where(w=>w.CreationDateTime >= StartDateTime && w.CreationDateTime <= EndDateTime)
+                .Include(w=>w.StateHistory)
+                .Include(w=>w.Consistencies)
+                .Include(w=>w.DiscountCode)
+                .Include(w=>w.Payment)
+                .Where(w=>w.StateHistory.OfType<MiseOnPlaceOrderState>().Any())
                 .OrderByDescending(w=>w.CreationDateTime)
+                .AsNoTracking()
                 .ToListAsync();
            
         }

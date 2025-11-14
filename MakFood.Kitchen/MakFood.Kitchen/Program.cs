@@ -1,4 +1,7 @@
+using MakFood.Kitchen.Application.Query.ShowAccountStatement;
+using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.Contract;
 using MakFood.Kitchen.Infrastructure.Persistence.Context;
+using MakFood.Kitchen.Infrastructure.Persistence.Repository.Repositores;
 using MakFood.Kitchen.Infrastructure.Substructure.Settings;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -30,10 +33,9 @@ builder.Services.AddControllers();
 
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddMediatR(cfg =>
-{
-    
-});
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(ShowAccountStatementQueryHandler).Assembly));
+
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 
 
 
