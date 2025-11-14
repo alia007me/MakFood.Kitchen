@@ -1,5 +1,4 @@
 using FluentValidation;
-using MakFood.Kitchen.Application.Command.CancelOrder;
 using MakFood.Kitchen.Application.Query.Behavior;
 using MakFood.Kitchen.Application.Query.GetAllMiseOnPlaceOrderByDateRange;
 using MakFood.Kitchen.Application.Query.GetTotalSalesByDateRange;
@@ -15,6 +14,7 @@ using MakFood.Kitchen.Infrastructure.DI;
 using System.Reflection;
 using MakFood.Kitchen.Application.Command.UpdateCart;
 using MakFood.Kitchen.Application.Query.GetCart;
+using MakFood.Kitchen.Application.Command.CancelOrder;
 
 
 
@@ -44,7 +44,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddControllers();
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(GetCartQueryHandler).Assembly));
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(AddItemToCartComandHandler).Assembly));
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(AddItemToCartCommandHandler).Assembly));
 
 builder.Services.AddSwaggerGen();
 

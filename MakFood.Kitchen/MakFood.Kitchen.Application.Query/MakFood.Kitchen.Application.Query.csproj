@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MakFood.Kitchen.Application.Command\MakFood.Kitchen.Application.Command.csproj" />
     <ProjectReference Include="..\MakFood.Kitchen.Infrastructure.Persistence.Repository\MakFood.Kitchen.Infrastructure.Persistence.Repository.csproj" />
     <ProjectReference Include="..\MakFood.Kitchen.Infrastructure.Substructure\MakFood.Kitchen.Infrastructure.Substructure.csproj" />
   </ItemGroup>

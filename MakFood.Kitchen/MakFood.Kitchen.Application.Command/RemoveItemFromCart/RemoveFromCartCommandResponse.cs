@@ -1,8 +1,8 @@
-﻿using MakFood.Kitchen.Application.Query.GetCart;
+﻿using MakFood.Kitchen.Application.Command.Helper.CartHelper;
 
 namespace MakFood.Kitchen.Application.Command.UpdateCart
 {
-    public class RemoveFromCartComandRespnse
+    public class RemoveFromCartCommandResponse
     {
         public GetCartDTO items { get; set; }
     }

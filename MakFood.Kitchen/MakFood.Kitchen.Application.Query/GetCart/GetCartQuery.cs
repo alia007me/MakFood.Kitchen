@@ -1,5 +1,4 @@
-﻿
-using MakFood.Kitchen.Domain.Entities.CartAggrigate;
+﻿using MakFood.Kitchen.Application.Command.Helper.CartHelper;
 using MediatR;
 
 namespace MakFood.Kitchen.Application.Query.GetCart

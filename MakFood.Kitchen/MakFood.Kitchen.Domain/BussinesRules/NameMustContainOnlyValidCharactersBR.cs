@@ -16,7 +16,7 @@ namespace MakFood.Kitchen.Domain.BussinesRules
         public bool Check()
         {
             var nameRegexPattern = "([a-zA-Z_\\s]{1,60})";
-            if (Regex.IsMatch(_name, nameRegexPattern)) return false;
+            if (!Regex.IsMatch(_name, nameRegexPattern)) return false;
 
             return true;
         }
