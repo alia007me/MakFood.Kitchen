@@ -1,4 +1,5 @@
 ﻿using MakFood.Kitchen.Application.Command.Base;
+using MakFood.Kitchen.Application.Command.UpdateCart.AddItemToCart;
 using MediatR;
 
 namespace MakFood.Kitchen.Application.Command.UpdateCart

@@ -7,6 +7,7 @@ using MakFood.Kitchen.Domain.Entities.OrderAggrigate;
 using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.Contract;
 using MakFood.Kitchen.Domain.Entities.ProductAggrigate.Contract;
 using MakFood.Kitchen.Infrastructure.Persistence.Context;
+using MakFood.Kitchen.Infrastructure.Persistence.Context.Transactions;
 using MediatR;
 
 namespace MakFood.Kitchen.Application.Command.AddOrder
@@ -39,7 +40,7 @@ namespace MakFood.Kitchen.Application.Command.AddOrder
 
             _unitOfWork = unitOfWork;
         }
-        public async Task<AddItemToCartComandRespnse> Handle(AddOrderCommand addOrderCommand, CancellationToken ct)
+        public async Task<AddOrderCommandResponse> Handle(AddOrderCommand addOrderCommand, CancellationToken ct)
         {
             var cart = await _cartRepository.GetCartById(addOrderCommand.CartId, ct);
             var Items = cart.CartItems.ToList();

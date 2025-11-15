@@ -1,5 +1,4 @@
 ﻿using MakFood.Kitchen.Domain.Entities.DiscountAggrigate.Enum;
-using MakFood.Kitchen.Infrastructure.Substructure.Extensions;
 
 namespace MakFood.Kitchen.Domain.Entities.DiscountAggrigate.DiscountPolicyAggrigate
 {
@@ -24,7 +23,6 @@ namespace MakFood.Kitchen.Domain.Entities.DiscountAggrigate.DiscountPolicyAggrig
         }
         private void CustomeridValidator(Guid customerId)
         {
-            customerId.CheckNullOrEmpty("Customer Id");
         }
     }
 }
