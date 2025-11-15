@@ -18,18 +18,21 @@ namespace MakFood.Kitchen.Domain.Entities.FoodRequestAggrigate
         /// <param name="userId">ایدی یوزر</param>
         /// <param name="productId">ایدی محصول</param>
         /// <param name="targetDate">تاریخ مورد نظر</param>
-        public FoodRequest(Guid userId, Guid productId, DateOnly targetDate)
+        public FoodRequest(Guid userId, Guid productId, string productName, DateOnly targetDate)
         {
             Check(new FoodRequestDateMustBeInFutureBR(targetDate));
 
             Id = Guid.NewGuid();
             UserId = userId;
             ProductId = productId;
+            ProductName = productName;
+
             TargetDate = targetDate;
         }
 
         public Guid UserId { get; private set; }
         public Guid ProductId { get; private set; }
+        public string ProductName { get; private set; }
         public DateOnly TargetDate { get; private set; }
 
 

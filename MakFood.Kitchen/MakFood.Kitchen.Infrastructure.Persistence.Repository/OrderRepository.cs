@@ -22,6 +22,7 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Repository
             var endDateTime = ToDate.ToDateTime(TimeOnly.MaxValue);
 
             return await _context.Orders
+                                 .AsNoTracking()
                                  .Where(x => x.CreationDateTime >= startDateTime
                                           && x.CreationDateTime <= endDateTime)
                                  .Include(x => x.StateHistory)

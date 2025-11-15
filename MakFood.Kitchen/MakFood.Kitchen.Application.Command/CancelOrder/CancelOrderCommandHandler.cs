@@ -31,7 +31,7 @@ namespace MakFood.Kitchen.Application.Command.CancelOrder
 
             targetOrder!.Cancelled();
 
-            await _unitOfWork.commit(ct);
+            await _unitOfWork.Commit(ct);
 
             return new CancelOrderResponse { Success = true , OrderId = request.OrderId };
         }
