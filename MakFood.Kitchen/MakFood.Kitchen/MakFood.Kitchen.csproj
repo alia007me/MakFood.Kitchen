@@ -28,6 +28,7 @@
     <ProjectReference Include="..\MakFood.Kitchen.Application.Command\MakFood.Kitchen.Application.Command.csproj" />
     <ProjectReference Include="..\MakFood.Kitchen.Application.Query\MakFood.Kitchen.Application.Query.csproj" />
     <ProjectReference Include="..\MakFood.Kitchen.Domain\MakFood.Kitchen.Domain.csproj" />
+    <ProjectReference Include="..\MakFood.Kitchen.Infrastructure.DI\MakFood.Kitchen.Infrastructure.DI.csproj" />
     <ProjectReference Include="..\MakFood.Kitchen.Infrastructure.Persistence.Context\MakFood.Kitchen.Infrastructure.Persistence.Context.csproj" />
     <ProjectReference Include="..\MakFood.Kitchen.Infrastructure.Substructure\MakFood.Kitchen.Infrastructure.Substructure.csproj" />
   </ItemGroup>

@@ -1,4 +1,5 @@
-﻿using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate;
+﻿using MakFood.Kitchen.Application.Command.CancelOrder;
+using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate;
 using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.Contract;
 using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.OrederState;
 using MakFood.Kitchen.Infrastructure.Persistence.Context.Transactions;
@@ -31,7 +32,7 @@ namespace MakFood.Kitchen.Application.Command.CancelOrder
 
             targetOrder!.Cancelled();
 
-            await _unitOfWork.commit(ct);
+            await _unitOfWork.Commit(ct);
 
             return new CancelOrderResponse { Success = true , OrderId = request.OrderId };
         }

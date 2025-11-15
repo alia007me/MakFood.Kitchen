@@ -14,7 +14,7 @@ namespace MakFood.Kitchen.Domain.Entities.CartAggrigate
             Check(new ProductIdCannotBeEmptyBR(product.Id));
             Check(new NameMustContainOnlyValidCharactersBR(product.Name));
             Check(new ThumbnailPathCanNotBeWhitespaceBR(product.ThumbnailPath));
-
+            Id = Guid.NewGuid();
             ProductName = product.Name;
             ProductThumbnailPath = product.ThumbnailPath;
             ProductId = product.Id;
@@ -27,16 +27,19 @@ namespace MakFood.Kitchen.Domain.Entities.CartAggrigate
         public uint Quantity { get; private set; }
 
         #region Behaviors
-        public void IncreaseQuantity(uint quantityToIncrease)
+        public void IncreaseQuantity()
         {
-            Check(new IncreaseQuantityMustBeGreaterThanZeroBR(quantityToIncrease));
-            Quantity += quantityToIncrease;
+            Quantity ++;
         }
 
-        public void DecreaseQuantity(uint quantityToDecrease)
+        public void DecreaseQuantity()
         {
-            Check(new QuantityCannotBeDecreasedBeyondAvailableBR(Quantity,quantityToDecrease));
-            Quantity -= quantityToDecrease;
+            Check(new QuantityCannotBeDecreasedBeyondAvailableBR(Quantity));
+            Quantity--;
+        }
+        public bool IsReducible()
+        {
+            return Quantity > 1;
         }
         #endregion
     }

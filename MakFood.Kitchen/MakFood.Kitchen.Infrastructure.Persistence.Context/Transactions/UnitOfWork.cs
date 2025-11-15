@@ -10,7 +10,7 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Context.Transactions
             _context = context;
         }
 
-        public async Task<int> commit(CancellationToken ct)
+        public async Task<int> Commit(CancellationToken ct)
         {
             return await _context.SaveChangesAsync(ct);
         }

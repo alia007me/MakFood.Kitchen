@@ -1,5 +1,4 @@
 using FluentValidation;
-using MakFood.Kitchen.Application.Command.CancelOrder;
 using MakFood.Kitchen.Application.Query.Behavior;
 using MakFood.Kitchen.Application.Query.GetAllMiseOnPlaceOrderByDateRange;
 using MakFood.Kitchen.Application.Query.GetTotalSalesByDateRange;
@@ -11,6 +10,12 @@ using MakFood.Kitchen.Infrastructure.Substructure.Settings;
 using MediatR;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using MakFood.Kitchen.Infrastructure.DI;
+using System.Reflection;
+using MakFood.Kitchen.Application.Command.UpdateCart;
+using MakFood.Kitchen.Application.Query.GetCart;
+using MakFood.Kitchen.Application.Command.CancelOrder;
+
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,7 +25,7 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionStringConfiguration = builder.Configuration.GetSection(nameof(ConnectionStrings));
 
 builder.Services.Configure<ConnectionStrings>(connectionStringConfiguration);
-
+builder.Services.ConfigureDI();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     var connectionString = connectionStringConfiguration.Get<ConnectionStrings>();
@@ -35,7 +40,11 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 }
 );
 
+
+
 builder.Services.AddControllers();
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(GetCartQueryHandler).Assembly));
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(AddItemToCartCommandHandler).Assembly));
 
 builder.Services.AddSwaggerGen();
 
@@ -60,7 +69,13 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 
 var app = builder.Build();
-
+if (app.Environment.IsDevelopment()) {
+    app.UseSwagger();
+    app.UseSwaggerUI(options =>
+    {
+        options.EnableTryItOutByDefault();
+    });
+}
 // Configure the HTTP request pipeline.
 
 app.UseAuthorization();
