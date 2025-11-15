@@ -8,9 +8,11 @@ using MakFood.Kitchen.Infrastructure.Persistence.Context;
 using MakFood.Kitchen.Infrastructure.Persistence.Context.Transactions;
 using MakFood.Kitchen.Infrastructure.Persistence.Repository;
 using MakFood.Kitchen.Infrastructure.Substructure.Settings;
+using MakFood.Kitchen.Middleware;
 using MediatR;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using MakFood.Kitchen.Middleware;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -70,6 +72,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseMiddleware<ExceptionHandlerMiddleware>();
 
 
 app.MapControllers();
