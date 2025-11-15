@@ -10,8 +10,9 @@
         /// درست => در صورتی که محصول وجود داشته باشد/\
         /// نادرست => در صورتی که محصول وجود نداشته باشد
         /// </returns>
-        Task<bool> IsExistByIdAsync(Guid productId);
-        Task<bool> IsExistByIdNameThumbnailPathAsync(Guid productId,string productName,string productThumbnailPath);
-        Task<bool> IsExistByIdNamePriceAsync(Guid productId, string productName, decimal price);
+        Task<bool> IsExistByIdAsync(Guid productId, CancellationToken ct);
+        Task<bool> IsExistByIdNameThumbnailPathAsync(Guid productId,string productName,string productThumbnailPath,CancellationToken ct);
+        Task<bool> IsExistByIdNamePriceAsync(Guid productId, string productName, decimal price,CancellationToken ct);
+        Task<Product?> GetProductById(Guid productId, CancellationToken ct);
     } 
 }

@@ -18,6 +18,8 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Context.Configurations
 
             builder.Property(f => f.ProductId).IsRequired();
 
+            builder.Property(f => f.ProductName).IsRequired();
+
             builder.Property(f => f.TargetDate).IsRequired();
         }
     }
