@@ -18,7 +18,6 @@ namespace MakFood.Kitchen.Middleware
             {
                 await _next(context);
             }
-
             catch (ValidationFailedDomainException exception)
             {
                 context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
@@ -27,13 +26,26 @@ namespace MakFood.Kitchen.Middleware
 
             catch (ForbbidenDomainException exception)
             {
-                context.Response.StatusCode = (int)(HttpStatusCode.Forbidden);
+                context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
                 await context.Response.WriteAsync(exception.Message);
             }
 
+            catch (DomainException exception)
+            {
+                context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                await context.Response.WriteAsync(exception.Message);
+            }
+            catch (ApplicationBaseException exception) 
+            {
+                
+                context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                await context.Response.WriteAsync(exception.Message);
+            }
+
+
             catch (Exception exception)
             {
-                context.Response.StatusCode = (int)((HttpStatusCode)HttpStatusCode.InternalServerError);
+                context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                 await context.Response.WriteAsync("An unexpected server error occurred.");
             }
         }
