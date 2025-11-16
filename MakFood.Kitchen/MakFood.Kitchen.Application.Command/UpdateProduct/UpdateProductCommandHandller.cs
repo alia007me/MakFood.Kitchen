@@ -1,4 +1,5 @@
-﻿using MakFood.Kitchen.Domain.Entities.CategoryAggrigate.Contract;
+﻿using MakFood.Kitchen.Application.Command.AddProduct;
+using MakFood.Kitchen.Domain.Entities.CategoryAggrigate.Contract;
 using MakFood.Kitchen.Domain.Entities.ProductAggrigate;
 using MakFood.Kitchen.Domain.Entities.ProductAggrigate.Contract;
 using MakFood.Kitchen.Infrastructure.Persistence.Context;
@@ -10,25 +11,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MakFood.Kitchen.Application.Command.AddProduct
+namespace MakFood.Kitchen.Application.Command.UpdateProduct
 {
-    public class AddProductCommandHandller : IRequestHandler<AddProductCommand, AddProductCommandResponce>
+
+    public class UpdateProductCommandHandller : IRequestHandler<UpdateProductCommand, bool>
     {
         public readonly ApplicationDbContext _context;
         public readonly IProductRepository productRepository;
         public readonly ISubCategoryRepository subCategoryRepository;
         public readonly IUnitOfWork unitOfWork;
 
-        public AddProductCommandHandller(ApplicationDbContext context, IProductRepository productRepository, ISubCategoryRepository subCategoryRepository, IUnitOfWork unitOfWork)
+        public async Task<bool> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
         {
-            _context = context;
-            this.productRepository = productRepository;
-            this.subCategoryRepository = subCategoryRepository;
-            this.unitOfWork = unitOfWork;
-        }
 
-        public async Task<AddProductCommandResponce> Handle(AddProductCommand request, CancellationToken cancellationToken)
-        {
+            var e = await productRepository.GetByIdAsync(request.ProductId);
+            productRepository.RemoveProductAsync(e);
+ 
             var subCategory = await subCategoryRepository.GetSubCategoryBySabCategoryNameAsync(request.SubCategoryName);
             var product = new Product
                 (
@@ -41,7 +39,7 @@ namespace MakFood.Kitchen.Application.Command.AddProduct
                 );
             await productRepository.AddProductAsync(product);
             await unitOfWork.SaveChangesAsync();
-            return new AddProductCommandResponce(product.Id);
+            return true;
         }
     }
 }

@@ -11,6 +11,7 @@ namespace MakFood.Kitchen.Application.Command.UpdateProduct
 {
     public class UpdateProductCommand : CommandBase, IRequest<bool>
     {
+        public Guid ProductId { get; set; }
         public string Name { get; set; }
         public decimal Price { get; set; }
         public string Description { get; set; }

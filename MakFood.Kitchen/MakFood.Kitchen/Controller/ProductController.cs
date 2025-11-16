@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MakFood.Kitchen.Application.Command.AddProduct;
 using MakFood.Kitchen.Application.Command.RemoveProduct;
+using MakFood.Kitchen.Application.Command.UpdateProduct;
 
 namespace MakFood.Kitchen.Controller
 {
@@ -23,6 +24,12 @@ namespace MakFood.Kitchen.Controller
         }
         [HttpDelete("Kitchen/{CastomerId}/Product/RemoveProduct")]
         public async Task<IActionResult> RemoveProduct(RemoveProductCommand command )
+        {
+            var w = await _mediator.Send(command);
+            return Ok(w);
+        }
+        [HttpPatch("Kitchen/{CastomerId}/Product/UpdateProduct")]
+        public async Task<IActionResult> UpdateProduct(UpdateProductCommand command)
         {
             var w = await _mediator.Send(command);
             return Ok(w);
