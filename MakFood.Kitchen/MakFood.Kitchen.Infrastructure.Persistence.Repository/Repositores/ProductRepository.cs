@@ -37,5 +37,10 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Repository.Repositores
         {
             throw new NotImplementedException();
         }
+
+        public  void RemoveProductAsync(Product product)
+        {
+             _context.Remove(product);
+        }
     }
 }

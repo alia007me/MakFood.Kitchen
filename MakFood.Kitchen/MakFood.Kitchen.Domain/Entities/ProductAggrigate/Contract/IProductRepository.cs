@@ -1,6 +1,6 @@
 ﻿namespace MakFood.Kitchen.Domain.Entities.ProductAggrigate.Contract
 {
-    public interface IProductRepository
+    public interface  IProductRepository
     {
         /// <summary>
         /// برسی می کند آیا محصول وجود دارد یا خیر
@@ -18,5 +18,10 @@
         /// </summary>
         /// <param name="product">پروداکت</param>
        public Task AddProductAsync(Product product);
+        /// <summary>
+        /// حذف کردن پروداکت
+        /// </summary>
+        /// <param name="product">پروداکت</param>
+        public void RemoveProductAsync(Product product);
     } 
 }
