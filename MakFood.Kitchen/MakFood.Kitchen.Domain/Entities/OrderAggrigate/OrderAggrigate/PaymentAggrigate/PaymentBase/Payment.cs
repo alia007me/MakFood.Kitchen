@@ -1,7 +1,7 @@
-﻿using MakFood.Kitchen.Domain.Entities.Base;
+﻿using MakFood.Kitchen.Domain.BussinesRules;
+using MakFood.Kitchen.Domain.Entities.Base;
 using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentAggrigate.Enum;
 using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentAggrigate.State;
-using System.Security.Principal;
 
 namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentAggrigate.PaymentBase
 {
@@ -9,10 +9,11 @@ namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentA
     {
         protected Payment() { } //ef
         protected List<PaymentState> _PaymentHistory = new List<PaymentState>();
-        protected Payment(decimal totalAmount, decimal reminingAmount, PaymentMathods ownerPaymentMethod)
+        protected Payment(decimal totalAmount, PaymentMathods ownerPaymentMethod)
         {
             TotalAmount = totalAmount;
-            ReminingAmount = reminingAmount;
+            ReminingAmount = totalAmount;
+            OwnerAmount = totalAmount;
             OwnerPaymentMethod = ownerPaymentMethod;  
             OwnerPaidAmount = Decimal.Zero;
             _PaymentHistory.Add(new CreatedPaymentState());
@@ -21,10 +22,11 @@ namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentA
         public PaymentState CurrentState => _PaymentHistory.OrderByDescending(c => c.CreationDateTime).First();
         public decimal ReminingAmount { get; protected set; }
         public PaymentMathods OwnerPaymentMethod { get; protected set; }
-        public PaymentStatus paymentStatus { get; protected set; }
-        public PaymentType paymentType { get; protected set; }
+        public PaymentStatus PaymentStatus { get; protected set; }
+        public PaymentType PaymentType { get; protected set; }
         public decimal OwnerAmount { get; protected set; }
         public decimal OwnerPaidAmount { get; protected set; }
+        public DateTime? OwnerPaidTime { get; protected set; }
         public IEnumerable<PaymentState> PaymentLog => _PaymentHistory.AsEnumerable();
 
         #region Behaviors
@@ -32,15 +34,29 @@ namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentA
         {
             _PaymentHistory.Add(CurrentState.Cancelled());
         }
-        public void paied()
+        public void Paid()
         {
             _PaymentHistory.Add(CurrentState.Paid());
         }
 
+        public void SetOwnerPaymentMethod(PaymentMathods ownerPaymentMethod)
+        {
+            Check(new PaymentMethodShouldNotBeSelectedMoreThanOnceBR(OwnerPaymentMethod));
+            OwnerPaymentMethod = ownerPaymentMethod;
+        }
 
-        public void ChangePaymentMethod(PaymentMathods OwnerPaymentMethod) 
-        { 
-            this.OwnerPaymentMethod = OwnerPaymentMethod;
+        public void UpdateOwnerPaymentMethod(PaymentMathods ownerPaymentMethod)
+        {
+            Check(new PaymentMethodMustBeSetBeforeUpdateBR(OwnerPaymentMethod));
+            Check(new PaymentMethodMustNotBeChangedAfterPaymentStartedBR(OwnerPaidAmount));
+            OwnerPaymentMethod = ownerPaymentMethod;
+        }
+
+        public void RegisterOwnerPaymentAmount(decimal amount)
+        {
+            Check(new PayAmountMustBePositiveBR(amount));
+            Check(new PaymentAmountMustNotExceedRemainingAmountBR(OwnerAmount, OwnerPaidAmount, amount));
+            OwnerPaidAmount += amount;
         }
         #endregion
 

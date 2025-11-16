@@ -2,6 +2,7 @@
 using MakFood.Kitchen.Domain.Entities.DiscountAggrigate;
 using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.OrederState;
 using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentAggrigate.PaymentBase;
+using MakFood.Kitchen.Infrastructure.Substructure.Exceptions;
 
 namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate
 {
@@ -84,11 +85,18 @@ namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate
 
         private decimal CalculateDiscountPrice(Discount discount, decimal price)
         {
-            var discountAmount = ((discount.Percent / 100) * price);
-            discountAmount = Math.Round(discountAmount, 2);
-            DiscountPrice = discountAmount;
-            return discountAmount;
-
+            if (price < discount.MinimumBalance)
+            {
+                throw new OrderTooCheapForDiscountCodeException();
+            }
+            else if (price > discount.MaximumBalance)
+            {
+                return (price - (discount.MaximumBalance * discount.Percent));
+            }
+            else
+            {
+                return (price * (discount.Percent));
+            }
         }
 
         private decimal CalculatePayable(decimal total, decimal discountAmount)

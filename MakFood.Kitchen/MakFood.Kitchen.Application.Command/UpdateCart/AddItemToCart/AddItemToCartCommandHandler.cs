@@ -5,7 +5,7 @@ using MakFood.Kitchen.Domain.Entities.ProductAggrigate.Contract;
 using MakFood.Kitchen.Infrastructure.Persistence.Context.Transactions;
 using MediatR;
 
-namespace MakFood.Kitchen.Application.Command.UpdateCart
+namespace MakFood.Kitchen.Application.Command.UpdateCart.AddItemToCart
 {
     public class AddItemToCartCommandHandler : IRequestHandler<AddItemToCartCommand, AddItemToCartCommandRespnse>
     {

@@ -1,7 +1,7 @@
 ﻿using MakFood.Kitchen.Domain.Entities.DiscountAggrigate;
 using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentAggrigate.PaymentBase;
 
-namespace MakFood.Kitchen.Application.Query.GetAllMiseOnPlaceOrderByDateRange
+namespace MakFood.Kitchen.Application.Query.GetAllMiseOnPlaceOrdersByDateRange
 {
     public record GetAllMiseOnPlaceOrdersByDateRangeDto(
                                                         Guid CustomerId,

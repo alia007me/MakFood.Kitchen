@@ -1,7 +1,7 @@
 ﻿using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.Contract;
 using MediatR;
 
-namespace MakFood.Kitchen.Application.Query.GetAllMiseOnPlaceOrderByDateRange
+namespace MakFood.Kitchen.Application.Query.GetAllMiseOnPlaceOrdersByDateRange
 {
     public class GetAllMiseOnPlaceOrdersByDateRangeHandler : IRequestHandler<GetAllMiseOnPlaceOrdersByDateRangeQuery, List<GetAllMiseOnPlaceOrdersByDateRangeDto>>
     {

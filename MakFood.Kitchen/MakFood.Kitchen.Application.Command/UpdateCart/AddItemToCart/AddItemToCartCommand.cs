@@ -1,8 +1,7 @@
 ﻿using MakFood.Kitchen.Application.Command.Base;
-using MakFood.Kitchen.Application.Command.UpdateCart.AddItemToCart;
 using MediatR;
 
-namespace MakFood.Kitchen.Application.Command.UpdateCart
+namespace MakFood.Kitchen.Application.Command.UpdateCart.AddItemToCart
 {
     public class AddItemToCartCommand : ComandBase, IRequest<AddItemToCartCommandRespnse>
     {

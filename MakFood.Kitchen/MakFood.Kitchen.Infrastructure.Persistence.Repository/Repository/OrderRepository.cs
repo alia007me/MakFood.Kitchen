@@ -18,9 +18,8 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Repository.Repository
         {
             _applicationDbContext = context;
         }
-        public void AddOrder(Guid customerId, Discount discountCode, Payment payment, List<Constituent> constituents)
+        public void AddOrder(Order order)
         {
-            var order = new Order(customerId, discountCode, payment, constituents);
             _applicationDbContext.Orders.Add(order);
         }
         public async Task<IEnumerable<Order>> GetOrderByDateRangeAsync(DateOnly FromDate, DateOnly ToDate, CancellationToken ct)

@@ -1,4 +1,5 @@
-﻿using MakFood.Kitchen.Application.Command.UpdateCart;
+﻿using MakFood.Kitchen.Application.Command.UpdateCart.AddItemToCart;
+using MakFood.Kitchen.Application.Command.UpdateCart.RemoveItemFromCart;
 using MakFood.Kitchen.Application.Query.GetCart;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

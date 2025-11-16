@@ -1,5 +1,4 @@
-﻿
-namespace MakFood.Kitchen.Application.Command.CancelOrder
+﻿namespace MakFood.Kitchen.Infrastructure.Substructure.Exceptions
 {
     [Serializable]
     public class OrderNotCancelableException : Exception

@@ -6,13 +6,13 @@ namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentA
     public class SinglePayment : Payment
     {
         private SinglePayment() { } //ef
-        public SinglePayment(decimal totalAmount, decimal reminingAmount, PaymentMathods ownerPaymentMethod) : base(totalAmount, reminingAmount, ownerPaymentMethod)
+        public SinglePayment(decimal totalAmount, PaymentMathods ownerPaymentMethod) : base(totalAmount, ownerPaymentMethod)
         {
             TotalAmount = totalAmount;
-            ReminingAmount = reminingAmount;
+            ReminingAmount = totalAmount;
             OwnerPaymentMethod = ownerPaymentMethod;
-            OwnerAmount = reminingAmount;
-            paymentType = PaymentType.singel;
+            OwnerAmount = totalAmount;
+            PaymentType = PaymentType.singel;
         }
     }
 }

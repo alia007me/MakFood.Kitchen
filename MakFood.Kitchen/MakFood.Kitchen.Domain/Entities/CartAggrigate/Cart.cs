@@ -1,6 +1,7 @@
 ﻿using MakFood.Kitchen.Domain.BussinesRules;
 using MakFood.Kitchen.Domain.Entities.Base;
 using MakFood.Kitchen.Domain.Entities.CartAggrigate;
+using MakFood.Kitchen.Domain.Entities.OrderAggrigate;
 
 
 public class Cart : BaseEntity<Guid>
@@ -32,11 +33,10 @@ public class Cart : BaseEntity<Guid>
         Check(new TheCartItemMustExistInTheCartToBeDeletedBR(_cartItems, cartItem.Id));
         _cartItems.Remove(cartItem);
     }
-    public CartItem GetCartItemByID(Guid id)
+    public CartItem? GetCartItemByID(Guid id)
     {
         return CartItems.SingleOrDefault(x => x.ProductId == id);
     }
-
     #endregion
 
     

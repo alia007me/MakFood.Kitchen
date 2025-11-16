@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using MediatR;
 
-namespace MakFood.Kitchen.Application.Query.Behavior
+namespace MakFood.Kitchen.Infrastructure.Substructure.Behavior
 {
     public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>

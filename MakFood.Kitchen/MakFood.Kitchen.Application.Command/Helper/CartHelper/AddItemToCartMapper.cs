@@ -1,4 +1,4 @@
-﻿using MakFood.Kitchen.Application.Command.UpdateCart;
+﻿using MakFood.Kitchen.Application.Command.UpdateCart.AddItemToCart;
 using MakFood.Kitchen.Domain.Entities.CartAggrigate;
 
 namespace MakFood.Kitchen.Application.Command.Helper.CartHelper

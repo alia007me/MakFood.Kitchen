@@ -1,6 +1,6 @@
 ﻿using MakFood.Kitchen.Application.Command.Helper.CartHelper;
 
-namespace MakFood.Kitchen.Application.Command.UpdateCart
+namespace MakFood.Kitchen.Application.Command.UpdateCart.AddItemToCart
 {
     public class AddItemToCartCommandRespnse
     {

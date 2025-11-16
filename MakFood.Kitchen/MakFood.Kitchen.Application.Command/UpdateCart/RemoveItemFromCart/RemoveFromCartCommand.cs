@@ -1,8 +1,7 @@
 ﻿using MakFood.Kitchen.Application.Command.Base;
-using MakFood.Kitchen.Application.Command.UpdateCart.RemoveItemFromCart;
 using MediatR;
 
-namespace MakFood.Kitchen.Application.Command.UpdateCart
+namespace MakFood.Kitchen.Application.Command.UpdateCart.RemoveItemFromCart
 {
     public class RemoveFromCartCommand : ComandBase, IRequest<RemoveFromCartCommandResponse>
     {

@@ -1,5 +1,7 @@
-﻿using MakFood.Kitchen.Application.Command.CancelOrder;
-using MakFood.Kitchen.Application.Query.GetAllMiseOnPlaceOrderByDateRange;
+﻿using MakFood.Kitchen.Application.Command.AddOrder.SharedPayment;
+using MakFood.Kitchen.Application.Command.AddOrder.SinglePayment;
+using MakFood.Kitchen.Application.Command.CancelOrder;
+using MakFood.Kitchen.Application.Query.GetAllMiseOnPlaceOrdersByDateRange;
 using MakFood.Kitchen.Application.Query.GetProductOrderCountsByDateRange;
 using MakFood.Kitchen.Application.Query.GetTotalSalesByDateRange;
 using MediatR;
@@ -59,6 +61,21 @@ namespace MakFood.Kitchen.Controllers
             return Ok(result);
         }
 
+        [HttpPost("/SinglePayment")]
+        public async Task<IActionResult> AddSinglePaymentOrder([FromBody] AddSinglePaymentOrderCommand command)
+        {
+            var result = await _mediator.Send(command);
+
+            return Ok(result);
+        }
+
+        [HttpPost("/SharedPayment")]
+        public async Task<IActionResult> AddSharedPaymentOrder([FromBody] AddSharedPaymentOrderCommand command)
+        {
+            var result = await _mediator.Send(command);
+
+            return Ok(result);
+        }
 
 
     }
