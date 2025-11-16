@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MediatR;
-using MakFood.Kitchen.Application.Query.ShowAccount;
+using MakFood.Kitchen.Application.Query.ShowAccountStatement;
 
 namespace MakFood.Kitchen.Controller
 {

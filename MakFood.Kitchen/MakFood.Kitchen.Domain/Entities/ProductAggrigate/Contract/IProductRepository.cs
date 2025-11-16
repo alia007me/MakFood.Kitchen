@@ -13,5 +13,10 @@
         Task<bool> IsExistByIdAsync(Guid productId);
         Task<bool> IsExistByIdNameThumbnailPathAsync(Guid productId,string productName,string productThumbnailPath);
         Task<bool> IsExistByIdNamePriceAsync(Guid productId, string productName, decimal price);
+        /// <summary>
+        /// اضافه کردن پروداکت جدید 
+        /// </summary>
+        /// <param name="product">پروداکت</param>
+       public Task AddProductAsync(Product product);
     } 
 }
