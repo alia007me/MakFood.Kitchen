@@ -1,6 +1,7 @@
 ﻿using MakFood.Kitchen.Domain.BussinesRules;
 using MakFood.Kitchen.Domain.BussinesRules.Exceptions;
 using MakFood.Kitchen.Domain.Entities.Base;
+using MakFood.Kitchen.Infrastructure.Substructure.Exceptions;
 
 namespace MakFood.Kitchen.Domain.Entities.CategoryAggrigate
 {

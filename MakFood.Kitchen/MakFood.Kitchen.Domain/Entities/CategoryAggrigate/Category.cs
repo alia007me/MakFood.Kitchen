@@ -14,7 +14,7 @@ namespace MakFood.Kitchen.Domain.Entities.CategoryAggrigate
         {
 
         }
-        private List<Subcategory> _subcategories = new List<Subcategory>();
+        private readonly List<Subcategory> _subcategories = new List<Subcategory>();
 
         /// <summary>
         /// مدل تسک بندی کلی با ورودی تنها یک نام
@@ -39,7 +39,8 @@ namespace MakFood.Kitchen.Domain.Entities.CategoryAggrigate
 
         private void CheckSubcategoryExist(Subcategory subcategory)
         {
-            if (_subcategories.Contains(subcategory)) throw new IsAlreadyExistException();
+            if (_subcategories.Any(x => x.Id == subcategory.Id))
+                throw new IsAlreadyExistException();
         }
 
         #endregion
@@ -73,6 +74,9 @@ namespace MakFood.Kitchen.Domain.Entities.CategoryAggrigate
         public void RemoveSubcategory(Guid subcategoryId)
         {
             var target = _subcategories.FirstOrDefault(x => x.Id == subcategoryId);
+            if (target == null)
+                throw new EntityNotFoundException($"Subcategory with Id '{subcategoryId}' not found.");
+
             _subcategories.Remove(target);
         }
 

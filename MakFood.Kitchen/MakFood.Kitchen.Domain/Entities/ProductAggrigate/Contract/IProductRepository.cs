@@ -13,5 +13,8 @@
         Task<bool> IsExistByIdAsync(Guid productId);
         Task<bool> IsExistByIdNameThumbnailPathAsync(Guid productId,string productName,string productThumbnailPath);
         Task<bool> IsExistByIdNamePriceAsync(Guid productId, string productName, decimal price);
-    } 
+        Task<bool> ExistsBySubcategoryIdAsync(Guid subcategoryId, CancellationToken ct);
+        Task<bool> ExistsByCategoryIdAsync(Guid categoryId, CancellationToken ct);
+
+    }
 }

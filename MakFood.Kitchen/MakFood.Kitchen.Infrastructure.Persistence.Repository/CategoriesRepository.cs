@@ -33,17 +33,17 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Repository
                 .Include(c => c.Subcategories)
                 .ToListAsync(ct);
         }
-
+        public async Task<Category?> GetBySubcategoryIdAsync(Guid subcategoryId, CancellationToken ct)
+        {
+           return await _context.Categories
+                .Include(c => c.Subcategories) 
+                .SingleOrDefaultAsync(c => c.Subcategories
+                .Any(s => s.Id == subcategoryId), ct);
+        }
         public void Add(Category category)
         {
-             _context.Categories.AddAsync(category);
+             _context.Categories.Add(category);
         }
-
-        public void Update(Category category)
-        {
-            _context.Categories.Update(category);
-        }
-
 
         public void Remove(Category category)
         {

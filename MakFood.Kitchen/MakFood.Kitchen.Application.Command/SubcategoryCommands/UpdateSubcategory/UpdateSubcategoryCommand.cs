@@ -6,6 +6,7 @@ namespace MakFood.Kitchen.Application.Command.SubcategoryCommands.UpdateSubcateg
     public class UpdateSubcategoryCommand : IRequest<UpdateSubcategoryCommandResponse>
     {
         public Guid Id { get; set; }
+        public Guid CategoryId { get; set; }  
         public string NewName { get; set; } = string.Empty;
     }
 }

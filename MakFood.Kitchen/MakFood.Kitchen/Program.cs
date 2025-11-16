@@ -53,9 +53,6 @@ builder.Services.AddMediatR(cfg =>
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<ICategoryRepository,CategoriesRepository>();
-builder.Services.AddScoped<ISubcategoryRepository, SubcategoryRepository>();
-builder.Services.AddScoped<IOrderRepository, OrderRepository>();
-
 builder.Services.AddMediatR(cfg =>
 {
     cfg.RegisterServicesFromAssembly(typeof(GetAllMiseOnPlaceOrdersByDateRangeHandler).Assembly);

@@ -1,6 +1,7 @@
 ﻿using MakFood.Kitchen.Domain.Entities.CategoryAggrigate;
 using MakFood.Kitchen.Domain.Entities.CategoryAggrigate.Contracts;
 using MakFood.Kitchen.Infrastructure.Persistence.Context.Transactions;
+using MakFood.Kitchen.Infrastructure.Substructure.Exceptions;
 using MediatR;
 
 
@@ -19,18 +20,14 @@ namespace MakFood.Kitchen.Application.Command.CategoriesCommand.CreateCategory
 
         public async Task<CreateCategoryCommandResponse> Handle(CreateCategoryCommand request, CancellationToken ct)
         {
-            
             bool exists = await _categoryRepository.CheckIsExistByNameAsync(request.Name, ct);
             if (exists)
-                throw new Exception($"Category with name '{request.Name}' already exists.");
-
-           
+                throw new IsAlreadyExistException($"Category with name '{request.Name}' already exists.");
+                      
             var category = new Category(request.Name);
-
-         
-            await _categoryRepository.AddAsync(category, ct);
-
-            
+                     
+             _categoryRepository.Add(category);
+                        
             await _unitOfWork.commit(ct);
 
             return new CreateCategoryCommandResponse

@@ -2,6 +2,7 @@
 using MakFood.Kitchen.Domain.Entities.CategoryAggrigate.Contracts;
 using MakFood.Kitchen.Infrastructure.Persistence.Context.Transactions;
 using MakFood.Kitchen.Domain.BussinesRules.Exceptions;
+using MakFood.Kitchen.Infrastructure.Substructure.Exceptions;
 
 namespace MakFood.Kitchen.Application.Command.CategoriesCommand.UpdateCategory
 {
@@ -22,17 +23,9 @@ namespace MakFood.Kitchen.Application.Command.CategoriesCommand.UpdateCategory
             var category = await _categoryRepository.GetByIdAsync(request.Id, ct);
             if (category == null)
                 throw new EntityNotFoundException($"Category with Id '{request.Id}' not found.");
-
-            
-            bool exists = await _categoryRepository.CheckIsExistByNameAsync(request.NewName, ct);
-            if (exists)
-                throw new NameAlreadyInUseException($"Category with name '{request.NewName}' already exists.");
-
-            
+                   
             category.UpdateCategoryName(request.NewName);
-            _categoryRepository.Update(category);
-
-            
+                       
             await _unitOfWork.commit(ct);
 
             return new UpdateCategoryCommandResponse

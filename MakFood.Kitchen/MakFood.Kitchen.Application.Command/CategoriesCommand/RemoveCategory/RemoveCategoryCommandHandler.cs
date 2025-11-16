@@ -1,8 +1,10 @@
-﻿using MediatR;
-using MakFood.Kitchen.Domain.Entities.CategoryAggrigate.Contracts;
-using MakFood.Kitchen.Infrastructure.Persistence.Context.Transactions;
+﻿using MakFood.Kitchen.Domain.BussinesRules.Exceptions;
 using MakFood.Kitchen.Domain.Entities.CategoryAggrigate;
-using MakFood.Kitchen.Domain.BussinesRules.Exceptions;
+using MakFood.Kitchen.Domain.Entities.CategoryAggrigate.Contracts;
+using MakFood.Kitchen.Domain.Entities.ProductAggrigate.Contract;
+using MakFood.Kitchen.Infrastructure.Persistence.Context.Transactions;
+using MakFood.Kitchen.Infrastructure.Substructure.Exceptions;
+using MediatR;
 
 namespace MakFood.Kitchen.Application.Command.CategoriesCommand.RemoveCategory
 {
@@ -10,10 +12,15 @@ namespace MakFood.Kitchen.Application.Command.CategoriesCommand.RemoveCategory
     {
         private readonly ICategoryRepository _categoryRepository;
         private readonly IUnitOfWork _unitOfWork;
-        public RemoveCategoryCommandHandler(ICategoryRepository categoryRepository, IUnitOfWork unitOfWork)
+        private readonly IProductRepository _productRepository;
+
+        
+
+        public RemoveCategoryCommandHandler(ICategoryRepository categoryRepository, IUnitOfWork unitOfWork ,IProductRepository productRepository)
         {
             _categoryRepository = categoryRepository;
             _unitOfWork = unitOfWork;
+            _productRepository = productRepository;
         }
          
         public async Task<RemoveCategoryCommandResponse> Handle (RemoveCategoryCommand request , CancellationToken ct)
@@ -22,8 +29,8 @@ namespace MakFood.Kitchen.Application.Command.CategoriesCommand.RemoveCategory
             if (Category == null)
                 throw new EntityNotFoundException($"Category with Id '{request.Id}' not found.");
 
-            bool hasProdct = false;
-            Category.CheckCanBeRemoved(hasProdct);
+            bool hasProducts = await _productRepository.ExistsByCategoryIdAsync(Category.Id, ct);
+            Category.CheckCanBeRemoved(hasProducts);
 
             _categoryRepository.Remove(Category);
             await _unitOfWork.commit(ct);
