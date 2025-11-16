@@ -23,5 +23,12 @@
         /// </summary>
         /// <param name="product">پروداکت</param>
         public void RemoveProductAsync(Product product);
+        /// <summary>
+        /// اوردن پروداکت براساس ایدی پروداکت
+        /// </summary>
+        /// <param name="productId">ایدی پروداکت</param>
+        /// <returns>پروداکت</returns>
+        public Task<Product> GetByIdAsync(Guid productId);
+
     } 
 }

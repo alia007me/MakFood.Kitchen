@@ -1,6 +1,7 @@
 ﻿using MakFood.Kitchen.Domain.Entities.ProductAggrigate;
 using MakFood.Kitchen.Domain.Entities.ProductAggrigate.Contract;
 using MakFood.Kitchen.Infrastructure.Persistence.Context;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,11 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Repository.Repositores
         public async Task AddProductAsync(Product product)
         {
              await _context.AddAsync(product);
+        }
+
+        public async Task<Product> GetByIdAsync(Guid productId)
+        {
+            return await _context.Products.FirstOrDefaultAsync(w => w.Id == productId);
         }
 
         public Task<bool> IsExistByIdAsync(Guid productId)

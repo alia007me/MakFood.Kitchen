@@ -11,7 +11,7 @@ namespace MakFood.Kitchen.Application.Command.RemoveProduct
 {
     public class RemoveProductCommand : CommandBase , IRequest<bool>
     {
-
+       
         public Guid ProductId { get; set; }
 
         public override void Validate()
