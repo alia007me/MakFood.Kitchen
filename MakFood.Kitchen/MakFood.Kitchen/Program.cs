@@ -51,10 +51,11 @@ builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssembly(typeof(CreateCategoryCommandHandler).Assembly);
 });
 
-
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<ICategoryRepository,CategoriesRepository>();
 builder.Services.AddScoped<ISubcategoryRepository, SubcategoryRepository>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+
 builder.Services.AddMediatR(cfg =>
 {
     cfg.RegisterServicesFromAssembly(typeof(GetAllMiseOnPlaceOrdersByDateRangeHandler).Assembly);
@@ -71,8 +72,7 @@ builder.Services.AddValidatorsFromAssemblies(new[]
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
 
-builder.Services.AddScoped<IOrderRepository, OrderRepository>();
-builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
 
 
 var app = builder.Build();
