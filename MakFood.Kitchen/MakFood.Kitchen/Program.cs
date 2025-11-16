@@ -1,6 +1,10 @@
+using MakFood.Kitchen.Application.Command.AddProduct;
 using MakFood.Kitchen.Application.Query.ShowAccountStatement;
+using MakFood.Kitchen.Domain.Entities.CategoryAggrigate.Contract;
 using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.Contract;
+using MakFood.Kitchen.Domain.Entities.ProductAggrigate.Contract;
 using MakFood.Kitchen.Infrastructure.Persistence.Context;
+using MakFood.Kitchen.Infrastructure.Persistence.Context.UnitOfWorks;
 using MakFood.Kitchen.Infrastructure.Persistence.Repository.Repositores;
 using MakFood.Kitchen.Infrastructure.Substructure.Settings;
 using Microsoft.Data.SqlClient;
@@ -33,12 +37,12 @@ builder.Services.AddControllers();
 
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(ShowAccountStatementQueryHandler).Assembly));
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(AddProductCommandHandller).Assembly));
 
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
-
-
-
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<ISubCategoryRepository, SubCategoryRepository>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
