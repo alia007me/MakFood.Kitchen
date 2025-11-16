@@ -182,6 +182,10 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Context.Migrations
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("ProductName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateOnly>("TargetDate")
                         .HasColumnType("date");
 

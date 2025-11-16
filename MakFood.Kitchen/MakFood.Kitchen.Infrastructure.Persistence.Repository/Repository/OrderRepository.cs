@@ -13,21 +13,22 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Repository.Repository
     public class OrderRepository : IOrderRepository
 
     {
-        private readonly ApplicationDbContext _applicationDbContext;
+        private readonly ApplicationDbContext _context;
         public OrderRepository(ApplicationDbContext context)
         {
-            _applicationDbContext = context;
+            _context = context;
         }
         public void AddOrder(Order order)
         {
-            _applicationDbContext.Orders.Add(order);
+            _context.Orders.Add(order);
         }
         public async Task<IEnumerable<Order>> GetOrderByDateRangeAsync(DateOnly FromDate, DateOnly ToDate, CancellationToken ct)
         {
             var startDateTime = FromDate.ToDateTime(TimeOnly.MinValue);
             var endDateTime = ToDate.ToDateTime(TimeOnly.MaxValue);
 
-            return await _applicationDbContext.Orders
+            return await _context.Orders
+                                 .AsNoTracking()
                                  .Where(x => x.CreationDateTime >= startDateTime
                                           && x.CreationDateTime <= endDateTime)
                                  .Include(x => x.StateHistory)
@@ -42,7 +43,7 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Repository.Repository
 
         public async Task<Order?> GetOrderByIdAsync(Guid orderId, CancellationToken ct)
         {
-            return await _applicationDbContext.Orders
+            return await _context.Orders
                 .Include(x => x.StateHistory)
                 .Include(x => x.Consistencies)
                 .Include(x => x.DiscountCode)

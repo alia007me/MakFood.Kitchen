@@ -16,13 +16,13 @@ namespace MakFood.Kitchen.Application.Command.AddOrder.SinglePayment
 {
     public class AddSharedPaymentOrderCommandHandler : IRequestHandler<AddSharedPaymentOrderCommand, AddSharedPaymentOrderCommandResponse>
     {
-        private readonly IDiscountCodeRepository _discountCodeRepository;
+        private readonly IDiscountRepository _discountCodeRepository;
         private readonly IProductRepository _productRepository;
         private readonly ICartRepository _cartRepository;
         private readonly IOrderRepository _orderRepository;
         private readonly IUnitOfWork _unitOfWork;
         public AddSharedPaymentOrderCommandHandler(IProductRepository productRepository, ICartRepository cartRepository, IOrderRepository orderRepository
-            , IUnitOfWork unitOfWork, IDiscountCodeRepository discountCodeRepository)
+            , IUnitOfWork unitOfWork, IDiscountRepository discountCodeRepository)
         {
             _cartRepository = cartRepository;
             _productRepository = productRepository;
@@ -42,7 +42,7 @@ namespace MakFood.Kitchen.Application.Command.AddOrder.SinglePayment
 
             for (int i = 0; i < Items.Count(); i++)
             {
-                Constituents.Add(new Constituent(await _productRepository.GetProduct(Items[i].ProductId, ct), Items[i]));
+                Constituents.Add(new Constituent(await _productRepository.GetProductById(Items[i].ProductId, ct), Items[i]));
             }
 
             cart.RemoveAllItems();

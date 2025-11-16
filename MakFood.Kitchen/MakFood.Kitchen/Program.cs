@@ -1,9 +1,10 @@
 using FluentValidation;
 using MakFood.Kitchen.Application.Query.GetTotalSalesByDateRange;
+using MakFood.Kitchen.Domain.Entities.FoodRequestAggrigate.Contract;
 using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.Contract;
+using MakFood.Kitchen.Domain.Entities.ProductAggrigate.Contract;
 using MakFood.Kitchen.Infrastructure.Persistence.Context;
 using MakFood.Kitchen.Infrastructure.Persistence.Context.Transactions;
-using MakFood.Kitchen.Infrastructure.Persistence.Repository;
 using MakFood.Kitchen.Infrastructure.Substructure.Settings;
 using MediatR;
 using Microsoft.Data.SqlClient;
@@ -16,6 +17,8 @@ using MakFood.Kitchen.Infrastructure.Persistence.Repository.Repository;
 using MakFood.Kitchen.Infrastructure.Substructure.Behavior;
 using MakFood.Kitchen.Application.Command.UpdateCart.AddItemToCart;
 using MakFood.Kitchen.Application.Query.GetAllMiseOnPlaceOrdersByDateRange;
+using MakFood.Kitchen.Domain.Entities.CartAggrigate.Contract;
+using MakFood.Kitchen.Domain.Entities.DiscountAggrigate.Contract;
 
 
 
@@ -58,8 +61,7 @@ builder.Services.AddMediatR(cfg =>
 builder.Services.AddValidatorsFromAssemblies(new[]
 {
     typeof(GetAllMiseOnPlaceOrdersByDateRangeValidation).Assembly,
-    typeof(CancelOrderValidation).Assembly,
-    typeof(GetTotalSalesByDateRangeValidation).Assembly
+    typeof(CancelOrderValidation).Assembly
 });
 
 
@@ -68,6 +70,10 @@ builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBeh
 
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IFoodRequestRepository, FoodRequestRepository>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<ICartRepository, CartRepository>();
+builder.Services.AddScoped<IDiscountRepository, DiscountRepository>();
 
 
 var app = builder.Build();

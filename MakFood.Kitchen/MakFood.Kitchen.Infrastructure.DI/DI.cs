@@ -17,7 +17,7 @@ namespace MakFood.Kitchen.Infrastructure.DI
             services.AddScoped<ICartRepository, CartRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
-            services.AddScoped<IDiscountCodeRepository, DiscountCodeRepository>();
+            services.AddScoped<IDiscountRepository, DiscountRepository>();
 
             //unit of work
             services.AddScoped<IUnitOfWork, UnitOfWork>();

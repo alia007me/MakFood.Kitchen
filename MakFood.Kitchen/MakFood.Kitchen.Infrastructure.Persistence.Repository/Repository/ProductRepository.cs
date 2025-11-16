@@ -5,20 +5,43 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MakFood.Kitchen.Infrastructure.Persistence.Repository.Repository
 {
+
     public class ProductRepository : IProductRepository
     {
-        private readonly ApplicationDbContext _applicationDbContext;
+        private readonly ApplicationDbContext _context;
+
         public ProductRepository(ApplicationDbContext context)
         {
-            _applicationDbContext = context;
+            _context = context;
         }
-        public async Task<Product> GetProduct(Guid prodactId, CancellationToken ct, bool needToTrack = true)
+
+        public async Task<Product?> GetProductById(Guid productId, CancellationToken ct, bool needToTrack = true)
         {
-            var Products = _applicationDbContext.Products.AsQueryable();
+            var Products = _context.Products.AsQueryable();
             Products = needToTrack ? Products : Products.AsNoTracking();
-            var Product = await Products.SingleOrDefaultAsync(x => x.Id == prodactId);
+            var Product = await Products.SingleOrDefaultAsync(x => x.Id == productId);
             return Product;
+        }
+
+        public async Task<bool> IsExistByIdAsync(Guid productId, CancellationToken ct)
+        {
+            return await _context.Products
+                .AsNoTracking()
+                .AnyAsync(x => x.Id == productId, ct);
+        }
+
+        public async Task<bool> IsExistByIdNamePriceAsync(Guid productId, string productName, decimal price, CancellationToken ct)
+        {
+            return await _context.Products
+                .AsNoTracking()
+                .AnyAsync(x => x.Id == productId && x.Name == productName && x.Price == price, ct);
+        }
+
+        public async Task<bool> IsExistByIdNameThumbnailPathAsync(Guid productId, string productName, string productThumbnailPath, CancellationToken ct)
+        {
+            return await _context.Products
+                .AsNoTracking()
+                .AnyAsync(x => x.Id == productId && x.Name == productName && x.ThumbnailPath == productThumbnailPath, ct);
         }
     }
 }
-
