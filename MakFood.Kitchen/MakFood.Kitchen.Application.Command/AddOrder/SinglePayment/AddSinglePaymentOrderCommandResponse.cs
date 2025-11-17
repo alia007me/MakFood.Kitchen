@@ -1,4 +1,4 @@
-﻿namespace MakFood.Kitchen.Application.Command.AddOrder.SharedPayment
+﻿namespace MakFood.Kitchen.Application.Command.AddOrder.SinglePayment
 {
     public class AddSinglePaymentOrderCommandResponse
     {

@@ -1,5 +1,6 @@
 ﻿using MakFood.Kitchen.Domain.BussinesRules;
 using MakFood.Kitchen.Domain.Entities.Base;
+using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.OrederState;
 using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentAggrigate.Enum;
 using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentAggrigate.State;
 
@@ -11,6 +12,8 @@ namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentA
         protected List<PaymentState> _PaymentHistory = new List<PaymentState>();
         protected Payment(decimal totalAmount, PaymentMathods ownerPaymentMethod)
         {
+            Id = Guid.NewGuid();
+
             TotalAmount = totalAmount;
             ReminingAmount = totalAmount;
             OwnerAmount = totalAmount;
@@ -32,11 +35,11 @@ namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentA
         #region Behaviors
         public void Cancelled()
         {
-            _PaymentHistory.Add(CurrentState.Cancelled());
+            _PaymentHistory.Add(new CancelledPaymentState());
         }
         public void Paid()
         {
-            _PaymentHistory.Add(CurrentState.Paid());
+            _PaymentHistory.Add(new PaidPaymentState());
         }
 
         public void SetOwnerPaymentMethod(PaymentMathods ownerPaymentMethod)

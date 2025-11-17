@@ -2,7 +2,7 @@
 {
     public enum PaymentType
     {
-        singel,
-        shared
+        Single,
+        Shared
     }
 }

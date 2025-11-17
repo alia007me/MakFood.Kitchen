@@ -25,7 +25,7 @@ namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentA
             PartnerPaymentMethod = null;
             PartnerApproved = null;
 
-            PaymentType = PaymentType.shared;
+            PaymentType = PaymentType.Shared;
         }
 
         public decimal PartnerAmount { get; private set; }

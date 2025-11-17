@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MakFood.Kitchen.Infrastructure.Persistence.Context.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251108163757_Initial")]
-    partial class Initial
+    [Migration("20251117013442_DiscountCodeOne-OneFix")]
+    partial class DiscountCodeOneOneFix
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -43,7 +43,7 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Context.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("CartId")
+                    b.Property<Guid>("CartId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreationDateTime")
@@ -185,6 +185,10 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Context.Migrations
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("ProductName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateOnly>("TargetDate")
                         .HasColumnType("date");
 
@@ -256,9 +260,7 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Context.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DiscountCodeId")
-                        .IsUnique()
-                        .HasFilter("[DiscountCodeId] IS NOT NULL");
+                    b.HasIndex("DiscountCodeId");
 
                     b.HasIndex("PaymentId")
                         .IsUnique();
@@ -307,13 +309,38 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Context.Migrations
                     b.Property<decimal>("OwnerPaidAmount")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("OwnerPaymentMethod")
+                    b.Property<DateTime?>("OwnerPaidTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("OwnerPaymentMethod")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal?>("PartnerAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<bool?>("PartnerApproved")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid?>("PartnerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal?>("PartnerPaidAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int?>("PartnerPaymentMethod")
                         .HasColumnType("int");
 
-                    b.Property<string>("PaymentType")
+                    b.Property<string>("PaymentDiscriminator")
                         .IsRequired()
-                        .HasMaxLength(13)
-                        .HasColumnType("nvarchar(13)");
+                        .HasMaxLength(8)
+                        .HasColumnType("nvarchar(8)");
+
+                    b.Property<int>("PaymentStatus")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PaymentType")
+                        .HasColumnType("int");
 
                     b.Property<decimal>("ReminingAmount")
                         .HasColumnType("decimal(18,2)");
@@ -325,7 +352,7 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Context.Migrations
 
                     b.ToTable("Payments");
 
-                    b.HasDiscriminator<string>("PaymentType").HasValue("Payment");
+                    b.HasDiscriminator<string>("PaymentDiscriminator").HasValue("Payment");
 
                     b.UseTphMappingStrategy();
                 });
@@ -436,29 +463,14 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Context.Migrations
                 {
                     b.HasBaseType("MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentAggrigate.PaymentBase.Payment");
 
-                    b.Property<decimal>("PartnerAmount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<bool>("PartnerApproved")
-                        .HasColumnType("bit");
-
-                    b.Property<Guid>("PartnerId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<decimal>("PartnerPaidAmount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("PartnerPaymentMethod")
-                        .HasColumnType("int");
-
-                    b.HasDiscriminator().HasValue("SharedPayment");
+                    b.HasDiscriminator().HasValue("Shared");
                 });
 
             modelBuilder.Entity("MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentAggrigate.SinglePayment", b =>
                 {
                     b.HasBaseType("MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentAggrigate.PaymentBase.Payment");
 
-                    b.HasDiscriminator().HasValue("SinglePayment");
+                    b.HasDiscriminator().HasValue("Single");
                 });
 
             modelBuilder.Entity("MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentAggrigate.State.CancelledPaymentState", b =>
@@ -487,7 +499,8 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Context.Migrations
                     b.HasOne("Cart", null)
                         .WithMany("CartItems")
                         .HasForeignKey("CartId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("MakFood.Kitchen.Domain.Entities.CategoryAggrigate.Subcategory", b =>
@@ -520,8 +533,9 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Context.Migrations
             modelBuilder.Entity("MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.Order", b =>
                 {
                     b.HasOne("MakFood.Kitchen.Domain.Entities.DiscountAggrigate.Discount", "DiscountCode")
-                        .WithOne()
-                        .HasForeignKey("MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.Order", "DiscountCodeId");
+                        .WithMany()
+                        .HasForeignKey("DiscountCodeId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentAggrigate.PaymentBase.Payment", "Payment")
                         .WithOne()

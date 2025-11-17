@@ -30,7 +30,7 @@ namespace MakFood.Kitchen.Controllers
             var result = await _mediator.Send(command);
             return Ok(result);
         }
-        [HttpPut("{userId}/Product/{ProductId}")]
+        [HttpPut("{userId}/Product/{ProductId}/Remove")]
         public async Task<IActionResult> RemoveCartItem([FromRoute] Guid userId, [FromRoute] Guid ProductId)
         {
             var command = new RemoveFromCartCommand { ItemId = ProductId, CartId = userId };

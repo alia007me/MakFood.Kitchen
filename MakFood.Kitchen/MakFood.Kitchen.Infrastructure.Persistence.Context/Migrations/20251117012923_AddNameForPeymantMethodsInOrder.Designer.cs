@@ -4,6 +4,7 @@ using MakFood.Kitchen.Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MakFood.Kitchen.Infrastructure.Persistence.Context.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251117012923_AddNameForPeymantMethodsInOrder")]
+    partial class AddNameForPeymantMethodsInOrder
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -257,7 +260,9 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Context.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DiscountCodeId");
+                    b.HasIndex("DiscountCodeId")
+                        .IsUnique()
+                        .HasFilter("[DiscountCodeId] IS NOT NULL");
 
                     b.HasIndex("PaymentId")
                         .IsUnique();
@@ -530,9 +535,8 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Context.Migrations
             modelBuilder.Entity("MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.Order", b =>
                 {
                     b.HasOne("MakFood.Kitchen.Domain.Entities.DiscountAggrigate.Discount", "DiscountCode")
-                        .WithMany()
-                        .HasForeignKey("DiscountCodeId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .WithOne()
+                        .HasForeignKey("MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.Order", "DiscountCodeId");
 
                     b.HasOne("MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentAggrigate.PaymentBase.Payment", "Payment")
                         .WithOne()

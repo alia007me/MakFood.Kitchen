@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace MakFood.Kitchen.Application.Command.AddOrder.SinglePayment
+namespace MakFood.Kitchen.Application.Command.AddOrder.SharedPayment
 {
     public class AddSharedPaymentOrderCommandValidator : AbstractValidator<AddSharedPaymentOrderCommand>
     {
@@ -9,15 +9,6 @@ namespace MakFood.Kitchen.Application.Command.AddOrder.SinglePayment
             RuleFor(x => x.CartId)
                 .NotEmpty()
                 .WithMessage("Cart ID cannot be empty.");
-
-
-            RuleFor(x => x.DiscountCodeTitle)
-                    .NotEmpty()
-                    .WithMessage("Discount Code Title cannot be empty.")
-                    .MinimumLength(4)
-                    .WithMessage("Discount Code Title must be at least 4 characters long.")
-                    .MaximumLength(24)
-                    .WithMessage("Discount Code Title cannot exceed 24 characters.");
 
             RuleFor(x => x.OwnerPaymentMethod)
                     .IsInEnum()

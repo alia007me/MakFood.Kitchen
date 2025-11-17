@@ -12,7 +12,7 @@ namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentA
             ReminingAmount = totalAmount;
             OwnerPaymentMethod = ownerPaymentMethod;
             OwnerAmount = totalAmount;
-            PaymentType = PaymentType.singel;
+            PaymentType = PaymentType.Single;
         }
     }
 }

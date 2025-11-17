@@ -6,11 +6,11 @@ namespace MakFood.Kitchen.Application.Command.Helper.DiscountCalculatorHelper
 {
     public static class DiscountCalculatorHelper
     {
-        public static decimal AmountCalculator(decimal amount, Discount? discount,Guid customerId)
+        public static decimal AmountCalculator(decimal amount, Discount? discount, Guid customerId)
         {
             if (discount == null) return amount;
 
-            DiscountValidation(discount,customerId);
+            DiscountValidation(discount, customerId);
 
             if (amount < discount.MinimumBalance)
             {
@@ -18,11 +18,11 @@ namespace MakFood.Kitchen.Application.Command.Helper.DiscountCalculatorHelper
             }
             else if (amount > discount.MaximumBalance)
             {
-                return (amount - (discount.MaximumBalance * discount.Percent));
+                return (amount - (discount.MaximumBalance * discount.Percent / 100));
             }
             else
             {
-                return (amount * (discount.Percent));
+                return (amount * (discount.Percent / 100));
             }
         }
         public static void DiscountValidation(Discount discount, Guid cartId)

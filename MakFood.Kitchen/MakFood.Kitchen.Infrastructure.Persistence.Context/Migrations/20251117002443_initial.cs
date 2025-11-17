@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace MakFood.Kitchen.Infrastructure.Persistence.Context.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -57,6 +57,7 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Context.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ProductName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     TargetDate = table.Column<DateOnly>(type: "date", nullable: false),
                     CreationDateTime = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -73,14 +74,17 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Context.Migrations
                     TotalAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     ReminingAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     OwnerPaymentMethod = table.Column<int>(type: "int", nullable: false),
+                    PaymentStatus = table.Column<int>(type: "int", nullable: false),
+                    PaymentType = table.Column<int>(type: "int", nullable: false),
                     OwnerAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     OwnerPaidAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    PaymentType = table.Column<string>(type: "nvarchar(13)", maxLength: 13, nullable: false),
+                    OwnerPaidTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     PartnerAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    PartnerApproved = table.Column<bool>(type: "bit", nullable: true),
                     PartnerId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     PartnerPaidAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     PartnerPaymentMethod = table.Column<int>(type: "int", nullable: true),
-                    PartnerApproved = table.Column<bool>(type: "bit", nullable: true),
+                    PaymentDiscriminator = table.Column<string>(type: "nvarchar(8)", maxLength: 8, nullable: false),
                     CreationDateTime = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
@@ -116,7 +120,7 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Context.Migrations
                     ProductThumbnailPath = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Quantity = table.Column<long>(type: "bigint", nullable: false),
-                    CartId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    CartId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreationDateTime = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
@@ -251,9 +255,9 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Context.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreationDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     OrderId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    OrderState = table.Column<string>(type: "nvarchar(21)", maxLength: 21, nullable: false)
+                    OrderState = table.Column<string>(type: "nvarchar(21)", maxLength: 21, nullable: false),
+                    CreationDateTime = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {

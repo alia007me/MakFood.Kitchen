@@ -1,7 +1,9 @@
 ﻿using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentAggrigate;
+using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentAggrigate.Enum;
 using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentAggrigate.PaymentBase;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.Runtime.CompilerServices;
 
 namespace MakFood.Kitchen.Infrastructure.Persistence.Context.Configurations
 {
@@ -22,6 +24,7 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Context.Configurations
                    .IsRequired();
 
             builder.Property(p => p.OwnerPaymentMethod)
+                   .HasConversion<string>()
                    .IsRequired();
 
             builder.Property(p => p.OwnerAmount)
@@ -32,14 +35,43 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Context.Configurations
                    .HasColumnType("decimal(18,2)")
                    .IsRequired();
 
+            builder.Property(p => p.OwnerPaidTime)
+                   .IsRequired(false);
+
+            builder.Property(p => p.PaymentStatus)
+                   .IsRequired();
+
+            builder.Property(p => p.PaymentType)
+                   .IsRequired();
+
+
+
+            builder.Property<decimal?>("PartnerAmount")
+                   .HasColumnType("decimal(18,2)")
+                   .IsRequired(false);
+
+            builder.Property<Guid?>("PartnerId")
+                   .IsRequired(false);
+
+            builder.Property<decimal?>("PartnerPaidAmount")
+                   .HasColumnType("decimal(18,2)")
+                   .IsRequired(false);
+
+            builder.Property<PaymentMathods?>("PartnerPaymentMethod")
+                   .IsRequired(false);
+
+            builder.Property<bool?>("PartnerApproved")
+                   .IsRequired(false);
+
+
+            builder.HasDiscriminator<string>("PaymentDiscriminator")
+                .HasValue<SinglePayment>(nameof(PaymentType.Single))
+                .HasValue<SharedPayment>(nameof(PaymentType.Shared));
+
             builder.HasMany(p => p.PaymentLog)
                 .WithOne()
-                .OnDelete(DeleteBehavior.Cascade);
-
-            builder.HasDiscriminator<string>("PaymentType")
-                .HasValue<SinglePayment>(nameof(SinglePayment))
-                .HasValue<SharedPayment>(nameof(SharedPayment));
-
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasForeignKey("PaymentId");
         }
     }
 }

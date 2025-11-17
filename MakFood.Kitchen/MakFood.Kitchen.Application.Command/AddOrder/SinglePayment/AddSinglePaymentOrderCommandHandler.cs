@@ -7,21 +7,22 @@ using MakFood.Kitchen.Domain.Entities.OrderAggrigate;
 using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate;
 using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.Contract;
 using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentAggrigate.Enum;
-using SharedPaymentState = MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentAggrigate;
 using MakFood.Kitchen.Domain.Entities.ProductAggrigate.Contract;
+using SinglePaymentState = MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentAggrigate;
 using MakFood.Kitchen.Infrastructure.Persistence.Context.Transactions;
 using MediatR;
+using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentAggrigate.PaymentBase;
 
 namespace MakFood.Kitchen.Application.Command.AddOrder.SinglePayment
 {
-    public class AddSharedPaymentOrderCommandHandler : IRequestHandler<AddSharedPaymentOrderCommand, AddSharedPaymentOrderCommandResponse>
+    public class AddSinglePaymentOrderCommandHandler : IRequestHandler<AddSinglePaymentOrderCommand, AddSinglePaymentOrderCommandResponse>
     {
         private readonly IDiscountRepository _discountCodeRepository;
         private readonly IProductRepository _productRepository;
         private readonly ICartRepository _cartRepository;
         private readonly IOrderRepository _orderRepository;
         private readonly IUnitOfWork _unitOfWork;
-        public AddSharedPaymentOrderCommandHandler(IProductRepository productRepository, ICartRepository cartRepository, IOrderRepository orderRepository
+        public AddSinglePaymentOrderCommandHandler(IProductRepository productRepository, ICartRepository cartRepository, IOrderRepository orderRepository
             , IUnitOfWork unitOfWork, IDiscountRepository discountCodeRepository)
         {
             _cartRepository = cartRepository;
@@ -30,7 +31,7 @@ namespace MakFood.Kitchen.Application.Command.AddOrder.SinglePayment
             _discountCodeRepository = discountCodeRepository;
             _unitOfWork = unitOfWork;
         }
-        public async Task<AddSharedPaymentOrderCommandResponse> Handle(AddSharedPaymentOrderCommand command, CancellationToken ct)
+        public async Task<AddSinglePaymentOrderCommandResponse> Handle(AddSinglePaymentOrderCommand command, CancellationToken ct)
         {
             //سبد خرید
             var cart = await _cartRepository.GetCartById(command.CartId, ct);
@@ -44,38 +45,51 @@ namespace MakFood.Kitchen.Application.Command.AddOrder.SinglePayment
             {
                 Constituents.Add(new Constituent(await _productRepository.GetProductById(Items[i].ProductId, ct), Items[i]));
             }
-
-            cart.RemoveAllItems();
-
+            
+            //cart.RemoveAllItems();
 
             // دریافت کد تخفیف
             var Discount = await _discountCodeRepository.GetDiscountByTitleTracked(command.DiscountCodeTitle);
 
             //مبلغ کل سفارش
-            var totalAmount = Constituents.Sum(x => x.Price);
+            var totalAmount = Constituents.Sum(x => x.Price * x.Quantity);
 
             //ایجاد پیمنت
-            var payment = CreatePayment(PaymentType.shared, command.OwnerPaymentMethod, Discount, totalAmount, command.CartId, command.PartnerId);
+            var payment = CreatePayment(PaymentType.Single,command.OwnerPaymentMethod,Discount,totalAmount,command.CartId);
 
             //ایجاد اوردر
-            var order = new Order(cart.Id, Discount, payment, Constituents);
+
+            var order = CreateOrder(cart.Id, Discount, payment, Constituents);
             _orderRepository.AddOrder(order);
 
 
             await _unitOfWork.Commit(ct);
 
-            return new AddSharedPaymentOrderCommandResponse()
+            return new AddSinglePaymentOrderCommandResponse()
             {
                 OrderId = order.Id
             };
         }
-        private SharedPaymentState.SharedPayment CreatePayment(PaymentType paymentType, PaymentMathods ownerPaymentMethod, Discount? discount, decimal totalAmount, Guid cartId, Guid partnerId)
+
+        private Order CreateOrder(Guid customerId, Discount? discountCode, Payment payment, List<Constituent> constituents)
         {
-            var payable = DiscountCalculatorHelper.AmountCalculator(totalAmount, discount, cartId);
-            SharedPaymentState.SharedPayment payment = new SharedPaymentState.SharedPayment(payable, ownerPaymentMethod, partnerId);
+            Order order;
+            if (discountCode != null)
+            {
+                order = new Order(customerId, discountCode, payment, constituents);
+            }
+            else
+            {
+                order = new Order(customerId, payment, constituents);
+            }
+            return order;
+        }
+        private SinglePaymentState.SinglePayment CreatePayment(PaymentType paymentType, PaymentMathods ownerPaymentMethod, Discount? discount, decimal totalAmount, Guid cartId)
+        {
+            var payable = DiscountCalculatorHelper.AmountCalculator(totalAmount, discount,cartId);
+            SinglePaymentState.SinglePayment payment = new SinglePaymentState.SinglePayment(payable,ownerPaymentMethod);
             return payment;
         }
     }
+
 }
-
-

@@ -17,24 +17,25 @@ namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate
 
             CustomerId = customerId;
             DiscountCode = discountCode;
+            _constituents = constituents;
             Price = CalculatePrice();
             DiscountPrice = CalculateDiscountPrice(DiscountCode, Price);
             Payable = CalculatePayable(Price, DiscountPrice);
             Payment = payment;
-            _stateHistory.Add(CurrentState.Created());
+            _stateHistory.Add(new CreatedOrderState());
 
         }
         public Order(Guid customerId, Payment payment, List<Constituent> constituents)
         {
             Id = Guid.NewGuid();
-
+            _constituents = constituents;
             CustomerId = customerId;
             DiscountCode = null;
             Price = CalculatePrice();
             DiscountPrice = decimal.Zero;
             Payable = Price;
             Payment = payment;
-            _stateHistory.Add(CurrentState.Created());
+            _stateHistory.Add(new CreatedOrderState());
 
         }
         private Order() //ef
@@ -77,7 +78,7 @@ namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate
             decimal total = decimal.Zero;
             foreach (var constituent in _constituents)
             {
-                total += constituent.Price;
+                total += constituent.Price * constituent.Quantity;
             }
 
             return total;
@@ -91,11 +92,11 @@ namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate
             }
             else if (price > discount.MaximumBalance)
             {
-                return (price - (discount.MaximumBalance * discount.Percent));
+                return discount.MaximumBalance * discount.Percent/100;
             }
             else
             {
-                return (price * (discount.Percent));
+                return (price * (discount.Percent/100));
             }
         }
 
