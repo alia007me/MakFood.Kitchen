@@ -3,7 +3,7 @@ using MediatR;
 
 namespace MakFood.Kitchen.Application.Query.GetProductOrderCountsByDateRange
 {
-    public class GetProductOrderCountsByDateRangeHandler : IRequestHandler<GetProductOrderCountsByDateRangeQuery, List<GetProductOrderCountsByDateRangeDto>>
+    public class GetProductOrderCountsByDateRangeHandler : IRequestHandler<GetProductOrderCountsByDateRangeQuery, GetProductOrderCountsByDateRangeResponse>
     {
         private readonly IOrderRepository _orderRepository;
 
@@ -12,18 +12,11 @@ namespace MakFood.Kitchen.Application.Query.GetProductOrderCountsByDateRange
             _orderRepository = orderRepository;
         }
 
-        public async Task<List<GetProductOrderCountsByDateRangeDto>> Handle(GetProductOrderCountsByDateRangeQuery request, CancellationToken ct)
+        public async Task<GetProductOrderCountsByDateRangeResponse> Handle(GetProductOrderCountsByDateRangeQuery request, CancellationToken ct)
         {
-            var ordersInDateRange = await _orderRepository.GetOrderByDateRangeAsync(request.FromDate, request.ToDate, ct);
+            var getProductOrderCountsByDateRange = await _orderRepository.GetProductOrderCountsByDateRange(request.FromDate, request.ToDate, ct);
 
-            var result = ordersInDateRange.SelectMany(p => p.Consistencies)
-                                          .GroupBy(g => new { g.ProductId,g.Name })
-                                          .Select(x => new GetProductOrderCountsByDateRangeDto(
-                                              x.Key.ProductId,
-                                              x.Key.Name,
-                                              x.Sum(k => k.Quantity)
-                                              ))
-                                          .ToList();
+            var result = new GetProductOrderCountsByDateRangeResponse(getProductOrderCountsByDateRange);
 
             return result;
         }

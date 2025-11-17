@@ -23,7 +23,7 @@ namespace MakFood.Kitchen.Application.Command.FoodRequest
 
         public async Task<FoodRequestResponse> Handle(FoodRequestCommand request, CancellationToken ct)
         {
-            var targetProduct = await _productRepository.GetProductById(request.ProductId,ct);
+            var targetProduct = await _productRepository.GetProductByIdAsync(request.ProductId,ct);
 
             CheckProductIsExist(targetProduct);
 

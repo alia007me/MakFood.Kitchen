@@ -15,9 +15,9 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Repository
             _context = context;
         }
 
-        public async Task<Product?> GetProductById(Guid productId, CancellationToken ct)
+        public async Task<Product?> GetProductByIdAsync(Guid productId, CancellationToken ct)
         {
-            return await _context.Products.FirstOrDefaultAsync(x => x.Id == productId,ct);
+            return await _context.Products.SingleOrDefaultAsync(x => x.Id == productId,ct);
         }
 
         public async Task<bool> IsExistByIdAsync(Guid productId, CancellationToken ct)

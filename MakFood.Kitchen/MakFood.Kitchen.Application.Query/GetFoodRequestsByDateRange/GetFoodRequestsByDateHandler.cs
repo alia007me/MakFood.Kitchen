@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace MakFood.Kitchen.Application.Query.GetFoodRequestsByDateRange
 {
-    public class GetFoodRequestsByDateHandler : IRequestHandler<GetFoodRequestsByDateQuery, IEnumerable<GetFoodRequestsByDateDto>>
+    public class GetFoodRequestsByDateHandler : IRequestHandler<GetFoodRequestsByDateQuery, GetFoodRequestsByDateRangeResponse>
     {
         private readonly IFoodRequestRepository _foodRequestRepository;
 
@@ -13,14 +13,13 @@ namespace MakFood.Kitchen.Application.Query.GetFoodRequestsByDateRange
             _foodRequestRepository = foodRequestRepository;
         }
 
-        public async Task<IEnumerable<GetFoodRequestsByDateDto>> Handle(GetFoodRequestsByDateQuery request, CancellationToken ct)
+        public async Task<GetFoodRequestsByDateRangeResponse> Handle(GetFoodRequestsByDateQuery request, CancellationToken ct)
         {
             var foodRequestsByDate = await _foodRequestRepository.GetFoodRequestsFoodCountByDateRangeAsync(request.FromDate, request.ToDate, ct);
 
-            if (foodRequestsByDate == null || !foodRequestsByDate.Any())
-                return new List<GetFoodRequestsByDateDto>();
+            var GetFoodRequestsByDateRange = foodRequestsByDate.Select(c => new GetFoodRequestsByDateDto(c.ProductId, c.ProductName, c.RequestedCount));
 
-            var result = foodRequestsByDate.Select(c => new GetFoodRequestsByDateDto(c.ProductId, c.ProductName, c.RequestedCount));
+            var result = new GetFoodRequestsByDateRangeResponse(GetFoodRequestsByDateRange);
 
             return result;
         }
