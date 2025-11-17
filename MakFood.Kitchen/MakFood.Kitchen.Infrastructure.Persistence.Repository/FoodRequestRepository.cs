@@ -2,6 +2,7 @@
 using MakFood.Kitchen.Domain.Entities.FoodRequestAggrigate.Contract;
 using MakFood.Kitchen.Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
+using static MakFood.Kitchen.Domain.Entities.FoodRequestAggrigate.Contract.IFoodRequestRepository;
 
 namespace MakFood.Kitchen.Infrastructure.Persistence.Repository
 {
@@ -14,19 +15,24 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Repository
             _context = context;
         }
 
-        public Task AddFoodRequest(FoodRequest foodRequest)
+        public void AddFoodRequest(FoodRequest foodRequest)
         {
             _context.FoodRequests.Add(foodRequest);
-
-            return Task.CompletedTask;
         }
 
-        public async Task<IEnumerable<FoodRequest>> GetFoodRequestsByDateRangeAsync(DateOnly fromDate, DateOnly toDate, CancellationToken ct)
+        public async Task<IEnumerable<GetAggregatedFoodRequestsReadModel>> GetFoodRequestsFoodCountByDateRangeAsync(DateOnly fromDate, DateOnly toDate, CancellationToken ct)
         {
             return await _context.FoodRequests
-                .AsNoTracking()
-                .Where(x => x.TargetDate >= fromDate && x.TargetDate <= toDate)
-                .ToListAsync();
+                            .Where(c => c.TargetDate >= fromDate && c.TargetDate <= toDate)
+                            .GroupBy(c => c.ProductId)
+                            .Select(c =>
+                                new GetAggregatedFoodRequestsReadModel
+                                {
+                                    ProductId = c.Key,
+                                    ProductName = c.First().ProductName,
+                                    RequestedCount = c.Count()
+                                })
+                            .ToListAsync(ct);
         }
 
         public async Task<bool> IsAlreadyExistAsync(Guid userId, Guid productId, DateOnly targetDate, CancellationToken ct)
