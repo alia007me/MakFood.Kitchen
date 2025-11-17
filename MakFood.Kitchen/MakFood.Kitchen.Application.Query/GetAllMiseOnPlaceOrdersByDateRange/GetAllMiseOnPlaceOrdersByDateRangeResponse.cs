@@ -1,6 +1,0 @@
-﻿using MakFood.Kitchen.Application.Query.GetAllMiseOnPlaceOrderByDateRange;
-
-namespace MakFood.Kitchen.Application.Query.GetAllMiseOnPlaceOrdersByDateRange
-{
-    public record GetAllMiseOnPlaceOrdersByDateRangeResponse(IEnumerable<GetAllMiseOnPlaceOrdersByDateRangeDto> GetAllMiseOnPlaceOrdersByDateResponse);
-}
