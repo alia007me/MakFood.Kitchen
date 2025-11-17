@@ -1,12 +1,14 @@
 using FluentValidation;
 using MakFood.Kitchen.Application.Command.CancelOrder;
-using MakFood.Kitchen.Application.Query.Behavior;
-using MakFood.Kitchen.Application.Query.GetAllMiseOnPlaceOrderByDateRange;
+using MakFood.Kitchen.Application.Command.LiveProductQuantity;
+using MakFood.Kitchen.Application.Query.GetAllMiseOnPlaceOrdersByDateRange;
 using MakFood.Kitchen.Application.Query.GetTotalSalesByDateRange;
 using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.Contract;
+using MakFood.Kitchen.Domain.Entities.ProductAggrigate.Contract;
 using MakFood.Kitchen.Infrastructure.Persistence.Context;
 using MakFood.Kitchen.Infrastructure.Persistence.Context.Transactions;
-using MakFood.Kitchen.Infrastructure.Persistence.Repository;
+using MakFood.Kitchen.Infrastructure.Persistence.Repository.Repository;
+using MakFood.Kitchen.Infrastructure.Substructure.Behavior;
 using MakFood.Kitchen.Infrastructure.Substructure.Settings;
 using MediatR;
 using Microsoft.Data.SqlClient;
@@ -34,6 +36,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionBuilder.ConnectionString);
 }
 );
+builder.Services.AddSignalR();
 
 builder.Services.AddControllers();
 
@@ -57,6 +60,7 @@ builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBeh
 
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
 
 var app = builder.Build();
@@ -71,6 +75,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.MapHub<LiveProductQuantity>("/lpq");
 
 app.MapControllers();
 
