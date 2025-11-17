@@ -18,9 +18,5 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Repository.Repository
             cart = needToTrack ? cart : cart.AsNoTracking();  
             return await cart.SingleAsync(c => c.Id == Id);
         }
-        public void AddNewCart(Guid id)
-        {
-            _applicationDbContext.Add(new Cart(id));
-        }
     }
 }
