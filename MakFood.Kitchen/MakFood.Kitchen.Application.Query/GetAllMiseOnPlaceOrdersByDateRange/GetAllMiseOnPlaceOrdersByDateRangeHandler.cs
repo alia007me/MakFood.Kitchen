@@ -4,7 +4,7 @@ using MediatR;
 
 namespace MakFood.Kitchen.Application.Query.GetAllMiseOnPlaceOrderByDateRange
 {
-    public class GetAllMiseOnPlaceOrdersByDateRangeHandler : IRequestHandler<GetAllMiseOnPlaceOrdersByDateRangeQuery, GetAllMiseOnPlaceOrdersByDateRangeResponse>>
+    public class GetAllMiseOnPlaceOrdersByDateRangeHandler : IRequestHandler<GetAllMiseOnPlaceOrdersByDateRangeQuery, GetAllMiseOnPlaceOrdersByDateRangeResponse>
     {
         private readonly IOrderRepository _orderRepository;
 
