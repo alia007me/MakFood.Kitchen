@@ -22,9 +22,14 @@ namespace MakFood.Kitchen.Application.Command.RemoveProduct
 
         public async Task<bool> Handle(RemoveProductCommand request, CancellationToken cancellationToken)
         {
-            var e = await productRepository.GetByIdAsync(request.ProductId);
-             productRepository.RemoveProductAsync(e);
-            await unitOfWork.SaveChangesAsync();
+            var product = productRepository.GetByIdAsync(request.ProductId, cancellationToken);
+            if (product == null)
+            {
+                throw new ArgumentException("product not found");
+            }
+            var e = await productRepository.GetByIdAsync(request.ProductId, cancellationToken);
+             productRepository.RemoveProduct(e);
+            await unitOfWork.SaveChangesAsync(cancellationToken);
             return true;
         }
     }

@@ -18,17 +18,22 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Repository.Repositores
         {
             _context = context;
         }
-
-        public async Task AddProductAsync(Product product)
+       
+        public void AddProduct(Product product)
         {
-             await _context.AddAsync(product);
+              _context.Add(product);
+        }
+        
+        public async Task<Product> GetByIdAsync(Guid productId, CancellationToken cancellationToken)
+        {
+            return await _context.Products.FirstOrDefaultAsync(w => w.Id == productId, cancellationToken);
         }
 
-        public async Task<Product> GetByIdAsync(Guid productId)
+        public async Task<Product> GetByNameAsync(string name, CancellationToken cancellationToken)
         {
-            return await _context.Products.FirstOrDefaultAsync(w => w.Id == productId);
+            return await _context.Products.FirstOrDefaultAsync(w => w.Name == name, cancellationToken);
         }
-
+            
         public Task<bool> IsExistByIdAsync(Guid productId)
         {
             throw new NotImplementedException();
@@ -43,10 +48,14 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Repository.Repositores
         {
             throw new NotImplementedException();
         }
-
-        public  void RemoveProductAsync(Product product)
+        /// <summary>
+        /// متد وید برای حذف کردن پروداکت از دیتابیس
+        /// </summary>
+        /// <param name="product">کلاس پروداکت</param>
+        public  void RemoveProduct(Product product)
         {
              _context.Remove(product);
         }
+
     }
 }

@@ -16,6 +16,6 @@ namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.Contract
         /// <param name="StartDateTime">تاریخ شروع بازه مورد نظر </param>
         /// <param name="EndDateTime">تاریخ پایان بازه مورد نظر</param>
         /// <returns>لیستی از صورت حساب های موفق در بازه مورد نظر </returns>
-        Task<List<Order>> GetOrderByCustomerIdAsyncs(Guid CustomerId, DateTime StartDateTime, DateTime EndDateTime);
+        Task<List<Order>> GetOrderByCustomerIdAsync(Guid CustomerId, DateTime StartDateTime, DateTime EndDateTime);
     }
 }

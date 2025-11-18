@@ -17,18 +17,23 @@
         /// اضافه کردن پروداکت جدید 
         /// </summary>
         /// <param name="product">پروداکت</param>
-       public Task AddProductAsync(Product product);
+       public void AddProduct(Product product);
         /// <summary>
         /// حذف کردن پروداکت
         /// </summary>
         /// <param name="product">پروداکت</param>
-        public void RemoveProductAsync(Product product);
+        public void RemoveProduct(Product product);
         /// <summary>
         /// اوردن پروداکت براساس ایدی پروداکت
         /// </summary>
         /// <param name="productId">ایدی پروداکت</param>
         /// <returns>پروداکت</returns>
-        public Task<Product> GetByIdAsync(Guid productId);
-
+        public Task<Product> GetByIdAsync(Guid productId, CancellationToken cancellationToken);
+        /// <summary>
+        /// متدی که پروداکت رو بر حسب اسم پروداکت میاره
+        /// </summary>
+        /// <param name="name">اسم پروداکت </param>
+        /// <returns>پروداکت</returns>
+        public Task<Product> GetByNameAsync(string name,CancellationToken cancellationToken);
     } 
 }

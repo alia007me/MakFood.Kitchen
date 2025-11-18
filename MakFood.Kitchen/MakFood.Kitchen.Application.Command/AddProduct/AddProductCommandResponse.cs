@@ -1,8 +1,8 @@
 ﻿namespace MakFood.Kitchen.Application.Command.AddProduct
 {
-    public class AddProductCommandResponce
+    public class AddProductCommandResponse
     {
-        public AddProductCommandResponce(Guid productId)
+        public AddProductCommandResponse(Guid productId)
         {
             ProductId = productId;
         }

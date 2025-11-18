@@ -13,9 +13,9 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Context.UnitOfWorks
         {
             _Context = context;
         }
-        public async Task<int> SaveChangesAsync()
+        public async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
         {
-           return await _Context.SaveChangesAsync();
+           return await _Context.SaveChangesAsync(cancellationToken);
         }
     }
 }

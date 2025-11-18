@@ -1,44 +1,48 @@
-﻿using MakFood.Kitchen.Application.Command.AddProduct;
-using MakFood.Kitchen.Domain.Entities.CategoryAggrigate.Contract;
+﻿using MakFood.Kitchen.Domain.Entities.CategoryAggrigate.Contract;
 using MakFood.Kitchen.Domain.Entities.ProductAggrigate;
 using MakFood.Kitchen.Domain.Entities.ProductAggrigate.Contract;
-using MakFood.Kitchen.Infrastructure.Persistence.Context;
 using MakFood.Kitchen.Infrastructure.Persistence.Context.UnitOfWorks;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MakFood.Kitchen.Application.Command.UpdateProduct
 {
 
     public class UpdateProductCommandHandller : IRequestHandler<UpdateProductCommand, bool>
     {
-        public readonly ApplicationDbContext _context;
-        public readonly IProductRepository productRepository;
-        public readonly ISubCategoryRepository subCategoryRepository;
-        public readonly IUnitOfWork unitOfWork;
+        private readonly IUnitOfWork unitOfWork;
+        private readonly IProductRepository productRepository;
+        private readonly ICategoriesRepository categoryRepository;
+
+        public UpdateProductCommandHandller(IUnitOfWork unitOfWork, IProductRepository productRepository, ICategoriesRepository categoryRepository)
+        {
+            this.unitOfWork = unitOfWork;
+            this.productRepository = productRepository;
+            this.categoryRepository = categoryRepository;
+        }
 
         public async Task<bool> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
         {
-
-            var e = await productRepository.GetByIdAsync(request.ProductId);
-            productRepository.RemoveProductAsync(e);
- 
-            var subCategory = await subCategoryRepository.GetSubCategoryBySabCategoryNameAsync(request.SubCategoryName);
-            var product = new Product
-                (
-                    request.Name,
-                    request.Price,
-                    request.Description,
-                    request.ThumbnailPath,
-                    subCategory,
-                    request.AvailableQuantity
-                );
-            await productRepository.AddProductAsync(product);
-            await unitOfWork.SaveChangesAsync();
+            var subCategoryName = await categoryRepository.GetSubCategoryByIdAsync(request.SubCategoryId, cancellationToken);
+            var product = await productRepository.GetByIdAsync(request.ProductId, cancellationToken);
+            if (product == null)
+            {
+                throw new ArgumentException("product not found");
+            }
+            if (request.Name != null)
+                product.UpdateProductName(request.Name);
+            if (request.Description != null)
+                product.UpdateDescription(request.Description);
+            if (request.ThumbnailPath != null)
+                product.UpdateThumbnailPath(product.ThumbnailPath);
+            if (request.Price.ToString() != null)
+                product.UpdatePrice(request.Price);
+            if (request.SubCategoryName != null)
+                product.UpdateSubcategory(subCategoryName);
+            if (request.QuantityToIncrease.ToString()!=null)
+                product.IncreaseAvailableQuantity(request.QuantityToIncrease);
+            if (request.QuantityToDecrease.ToString() != null)
+                product.DecreaseAvailableQuantity(request.QuantityToIncrease);
+            await unitOfWork.SaveChangesAsync(cancellationToken);
             return true;
         }
     }

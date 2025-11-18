@@ -8,6 +8,9 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Context.UnitOfWorks
 {
     public interface IUnitOfWork
     {
-        Task<int> SaveChangesAsync();
+        /// <summary>
+        /// متد برای سیو تغیرات در دیتابیس
+        /// </summary>
+        Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }
 }

@@ -4,44 +4,46 @@ using MakFood.Kitchen.Domain.Entities.ProductAggrigate.Contract;
 using MakFood.Kitchen.Infrastructure.Persistence.Context;
 using MakFood.Kitchen.Infrastructure.Persistence.Context.UnitOfWorks;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace MakFood.Kitchen.Application.Command.AddProduct
 {
-    public class AddProductCommandHandller : IRequestHandler<AddProductCommand, AddProductCommandResponce>
+    public class AddProductCommandHandller : IRequestHandler<AddProductCommand, AddProductCommandResponse>
     {
-        public readonly ApplicationDbContext _context;
         public readonly IProductRepository productRepository;
-        public readonly ISubCategoryRepository subCategoryRepository;
+        public readonly ICategoriesRepository categoryRepository;
         public readonly IUnitOfWork unitOfWork;
 
-        public AddProductCommandHandller(ApplicationDbContext context, IProductRepository productRepository, ISubCategoryRepository subCategoryRepository, IUnitOfWork unitOfWork)
+        public AddProductCommandHandller(IProductRepository productRepository, ICategoriesRepository categoryRepository, IUnitOfWork unitOfWork)
         {
-            _context = context;
             this.productRepository = productRepository;
-            this.subCategoryRepository = subCategoryRepository;
+            this.categoryRepository = categoryRepository;
             this.unitOfWork = unitOfWork;
         }
 
-        public async Task<AddProductCommandResponce> Handle(AddProductCommand request, CancellationToken cancellationToken)
+        public async Task<AddProductCommandResponse> Handle(AddProductCommand request, CancellationToken cancellationToken)
         {
-            var subCategory = await subCategoryRepository.GetSubCategoryBySabCategoryNameAsync(request.SubCategoryName);
+            var productIsNull = productRepository.GetByNameAsync(request.Name, cancellationToken);
+            if (productIsNull != null)
+            {
+                throw new Exception("this product has already been added");
+            }
+            var SubCategory = await categoryRepository.GetSubCategoryByIdAsync(request.SubCategoryId, cancellationToken);
+            if (SubCategory != null)
+            {
+                throw new Exception("subcategory not found");
+            }
             var product = new Product
-                (
-                    request.Name,
-                    request.Price,
-                    request.Description,
-                    request.ThumbnailPath,
-                    subCategory,
-                    request.AvailableQuantity
-                );
-            await productRepository.AddProductAsync(product);
-            await unitOfWork.SaveChangesAsync();
-            return new AddProductCommandResponce(product.Id);
+            (
+                request.Name,
+                request.Price,
+                request.Description,
+                request.ThumbnailPath,
+                SubCategory,
+                request.AvailableQuantity
+            );
+
+            productRepository.AddProduct(product);
+            await unitOfWork.SaveChangesAsync(cancellationToken);
+            return new AddProductCommandResponse(product.Id);
         }
     }
 }

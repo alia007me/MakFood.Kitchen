@@ -18,8 +18,8 @@ namespace MakFood.Kitchen.Application.Command.UpdateProduct
         public string ThumbnailPath { get; set; }
         public Guid SubCategoryId { get; set; }
         public string SubCategoryName { get; set; }
-        public uint AvailableQuantity { get; set; }
-
+        public uint QuantityToDecrease { get; set; }
+        public uint QuantityToIncrease { get; set; }
         public override void Validate()
         {
             new UpdateProductCommandValidation().Validate(this);
