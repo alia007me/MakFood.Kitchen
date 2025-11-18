@@ -2,18 +2,12 @@ using FluentValidation;
 using MakFood.Kitchen.Application.Query.Behavior;
 using MakFood.Kitchen.Application.Query.GetAllMiseOnPlaceOrderByDateRange;
 using MakFood.Kitchen.Application.Query.GetTotalSalesByDateRange;
-using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.Contract;
 using MakFood.Kitchen.Infrastructure.Persistence.Context;
-using MakFood.Kitchen.Infrastructure.Persistence.Context.Transactions;
-using MakFood.Kitchen.Infrastructure.Persistence.Repository;
 using MakFood.Kitchen.Infrastructure.Substructure.Settings;
 using MediatR;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using MakFood.Kitchen.Infrastructure.DI;
-using System.Reflection;
-using MakFood.Kitchen.Application.Command.UpdateCart;
-using MakFood.Kitchen.Application.Query.GetCart;
 using MakFood.Kitchen.Application.Command.CancelOrder;
 
 
