@@ -30,7 +30,7 @@ namespace MakFood.Kitchen.Application.Command.UpdateCart
         public void validate(CartItem cartItem)
         {
             if (cartItem is null)
-                throw new DirectoryNotFoundException("item not found in cart (you dont have this item in your cart)");
+                throw new NotFoundException("item not found in cart (you dont have this item in your cart)");
         }
         #endregion
         #region response
