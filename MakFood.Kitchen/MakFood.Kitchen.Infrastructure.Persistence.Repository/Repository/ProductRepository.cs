@@ -78,7 +78,8 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Repository.Repository
                 SubCategoryName = x.SubCategoryName
 
             }).ToListAsync(ct);
-         }
+
+        }
 
         public async Task<bool> HasProductsInSubcategoriesAsync(Guid subcategoryId, CancellationToken ct)
         {
@@ -97,6 +98,14 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Repository.Repository
             return await _context.Products
                 .AnyAsync(p => subcategoryIds.Contains(p.SubCategoryId), ct);
         }
+        public async Task<Product> GetProduct(Guid prodactId, CancellationToken ct, bool needToTrack = true)
+        {
+            var Products = _context.Products.AsQueryable();
+            Products = needToTrack ? Products : Products.AsNoTracking();
+            var Product = await Products.SingleOrDefaultAsync(x => x.Id == prodactId);
+            return Product!;
+        }
+
 
     }
 }

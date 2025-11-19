@@ -26,4 +26,6 @@ namespace MakFood.Kitchen.Domain.Entities.ProductAggrigate.Contract
             public string SubCategoryName { get; set; }
         }
     }
+        public Task<Product> GetProduct(Guid prodactId, CancellationToken ct, bool needToTrack = true);
+    }
 }
