@@ -6,17 +6,11 @@ using MakFood.Kitchen.Domain.Entities.CartAggrigate;
 public class Cart : BaseEntity<Guid>
 {
     private List<CartItem> _cartItems = new List<CartItem>();
-    public Cart(List<CartItem> cartItems)
+    public Cart(Guid cartId)
     {
-        _cartItems = cartItems;
+        Id = cartId;
     }
-    private Cart() //ef
-    {
-        
-    }
-
-
-    public IEnumerable<CartItem> CartItems => _cartItems.AsReadOnly();
+    private Cart() {} //ef
 
 
 
@@ -38,7 +32,10 @@ public class Cart : BaseEntity<Guid>
         Check(new TheCartItemMustExistInTheCartToBeDeletedBR(_cartItems, cartItem.Id));
         _cartItems.Remove(cartItem);
     }
-
+    public CartItem GetCartItemByID(Guid id)
+    {
+        return CartItems.SingleOrDefault(x => x.ProductId == id);
+    }
 
     #endregion
 

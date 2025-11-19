@@ -1,5 +1,4 @@
 ﻿using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate;
-using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.OrederState;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -42,9 +41,8 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Context.Configurations
                    .HasForeignKey("OrderId")
                    .OnDelete(DeleteBehavior.Cascade);
 
-            builder.HasMany(o => o.Consistencies)
+            builder.HasMany(j => j.StateHistory)
                    .WithOne()
-                   .HasForeignKey("OrderId")
                    .OnDelete(DeleteBehavior.Cascade);
             builder.HasMany(o => o.StateHistory)
                 .WithOne()
