@@ -44,24 +44,17 @@ namespace MakFood.Kitchen.Infrastructure.Repositories
                     x.Price == price);
         }
 
-        public async Task<bool> ExistsBySubcategoryIdsAsync(List<Guid> subcategoryIds, CancellationToken ct)
+         public async Task<List<Product>> FilterAsync(string? name, Guid? categoryId, Guid? subcategoryId, CancellationToken ct)
         {
-            return await _context.Products
-                .AnyAsync(p => subcategoryIds.Contains(p.SubCategoryId), ct);
-        }
+            var query = _context.Products.AsNoTracking().AsQueryable();
 
-
-        public async Task<List<Product>> FilterAsync(string? name, Guid? categoryId, Guid? subcategoryId, CancellationToken ct)
-        {
-            var query = _context.Products.AsQueryable();
-
-            // فیلتر بر اساس نام محصول
+            // فیلتر بر اساس نام غذا
             if (!string.IsNullOrWhiteSpace(name))
-                query = query.Where(x => x.Name.Contains(name));
+                query = query.Where(p => p.Name.Contains(name));
 
             // فیلتر بر اساس زیر دسته
             if (subcategoryId.HasValue)
-                query = query.Where(x => x.SubCategoryId == subcategoryId.Value);
+                query = query.Where(p => p.SubCategoryId == subcategoryId.Value);
 
             // فیلتر بر اساس دسته‌بندی
             if (categoryId.HasValue)
@@ -69,14 +62,14 @@ namespace MakFood.Kitchen.Infrastructure.Repositories
                 var subcategoryIds = await _context.Categories
                     .Where(c => c.Id == categoryId.Value)
                     .SelectMany(c => c.Subcategories)
-                    .Select(x => x.Id)
+                    .Select(sc => sc.Id)
                     .ToListAsync(ct);
 
-                query = query.Where(x => subcategoryIds.Contains(x.SubCategoryId));
+                query = query.Where(p => subcategoryIds.Contains(p.SubCategoryId));
             }
 
-            // برگشت نتیجه نهایی
-            return await query.ToListAsync(ct);
+           
+            return await query .ToListAsync(ct);
         }
     }
 }

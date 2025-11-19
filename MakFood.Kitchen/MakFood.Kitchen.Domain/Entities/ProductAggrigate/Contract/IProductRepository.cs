@@ -1,4 +1,5 @@
-﻿namespace MakFood.Kitchen.Domain.Entities.ProductAggrigate.Contract
+﻿
+namespace MakFood.Kitchen.Domain.Entities.ProductAggrigate.Contract
 {
     public interface IProductRepository
     {
@@ -13,7 +14,6 @@
         Task<bool> IsExistByIdAsync(Guid productId);
         Task<bool> IsExistByIdNameThumbnailPathAsync(Guid productId,string productName,string productThumbnailPath);
         Task<bool> IsExistByIdNamePriceAsync(Guid productId, string productName, decimal price);
-        Task<bool> ExistsBySubcategoryIdsAsync(List<Guid> subcategoryIds, CancellationToken ct);
         Task<List<Product>> FilterAsync(string? name, Guid? categoryId, Guid? subcategoryId, CancellationToken ct);
 
     }

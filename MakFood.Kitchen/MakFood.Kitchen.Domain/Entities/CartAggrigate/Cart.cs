@@ -6,7 +6,7 @@ using MakFood.Kitchen.Domain.Entities.CartAggrigate;
 public class Cart : BaseEntity<Guid>
 {
     private List<CartItem> _cartItems = new List<CartItem>();
-    public List<CartItem> CartItems { get; set; } = new List<CartItem>();
+    public IReadOnlyCollection<CartItem> CartItems => _cartItems.AsReadOnly();
     public Cart(Guid cartId)
     {
         Id = cartId;
