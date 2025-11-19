@@ -1,7 +1,6 @@
 using FluentValidation;
 using FluentValidation;
 using MakFood.Kitchen.Application.Command.CancelOrder;
-using MakFood.Kitchen.Application.Command.CategoriesCommand.CreateCategory;
 using MakFood.Kitchen.Application.Query.Behavior;
 using MakFood.Kitchen.Application.Query.GetAllMiseOnPlaceOrderByDateRange;
 using MakFood.Kitchen.Application.Query.GetTotalSalesByDateRange;
@@ -50,7 +49,7 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddMediatR(cfg =>
 {
-    cfg.RegisterServicesFromAssembly(typeof(CreateCategoryCommandHandler).Assembly);
+    cfg.RegisterServicesFromAssembly(typeof(CancelOrderCommandHandler).Assembly);
 });
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
