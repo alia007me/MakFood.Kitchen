@@ -28,7 +28,7 @@ namespace MakFood.Kitchen.Application.Command.CategoriesCommand.CreateCategory
                      
              _categoryRepository.Add(category);
                         
-            await _unitOfWork.commit(ct);
+            await _unitOfWork.Commit(ct);
 
             return new CreateCategoryCommandResponse
             {

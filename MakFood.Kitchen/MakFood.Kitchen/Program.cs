@@ -1,21 +1,23 @@
 using FluentValidation;
+using FluentValidation;
 using MakFood.Kitchen.Application.Command.CancelOrder;
+using MakFood.Kitchen.Application.Command.CategoriesCommand.CreateCategory;
 using MakFood.Kitchen.Application.Query.Behavior;
 using MakFood.Kitchen.Application.Query.GetAllMiseOnPlaceOrderByDateRange;
 using MakFood.Kitchen.Application.Query.GetTotalSalesByDateRange;
+using MakFood.Kitchen.Domain.Entities.CategoryAggrigate.Contracts;
 using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.Contract;
+using MakFood.Kitchen.Domain.Entities.ProductAggrigate.Contract;
 using MakFood.Kitchen.Infrastructure.Persistence.Context;
 using MakFood.Kitchen.Infrastructure.Persistence.Context.Transactions;
+using MakFood.Kitchen.Infrastructure.Persistence.Context.Transactions;
 using MakFood.Kitchen.Infrastructure.Persistence.Repository;
+using MakFood.Kitchen.Infrastructure.Persistence.Repository;
+using MakFood.Kitchen.Infrastructure.Repositories;
 using MakFood.Kitchen.Infrastructure.Substructure.Settings;
 using MediatR;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using MakFood.Kitchen.Application.Command.CategoriesCommand.CreateCategory;
-using MakFood.Kitchen.Infrastructure.Persistence.Context.Transactions;
-using MakFood.Kitchen.Domain.Entities.CategoryAggrigate.Contracts;
-using MakFood.Kitchen.Infrastructure.Persistence.Repository;
-using FluentValidation;
 
 
 
@@ -53,6 +55,8 @@ builder.Services.AddMediatR(cfg =>
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<ICategoryRepository,CategoriesRepository>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddMediatR(cfg =>
 {
     cfg.RegisterServicesFromAssembly(typeof(GetAllMiseOnPlaceOrdersByDateRangeHandler).Assembly);

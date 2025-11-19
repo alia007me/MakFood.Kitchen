@@ -20,13 +20,13 @@ namespace MakFood.Kitchen.Application.Command.CategoriesCommand.UpdateCategory
         public async Task<UpdateCategoryCommandResponse> Handle(UpdateCategoryCommand request, CancellationToken ct)
         {
            
-            var category = await _categoryRepository.GetByIdAsync(request.Id, ct);
+            var category = await _categoryRepository.GetCategoryByIdAsync(request.Id, ct);
             if (category == null)
                 throw new EntityNotFoundException($"Category with Id '{request.Id}' not found.");
                    
             category.UpdateCategoryName(request.NewName);
                        
-            await _unitOfWork.commit(ct);
+            await _unitOfWork.Commit(ct);
 
             return new UpdateCategoryCommandResponse
             {

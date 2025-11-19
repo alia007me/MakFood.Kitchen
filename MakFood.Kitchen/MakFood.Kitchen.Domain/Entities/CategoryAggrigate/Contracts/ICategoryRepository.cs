@@ -8,12 +8,12 @@ namespace MakFood.Kitchen.Domain.Entities.CategoryAggrigate.Contracts
 {
     public interface ICategoryRepository
     {
-        Task<Category?> GetByIdAsync(Guid id, CancellationToken ct);
-        Task<List<Category>> GetAllAsync(CancellationToken ct);
+        Task<Category?> GetCategoryByIdAsync(Guid id, CancellationToken ct);
+        Task<List<Category>> GetAllCategoryAsync(CancellationToken ct);
         Task<bool> CheckIsExistByNameAsync(string name , CancellationToken ct);
         void Add(Category category);
         void Remove (Category category);
-        Task<Category?> GetBySubcategoryIdAsync(Guid subcategoryId, CancellationToken ct);
+        Task<Category?> GetSubcategoryByIdAsync(Guid subcategoryId, CancellationToken ct);
     }
 
 }

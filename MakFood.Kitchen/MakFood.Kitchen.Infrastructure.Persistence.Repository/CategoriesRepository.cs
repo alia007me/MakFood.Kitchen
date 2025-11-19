@@ -1,6 +1,5 @@
 ﻿using MakFood.Kitchen.Domain.Entities.CategoryAggrigate;
 using MakFood.Kitchen.Domain.Entities.CategoryAggrigate.Contracts;
-
 using MakFood.Kitchen.Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,7 +14,7 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Repository
             _context = context;
         }
 
-        public async Task<Category?> GetByIdAsync(Guid Id, CancellationToken ct)
+        public async Task<Category?> GetCategoryByIdAsync(Guid Id, CancellationToken ct)
         {
             return await _context.Categories
                  .Include(c => c.Subcategories)
@@ -27,13 +26,13 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Repository
         }
 
 
-        public async Task<List<Category>> GetAllAsync(CancellationToken ct)
+        public async Task<List<Category>> GetAllCategoryAsync(CancellationToken ct)
         {
             return await _context.Categories
                 .Include(c => c.Subcategories)
                 .ToListAsync(ct);
         }
-        public async Task<Category?> GetBySubcategoryIdAsync(Guid subcategoryId, CancellationToken ct)
+        public async Task<Category?> GetSubcategoryByIdAsync(Guid subcategoryId, CancellationToken ct)
         {
            return await _context.Categories
                 .Include(c => c.Subcategories) 
