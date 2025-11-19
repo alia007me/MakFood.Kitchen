@@ -12,22 +12,6 @@ namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate
         private List<OrderState> _stateHistory = new List<OrderState>();
         private List<Constituent> _constituents = new List<Constituent>();
 
-
-
-        //public Order(Guid customerId, Discount discountCode, Payment payment, List<Constituent> constituents)
-        //{
-        //    Id = Guid.NewGuid();
-
-        //    CustomerId = customerId;
-        //    DiscountCode = discountCode;
-        //    _constituents = constituents;
-        //    Price = CalculatePrice();
-        //    DiscountPrice = CalculateDiscountPrice(DiscountCode, Price);
-        //    Payable = CalculatePayable(Price, DiscountPrice);
-        //    Payment = payment;
-        //    _stateHistory.Add(new CreatedOrderState());
-
-        //}
         public Order(Guid customerId, Discount? discountCode, SinglePayment singlepayment, List<Constituent> constituents)
         {
             Id = Guid.NewGuid();

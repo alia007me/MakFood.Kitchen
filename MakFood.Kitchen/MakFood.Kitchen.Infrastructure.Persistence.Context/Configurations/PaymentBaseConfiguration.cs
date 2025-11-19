@@ -3,11 +3,10 @@ using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentAggri
 using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentAggrigate.PaymentBase;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System.Runtime.CompilerServices;
 
 namespace MakFood.Kitchen.Infrastructure.Persistence.Context.Configurations
 {
-    public class PaymentConfiguration : IEntityTypeConfiguration<Payment>
+    public class PaymentBaseConfiguration : IEntityTypeConfiguration<Payment>
     {
         public void Configure(EntityTypeBuilder<Payment> builder)
         {
@@ -16,52 +15,36 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Context.Configurations
             builder.Property(p => p.Id).ValueGeneratedNever();
 
             builder.Property(p => p.TotalAmount)
-                   .HasColumnType("decimal(18,2)")
-                   .IsRequired();
+                    .HasColumnType("decimal(18,2)")
+                    .IsRequired();
 
             builder.Property(p => p.ReminingAmount)
-                   .HasColumnType("decimal(18,2)")
-                   .IsRequired();
+                    .HasColumnType("decimal(18,2)")
+                    .IsRequired();
 
             builder.Property(p => p.OwnerPaymentMethod)
-                   .HasConversion<string>()
-                   .IsRequired();
+                    .HasConversion<string>()
+                    .IsRequired();
 
             builder.Property(p => p.OwnerAmount)
-                   .HasColumnType("decimal(18,2)")
-                   .IsRequired();
+                    .HasColumnType("decimal(18,2)")
+                    .IsRequired();
 
             builder.Property(p => p.OwnerPaidAmount)
-                   .HasColumnType("decimal(18,2)")
-                   .IsRequired();
+                    .HasColumnType("decimal(18,2)")
+                    .IsRequired();
 
             builder.Property(p => p.OwnerPaidTime)
-                   .IsRequired(false);
+                    .IsRequired(false);
 
             builder.Property(p => p.PaymentStatus)
-                   .IsRequired();
+                    .IsRequired();
 
             builder.Property(p => p.PaymentType)
-                   .IsRequired();
+                    .IsRequired();
 
-
-
-            builder.Property<decimal?>("PartnerAmount")
-                   .HasColumnType("decimal(18,2)")
-                   .IsRequired(false);
-
-            builder.Property<Guid?>("PartnerId")
-                   .IsRequired(false);
-
-            builder.Property<decimal?>("PartnerPaidAmount")
-                   .HasColumnType("decimal(18,2)")
-                   .IsRequired(false);
-
-            builder.Property<PaymentMathods?>("PartnerPaymentMethod")
-                   .IsRequired(false);
-
-            builder.Property<bool?>("PartnerApproved")
-                   .IsRequired(false);
+            builder.Property(p => p.OwnerId)
+                    .IsRequired();
 
 
             builder.HasDiscriminator<string>("PaymentDiscriminator")
@@ -72,6 +55,7 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Context.Configurations
                 .WithOne()
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasForeignKey("PaymentId");
+
         }
     }
 }

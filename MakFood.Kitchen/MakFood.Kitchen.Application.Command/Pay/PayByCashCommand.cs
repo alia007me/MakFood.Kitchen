@@ -48,7 +48,6 @@ namespace MakFood.Kitchen.Application.Command.Pay
                 if (sharedPayment.PartnerApproved == false)
                     throw new PartnerRejecteTheOrderException();//اگر پرداخت رد بشه چه بلایی سر اوردر میاد رو باید بعدا اوکی کرد
 
-                sharedPayment.PartnerApproved = true;
                 await _unitOfWork.Commit(ct);
 
             }
