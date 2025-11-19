@@ -1,6 +1,5 @@
 ﻿using MakFood.Kitchen.Domain.BussinesRules;
 using MakFood.Kitchen.Domain.Entities.Base;
-using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.OrederState;
 using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentAggrigate.Enum;
 using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentAggrigate.State;
 
@@ -10,17 +9,18 @@ namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentA
     {
         protected Payment() { } //ef
         protected List<PaymentState> _PaymentHistory = new List<PaymentState>();
-        protected Payment(decimal totalAmount, PaymentMathods ownerPaymentMethod)
+        protected Payment(decimal totalAmount, PaymentMathods ownerPaymentMethod, Guid ownerId)
         {
             Id = Guid.NewGuid();
 
             TotalAmount = totalAmount;
             ReminingAmount = totalAmount;
-            OwnerAmount = totalAmount;
-            OwnerPaymentMethod = ownerPaymentMethod;  
+            OwnerPaymentMethod = ownerPaymentMethod;
+            OwnerId = ownerId;
             OwnerPaidAmount = Decimal.Zero;
             _PaymentHistory.Add(new CreatedPaymentState());
         }
+        public Guid OwnerId { get;protected init; }
         public decimal TotalAmount { get; protected set; }
         public PaymentState CurrentState => _PaymentHistory.OrderByDescending(c => c.CreationDateTime).First();
         public decimal ReminingAmount { get; protected set; }
@@ -62,6 +62,8 @@ namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentA
             OwnerPaidAmount += amount;
         }
         #endregion
-
+        #region abstractMethods
+        public abstract bool checkUser(Guid id);
+        #endregion
     }
 }

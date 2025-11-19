@@ -6,7 +6,7 @@ namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentA
     public class SinglePayment : Payment
     {
         private SinglePayment() { } //ef
-        public SinglePayment(decimal totalAmount, PaymentMathods ownerPaymentMethod) : base(totalAmount, ownerPaymentMethod)
+        public SinglePayment(decimal totalAmount, PaymentMathods ownerPaymentMethod, Guid ownerId) : base(totalAmount, ownerPaymentMethod, ownerId)
         {
             TotalAmount = totalAmount;
             ReminingAmount = totalAmount;
@@ -14,5 +14,11 @@ namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentA
             OwnerAmount = totalAmount;
             PaymentType = PaymentType.Single;
         }
+        #region overRides
+        public override bool checkUser(Guid customerId)
+        {
+            return (this.OwnerId == customerId) ? true : false;
+        }
+        #endregion
     }
 }

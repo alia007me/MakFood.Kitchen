@@ -12,6 +12,8 @@ using SinglePaymentState = MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderA
 using MakFood.Kitchen.Infrastructure.Persistence.Context.Transactions;
 using MediatR;
 using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentAggrigate.PaymentBase;
+using PaymentTypes = MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentAggrigate;
+using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentAggrigate;
 
 namespace MakFood.Kitchen.Application.Command.AddOrder.SinglePayment
 {
@@ -45,8 +47,8 @@ namespace MakFood.Kitchen.Application.Command.AddOrder.SinglePayment
             {
                 Constituents.Add(new Constituent(await _productRepository.GetProductById(Items[i].ProductId, ct), Items[i]));
             }
-            
-            //cart.RemoveAllItems();
+
+            cart.RemoveAllItems();
 
             // دریافت کد تخفیف
             var Discount = await _discountCodeRepository.GetDiscountByTitleTracked(command.DiscountCodeTitle);
@@ -71,7 +73,7 @@ namespace MakFood.Kitchen.Application.Command.AddOrder.SinglePayment
             };
         }
 
-        private Order CreateOrder(Guid customerId, Discount? discountCode, Payment payment, List<Constituent> constituents)
+        private Order CreateOrder(Guid customerId, Discount? discountCode, PaymentTypes.SinglePayment payment, List<Constituent> constituents)
         {
             Order order;
             if (discountCode != null)
@@ -80,14 +82,16 @@ namespace MakFood.Kitchen.Application.Command.AddOrder.SinglePayment
             }
             else
             {
-                order = new Order(customerId, payment, constituents);
+                order = new Order(customerId,null, payment, constituents);
             }
             return order;
         }
         private SinglePaymentState.SinglePayment CreatePayment(PaymentType paymentType, PaymentMathods ownerPaymentMethod, Discount? discount, decimal totalAmount, Guid cartId)
         {
             var payable = DiscountCalculatorHelper.AmountCalculator(totalAmount, discount,cartId);
-            SinglePaymentState.SinglePayment payment = new SinglePaymentState.SinglePayment(payable,ownerPaymentMethod);
+
+            var payment = new PaymentTypes.SinglePayment(payable,ownerPaymentMethod,cartId);
+
             return payment;
         }
     }

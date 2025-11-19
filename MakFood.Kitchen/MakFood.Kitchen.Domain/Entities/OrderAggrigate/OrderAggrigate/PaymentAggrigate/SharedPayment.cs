@@ -1,5 +1,4 @@
 ﻿using MakFood.Kitchen.Domain.BussinesRules;
-using MakFood.Kitchen.Domain.BussinesRules.Exceptions;
 using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentAggrigate.Enum;
 using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentAggrigate.PaymentBase;
 
@@ -10,14 +9,12 @@ namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentA
 
         private SharedPayment() { }//ef
         public SharedPayment(decimal totalAmount, PaymentMathods ownerPaymentMethod,
-            Guid partnerId)
-            : base(totalAmount, ownerPaymentMethod)
+            Guid ownerId, Guid partnerId)
+            : base(totalAmount, ownerPaymentMethod , ownerId)
         {
             TotalAmount = totalAmount;
             ReminingAmount = totalAmount;
-            OwnerPaymentMethod = ownerPaymentMethod;
             OwnerAmount = calculatePersonAmount(totalAmount);
-            OwnerPaidAmount = Decimal.Zero;
 
             PartnerId = partnerId;
             PartnerAmount = calculatePersonAmount(totalAmount);
@@ -32,7 +29,7 @@ namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentA
         public Guid PartnerId { get; private set; }
         public decimal PartnerPaidAmount { get; private set; }
         public PaymentMathods? PartnerPaymentMethod { get; private set; }
-        public bool? PartnerApproved { get; private set; }
+        public bool? PartnerApproved { get; set; }
 
 
         #region Behaviors
@@ -59,6 +56,12 @@ namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentA
             Check(new PayAmountMustBePositiveBR(amount));
             Check(new PaymentAmountMustNotExceedRemainingAmountBR(PartnerAmount, PartnerPaidAmount, amount));
             PartnerPaidAmount += amount;
+        }
+        #endregion
+        #region overRides
+        public override bool checkUser(Guid customerId)
+        {
+            return (this.PartnerId == customerId || this.OwnerId == customerId) ? true : false;
         }
         #endregion
     }

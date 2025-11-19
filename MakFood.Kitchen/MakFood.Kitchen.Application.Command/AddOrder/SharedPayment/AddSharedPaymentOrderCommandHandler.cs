@@ -7,11 +7,10 @@ using MakFood.Kitchen.Domain.Entities.OrderAggrigate;
 using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate;
 using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.Contract;
 using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentAggrigate.Enum;
-using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentAggrigate.PaymentBase;
 using MakFood.Kitchen.Domain.Entities.ProductAggrigate.Contract;
 using MakFood.Kitchen.Infrastructure.Persistence.Context.Transactions;
 using MediatR;
-using SharedPaymentState = MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentAggrigate;
+using PaymentStates = MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentAggrigate;
 
 namespace MakFood.Kitchen.Application.Command.AddOrder.SharedPayment
 {
@@ -37,7 +36,7 @@ namespace MakFood.Kitchen.Application.Command.AddOrder.SharedPayment
             var cart = await _cartRepository.GetCartById(command.CartId, ct);
 
             //برسی وجود پارتنر
-            var partner = await _cartRepository.GetCartById(command.PartnerId, ct,false);
+            var partner = await _cartRepository.GetCartById(command.PartnerId, ct, false);
             if (partner is null) throw new PartnerNotFoundException();
 
             //ایجاد محتویات سفارش از آیتم های سبد خرید
@@ -45,12 +44,11 @@ namespace MakFood.Kitchen.Application.Command.AddOrder.SharedPayment
             var Items = cart.CartItems.ToList();
             var Constituents = new List<Constituent>();
 
-            for (int i = 0; i < Items.Count(); i++)
-            {
+            for (int i = 0; i < Items.Count(); i++) {
                 Constituents.Add(new Constituent(await _productRepository.GetProductById(Items[i].ProductId, ct), Items[i]));
             }
 
-            cart.RemoveAllItems();
+            //cart.RemoveAllItems();
 
 
             // دریافت کد تخفیف
@@ -74,26 +72,25 @@ namespace MakFood.Kitchen.Application.Command.AddOrder.SharedPayment
                 OrderId = order.Id
             };
         }
-
-        private Order CreateOrder(Guid customerId, Discount? discountCode, Payment payment, List<Constituent> constituents)
+        #region methodes
+        private Order CreateOrder(Guid customerId, Discount? discountCode, PaymentStates.SharedPayment payment, List<Constituent> constituents)
         {
             Order order;
-            if (discountCode != null)
-            {
+            if (discountCode != null) {
                 order = new Order(customerId, discountCode, payment, constituents);
             }
-            else
-            {
-                order = new Order(customerId, payment, constituents);
+            else {
+                order = new Order(customerId, null, payment, constituents);
             }
             return order;
         }
-        private SharedPaymentState.SharedPayment CreatePayment(PaymentType paymentType, PaymentMathods ownerPaymentMethod, Discount? discount, decimal totalAmount, Guid cartId, Guid partnerId)
+        private PaymentStates.SharedPayment CreatePayment(PaymentType paymentType, PaymentMathods ownerPaymentMethod, Discount? discount, decimal totalAmount, Guid cartId/*this is owner id*/, Guid partnerId)
         {
             var payable = DiscountCalculatorHelper.AmountCalculator(totalAmount, discount, cartId);
-            SharedPaymentState.SharedPayment payment = new SharedPaymentState.SharedPayment(payable, ownerPaymentMethod, partnerId);
+            PaymentStates.SharedPayment payment = new PaymentStates.SharedPayment(payable, ownerPaymentMethod, cartId, partnerId);
             return payment;
         }
+        #endregion
     }
 }
 

@@ -1,6 +1,7 @@
 ﻿using MakFood.Kitchen.Application.Command.AddOrder.SharedPayment;
 using MakFood.Kitchen.Application.Command.AddOrder.SinglePayment;
 using MakFood.Kitchen.Application.Command.CancelOrder;
+using MakFood.Kitchen.Application.Command.Pay;
 using MakFood.Kitchen.Application.Query.GetAllMiseOnPlaceOrdersByDateRange;
 using MakFood.Kitchen.Application.Query.GetProductOrderCountsByDateRange;
 using MakFood.Kitchen.Application.Query.GetTotalSalesByDateRange;
@@ -75,6 +76,14 @@ namespace MakFood.Kitchen.Controllers
             var result = await _mediator.Send(command);
 
             return Ok(result);
+        }
+
+        [HttpPatch]
+        public async Task<IActionResult> PayOrderByCash([FromBody] PayByCashCommand command)
+        {
+            var result = await _mediator.Send(command);
+            return Ok(result);
+
         }
 
 
