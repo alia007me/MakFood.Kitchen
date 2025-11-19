@@ -3,7 +3,7 @@ using MakFood.Kitchen.Domain.Entities.CategoryAggrigate.Contracts;
 using MakFood.Kitchen.Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 
-namespace MakFood.Kitchen.Infrastructure.Persistence.Repository
+namespace MakFood.Kitchen.Infrastructure.Persistence.Repository.Repository
 {
     public class CategoriesRepository : ICategoryRepository
     {

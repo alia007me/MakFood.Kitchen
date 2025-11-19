@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 
 
-namespace MakFood.Kitchen.Infrastructure.Repositories
+namespace MakFood.Kitchen.Infrastructure.Persistence.Repository.Repository
 {
 
     public class ProductRepository : IProductRepository
@@ -44,7 +44,7 @@ namespace MakFood.Kitchen.Infrastructure.Repositories
                     x.Price == price);
         }
 
-        public async Task<IEnumerable<GetFilteredProductsReadModel>> FilterAsync(string? name, Guid? categoryId, Guid? subcategoryId, CancellationToken ct)
+        public async Task<IEnumerable<IProductRepository.GetFilteredProductsReadModel>> FilterAsync(string? name, Guid? categoryId, Guid? subcategoryId, CancellationToken ct)
         {
             var query = _context.Products.AsNoTracking().AsQueryable();
 
@@ -69,7 +69,7 @@ namespace MakFood.Kitchen.Infrastructure.Repositories
             }
 
 
-            return await query.Select(x => new GetFilteredProductsReadModel
+            return await query.Select(x => new IProductRepository.GetFilteredProductsReadModel
             {
                 ProductId = x.Id,
                 ProductName = x.Name,

@@ -1,8 +1,8 @@
-﻿using MakFood.Kitchen.Application.Command.UpdateCart;
+﻿using MakFood.Kitchen.Application.Command.AddItemToCart;
+using MakFood.Kitchen.Application.Command.RemoveItemFromCart;
 using MakFood.Kitchen.Application.Query.GetCart;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace MakFood.Kitchen.Controllers
 {
