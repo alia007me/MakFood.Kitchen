@@ -11,6 +11,6 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Context.UnitOfWorks
         /// <summary>
         /// متد برای سیو تغیرات در دیتابیس
         /// </summary>
-        Task<int> SaveChangesAsync(CancellationToken cancellationToken);
+        Task<int> Commit(CancellationToken cancellationToken);
     }
 }

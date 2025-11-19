@@ -1,5 +1,6 @@
 ﻿using MakFood.Kitchen.Application.Command.AddProduct;
 using MakFood.Kitchen.Application.Command.CommandBases;
+using MakFood.Kitchen.Application.Command.CommandBases.Extensions;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,7 @@ namespace MakFood.Kitchen.Application.Command.RemoveProduct
 
         public override void Validate()
         {
-            new RemoveProductCommandValidation().Validate(this);
+            new RemoveProductCommandValidation().Validate(this).ThrowIfNeeded();
         }
     }
 }

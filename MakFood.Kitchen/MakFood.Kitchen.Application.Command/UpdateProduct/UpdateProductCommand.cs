@@ -1,5 +1,6 @@
 ﻿using MakFood.Kitchen.Application.Command.AddProduct;
 using MakFood.Kitchen.Application.Command.CommandBases;
+using MakFood.Kitchen.Application.Command.CommandBases.Extensions;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -22,7 +23,7 @@ namespace MakFood.Kitchen.Application.Command.UpdateProduct
         public uint QuantityToIncrease { get; set; }
         public override void Validate()
         {
-            new UpdateProductCommandValidation().Validate(this);
+            new UpdateProductCommandValidation().Validate(this).ThrowIfNeeded();
         }
     }
 

@@ -19,20 +19,20 @@ namespace MakFood.Kitchen.Controller
         [HttpPost("Kitchen/{CastomerId}/Product/AddProduct")]
         public async Task<IActionResult> AddProduct( AddProductCommand cammand)
         {
-            var w = await _mediator.Send(cammand);
-            return Ok(w);
+            var cammands= await _mediator.Send(cammand);
+            return Ok(cammands);
         }
         [HttpDelete("Kitchen/{CastomerId}/Product/RemoveProduct")]
         public async Task<IActionResult> RemoveProduct(RemoveProductCommand command )
         {
-            var w = await _mediator.Send(command);
-            return Ok(w);
+            var cammands = await _mediator.Send(command);
+            return Ok(cammands);
         }
-        [HttpPatch("Kitchen/{CastomerId}/Product/UpdateProduct")]
+        [HttpPut("Kitchen/{CastomerId}/Product/UpdateProduct")]
         public async Task<IActionResult> UpdateProduct(UpdateProductCommand command)
         {
-            var w = await _mediator.Send(command);
-            return Ok(w);
+            var cammands = await _mediator.Send(command);
+            return Ok(cammands);
         }
     }
 }

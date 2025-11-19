@@ -8,14 +8,14 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Context.UnitOfWorks
 {
     public class UnitOfWork : IUnitOfWork
     {
-        public readonly ApplicationDbContext _Context;
+        public readonly ApplicationDbContext _context;
         public UnitOfWork(ApplicationDbContext context)
         {
-            _Context = context;
+            _context = context;
         }
-        public async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
+        public async Task<int> Commit(CancellationToken cancellationToken)
         {
-           return await _Context.SaveChangesAsync(cancellationToken);
+           return await _context.SaveChangesAsync(cancellationToken);
         }
     }
 }

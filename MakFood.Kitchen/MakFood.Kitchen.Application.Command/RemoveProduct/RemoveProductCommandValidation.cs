@@ -7,7 +7,8 @@ namespace MakFood.Kitchen.Application.Command.RemoveProduct
         public RemoveProductCommandValidation()
         {
             RuleFor(x => x.ProductId).NotEmpty()
-           .WithMessage("The Name is Not Empty");
+           .WithMessage("The ProductId is Not Empty");
         }
+
     }
 }

@@ -1,10 +1,11 @@
 ﻿using MakFood.Kitchen.Application.Command.CommandBases;
+using MakFood.Kitchen.Application.Command.CommandBases.Extensions;
+using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MediatR;
 
 namespace MakFood.Kitchen.Application.Command.AddProduct
 {
@@ -19,7 +20,7 @@ namespace MakFood.Kitchen.Application.Command.AddProduct
 
         public override void Validate()
         {
-             new AddProductCommandValidation().Validate(this);
+            new AddProductCommandValidation().Validate(this).ThrowIfNeeded();
         }
     }
 
