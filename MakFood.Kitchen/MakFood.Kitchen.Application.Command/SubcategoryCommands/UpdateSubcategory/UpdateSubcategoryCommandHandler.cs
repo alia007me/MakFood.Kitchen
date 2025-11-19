@@ -22,7 +22,7 @@ namespace MakFood.Kitchen.Application.Command.SubcategoryCommands.UpdateSubcateg
 
             public async Task<UpdateSubcategoryCommandResponse> Handle(UpdateSubcategoryCommand request, CancellationToken ct)
             {
-                var category = await _categoryRepository.GetBySubcategoryIdAsync(request.Id, ct);
+                var category = await _categoryRepository.GetSubcategoryByIdAsync(request.Id, ct);
 
                 if (category == null)
                     throw new EntityNotFoundException($"category with Id '{request.Id}' not found.");
@@ -34,7 +34,7 @@ namespace MakFood.Kitchen.Application.Command.SubcategoryCommands.UpdateSubcateg
                 
                 subcategory.updateSubcategoryName(request.NewName);
                
-                await _unitOfWork.commit(ct);
+                await _unitOfWork.Commit(ct);
 
                 return new UpdateSubcategoryCommandResponse
                 {
