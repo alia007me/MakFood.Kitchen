@@ -31,3 +31,4 @@ namespace MakFood.Kitchen.Application.Command.AddDiscount
 
         }
     }
+}

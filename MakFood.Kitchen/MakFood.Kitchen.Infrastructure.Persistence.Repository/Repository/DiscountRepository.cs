@@ -1,5 +1,6 @@
 ﻿using MakFood.Kitchen.Domain.Entities.DiscountAggrigate;
 using MakFood.Kitchen.Domain.Entities.DiscountAggrigate.Contract;
+using MakFood.Kitchen.Domain.Entities.DiscountAggrigate.DiscountPolicyAggrigate;
 using MakFood.Kitchen.Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -28,6 +29,11 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Repository.Repository
         {
             var Discounts = await _context.Discounts.Include(w=>w.DiscountPolicy).Where(w => w.Title == Title).ToListAsync(cancellationToken);
             return Discounts;
+        }
+
+        public async Task<List<DiscountPolicy>> GetDiscountPolicies(DiscountPolicy discountPolicy, CancellationToken cancellationToken)
+        {
+            return await _context.Discounts.Include(w=>w.DiscountPolicy).Select(w=>w.DiscountPolicy).ToListAsync(cancellationToken);
         }
     }
 }

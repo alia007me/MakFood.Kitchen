@@ -1,5 +1,6 @@
 ﻿using MakFood.Kitchen.Application.Command.Base;
 using MakFood.Kitchen.Domain.Entities.DiscountAggrigate.DiscountPolicyAggrigate;
+using MakFood.Kitchen.Domain.Entities.DiscountAggrigate.Enum;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -13,11 +14,12 @@ namespace MakFood.Kitchen.Application.Command.AddDiscount
     {
 
         public string Title { get; set; }
-        public decimal Percent { get; set; }
+        public IEnumerable<Guid> CustomerIds { get; set; }
+        public uint Percent { get; set; }
         public DateOnly ExpiryDate { get; set; }
         public decimal MaximumBalance { get; set; }
         public decimal MinimumBalance { get; set; }
-        public DiscountPolicy DiscountPolicy { get; set; }
+        public DiscountPolicyType DiscountPolicy { get; set; }
         public override void Validate()
         {
             new CreateDiscountCommandValidator().Validate(this).ThrowIfNeeded();
