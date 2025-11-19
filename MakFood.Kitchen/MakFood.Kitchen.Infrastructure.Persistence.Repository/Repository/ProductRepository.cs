@@ -44,7 +44,7 @@ namespace MakFood.Kitchen.Infrastructure.Repositories
                     x.Price == price);
         }
 
-        public async Task<List<Product>> FilterAsync(string? name, Guid? categoryId, Guid? subcategoryId, CancellationToken ct)
+        public async Task<IEnumerable<GetFilteredProductsReadModel>> FilterAsync(string? name, Guid? categoryId, Guid? subcategoryId, CancellationToken ct)
         {
             var query = _context.Products.AsNoTracking().AsQueryable();
 
@@ -69,7 +69,15 @@ namespace MakFood.Kitchen.Infrastructure.Repositories
             }
 
 
-            return await query.ToListAsync(ct);
+            return await query.Select(x => new GetFilteredProductsReadModel
+            {
+                ProductId = x.Id,
+                ProductName = x.Name,
+                Price = x.Price,
+                SubCategoryName = x.SubCategoryName
+
+            }).ToListAsync(ct);
+
         }
         public async Task<Product> GetProduct(Guid prodactId, CancellationToken ct, bool needToTrack = true)
         {

@@ -14,7 +14,7 @@ namespace MakFood.Kitchen.Domain.Entities.ProductAggrigate.Contract
         Task<bool> IsExistByIdAsync(Guid productId);
         Task<bool> IsExistByIdNameThumbnailPathAsync(Guid productId,string productName,string productThumbnailPath);
         Task<bool> IsExistByIdNamePriceAsync(Guid productId, string productName, decimal price);
-        Task<List<Product>> FilterAsync(string? name, Guid? categoryId, Guid? subcategoryId, CancellationToken ct);
+        Task<IEnumerable<GetFilteredProductsReadModel>> FilterAsync(string? name, Guid? categoryId, Guid? subcategoryId, CancellationToken ct)
 
         Task<Product> GetProduct(Guid prodactId, CancellationToken ct, bool needToTrack = true);
     }
