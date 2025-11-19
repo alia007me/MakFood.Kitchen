@@ -15,4 +15,6 @@
         Task<bool> IsExistByIdNamePriceAsync(Guid productId, string productName, decimal price, CancellationToken ct);
         Task<Product?> GetProductByIdAsync(Guid productId, CancellationToken ct);
     }
+        public Task<Product> GetProduct(Guid prodactId, CancellationToken ct, bool needToTrack = true);
+    }
 }
