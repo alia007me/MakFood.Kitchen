@@ -8,6 +8,6 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Context.Transactions
 {
     public interface IUnitOfWork
     {
-        public Task<int> commit(CancellationToken ct);
+        public Task<int> Commit(CancellationToken ct);
     }
 }

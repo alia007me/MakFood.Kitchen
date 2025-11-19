@@ -9,10 +9,10 @@ namespace MakFood.Kitchen.Domain.BussinesRules
         private readonly uint _avaliblequantity;
         private readonly uint _decreaseAmount;
 
-        public QuantityCannotBeDecreasedBeyondAvailableBR(uint avaliblequantity, uint decreaseAmount)
+        public QuantityCannotBeDecreasedBeyondAvailableBR(uint avaliblequantity)
         {
             _avaliblequantity = avaliblequantity;
-            _decreaseAmount = decreaseAmount;
+            _decreaseAmount = 1;
         }
 
         public bool Check()

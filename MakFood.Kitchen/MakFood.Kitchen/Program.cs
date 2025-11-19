@@ -1,16 +1,15 @@
 using FluentValidation;
-using MakFood.Kitchen.Application.Command.CancelOrder;
-using MakFood.Kitchen.Application.Query.Behavior;
-using MakFood.Kitchen.Application.Query.GetAllMiseOnPlaceOrderByDateRange;
 using MakFood.Kitchen.Application.Query.GetTotalSalesByDateRange;
-using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.Contract;
 using MakFood.Kitchen.Infrastructure.Persistence.Context;
-using MakFood.Kitchen.Infrastructure.Persistence.Context.Transactions;
-using MakFood.Kitchen.Infrastructure.Persistence.Repository;
 using MakFood.Kitchen.Infrastructure.Substructure.Settings;
 using MediatR;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using MakFood.Kitchen.Infrastructure.DI;
+using MakFood.Kitchen.Application.Command.CancelOrder;
+using MakFood.Kitchen.Application.Query.GetAllMiseOnPlaceOrdersByDateRange;
+using MakFood.Kitchen.Infrastructure.Substructure.Behavior;
+
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,7 +19,7 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionStringConfiguration = builder.Configuration.GetSection(nameof(ConnectionStrings));
 
 builder.Services.Configure<ConnectionStrings>(connectionStringConfiguration);
-
+builder.Services.ConfigureDI();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     var connectionString = connectionStringConfiguration.Get<ConnectionStrings>();
@@ -35,15 +34,10 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 }
 );
 
+
+
 builder.Services.AddControllers();
-
 builder.Services.AddSwaggerGen();
-
-builder.Services.AddMediatR(cfg =>
-{
-    cfg.RegisterServicesFromAssembly(typeof(GetAllMiseOnPlaceOrdersByDateRangeHandler).Assembly);
-    cfg.RegisterServicesFromAssembly(typeof(CancelOrderCommandHandler).Assembly);
-});
 
 builder.Services.AddValidatorsFromAssemblies(new[]
 {
@@ -55,12 +49,14 @@ builder.Services.AddValidatorsFromAssemblies(new[]
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
 
-builder.Services.AddScoped<IOrderRepository, OrderRepository>();
-builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-
-
 var app = builder.Build();
-
+if (app.Environment.IsDevelopment()) {
+    app.UseSwagger();
+    app.UseSwaggerUI(options =>
+    {
+        options.EnableTryItOutByDefault();
+    });
+}
 // Configure the HTTP request pipeline.
 
 app.UseAuthorization();
