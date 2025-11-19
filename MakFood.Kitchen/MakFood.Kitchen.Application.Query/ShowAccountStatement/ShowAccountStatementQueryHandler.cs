@@ -9,7 +9,7 @@ using MediatR;
 
 namespace MakFood.Kitchen.Application.Query.ShowAccountStatement
 {
-    public class ShowAccountStatementQueryHandler : IRequestHandler<ShowAccountStatementQuery , ShowAccountStatementQueryResponce>
+    public class ShowAccountStatementQueryHandler : IRequestHandler<ShowAccountStatementQuery , ShowAccountStatementQueryResponse>
     {
         private readonly IOrderRepository _orderRepository;
         public ShowAccountStatementQueryHandler(IOrderRepository orderRepository)
@@ -18,10 +18,10 @@ namespace MakFood.Kitchen.Application.Query.ShowAccountStatement
 
         }
 
-        public async Task<ShowAccountStatementQueryResponce> Handle(ShowAccountStatementQuery request, CancellationToken cancellationToken)
+        public async Task<ShowAccountStatementQueryResponse> Handle(ShowAccountStatementQuery request, CancellationToken cancellationToken)
         {
             var orders = await _orderRepository.GetOrderByCustomerIdAsyncs(request.CustomerId, request.StartDateTime, request.EndDateTime, cancellationToken);
-            var orderItems = orders.Select(w=> new ShowAccountStatementQueryResponce.ShowAccountStatementItem
+            var orderItems = orders.Select(w=> new ShowAccountStatementQueryResponse.ShowAccountStatementItem
             {
                 DiscountCode = w.DiscountCode,
                 DiscountPrice = w.DiscountPrice,
@@ -29,7 +29,7 @@ namespace MakFood.Kitchen.Application.Query.ShowAccountStatement
                 Payment = w.Payment,
                 Price = w.Price
             }).ToList();
-            return new ShowAccountStatementQueryResponce(orderItems);
+            return new ShowAccountStatementQueryResponse(orderItems);
         }
     }
 }

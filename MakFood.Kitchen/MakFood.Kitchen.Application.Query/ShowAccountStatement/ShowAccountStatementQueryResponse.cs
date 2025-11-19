@@ -3,11 +3,11 @@ using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentAggri
 
 namespace MakFood.Kitchen.Application.Query.ShowAccountStatement
 {
-    public class ShowAccountStatementQueryResponce
+    public class ShowAccountStatementQueryResponse
     {
         public List<ShowAccountStatementItem> ShowAccountStatementItems { get; set; }
 
-        public ShowAccountStatementQueryResponce(List<ShowAccountStatementItem> showAccountStatementItems)
+        public ShowAccountStatementQueryResponse(List<ShowAccountStatementItem> showAccountStatementItems)
         {
             ShowAccountStatementItems = showAccountStatementItems;
         }

@@ -8,7 +8,7 @@ using MediatR;
 
 namespace MakFood.Kitchen.Application.Query.ShowAccount
 {
-    public class ShowAccountStatementQuery : QueryBase , IRequest<ShowAccountStatementQueryResponce>
+    public class ShowAccountStatementQuery : QueryBase , IRequest<ShowAccountStatementQueryResponse>
     {
         public Guid CustomerId { get; set; }
         public DateTime StartDateTime { get; set; }
