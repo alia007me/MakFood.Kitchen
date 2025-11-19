@@ -6,19 +6,20 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using static MakFood.Kitchen.Domain.Entities.ProductAggrigate.Contract.IProductRepository;
 
 
 
-namespace MakFood.Kitchen.Infrastructure.Repositories
+namespace MakFood.Kitchen.Infrastructure.Persistence.Repository.Repository
 {
- 
+
     public class ProductRepository : IProductRepository
     {
         private readonly ApplicationDbContext _context;
         public ProductRepository(ApplicationDbContext context)
         {
             _context = context;
-            
+
         }
         public async Task<bool> IsExistByIdAsync(Guid productId)
         {
@@ -44,7 +45,7 @@ namespace MakFood.Kitchen.Infrastructure.Repositories
                     x.Price == price);
         }
 
-         public async Task<List<Product>> FilterAsync(string? name, Guid? categoryId, Guid? subcategoryId, CancellationToken ct)
+        public async Task<IEnumerable<GetFilteredProductsReadModel>> FilterAsync(string? name, Guid? categoryId, Guid? subcategoryId, CancellationToken ct)
         {
             var query = _context.Products.AsNoTracking().AsQueryable();
 
@@ -68,8 +69,15 @@ namespace MakFood.Kitchen.Infrastructure.Repositories
                 query = query.Where(p => subcategoryIds.Contains(p.SubCategoryId));
             }
 
-           
-            return await query .ToListAsync(ct);
+
+            return await query.Select(x => new GetFilteredProductsReadModel
+            {
+                ProductId = x.Id,
+                ProductName = x.Name,
+                Price = x.Price,
+                SubCategoryName = x.SubCategoryName
+
+            }).ToListAsync(ct);
          }
 
         public async Task<bool> HasProductsInSubcategoriesAsync(Guid subcategoryId, CancellationToken ct)

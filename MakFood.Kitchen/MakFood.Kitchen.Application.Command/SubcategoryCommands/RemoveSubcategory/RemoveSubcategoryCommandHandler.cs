@@ -1,4 +1,5 @@
 ﻿using MakFood.Kitchen.Domain.BussinesRules.Exceptions;
+using MakFood.Kitchen.Domain.Entities.CategoryAggrigate;
 using MakFood.Kitchen.Domain.Entities.CategoryAggrigate.Contracts;
 using MakFood.Kitchen.Domain.Entities.ProductAggrigate.Contract;
 using MakFood.Kitchen.Infrastructure.Persistence.Context.Transactions;
@@ -13,32 +14,43 @@ namespace MakFood.Kitchen.Application.Command.SubcategoryCommands.RemoveSubcateg
         private readonly IUnitOfWork _unitOfWork;
         private readonly IProductRepository _productRepository;
 
-        public RemoveSubcategoryCommandHandler(IUnitOfWork unitOfWork,IProductRepository productRepository,ICategoryRepository categoryRepository)
+        public RemoveSubcategoryCommandHandler(IUnitOfWork unitOfWork, IProductRepository productRepository, ICategoryRepository categoryRepository)
         {
             _productRepository = productRepository;
-            _categoryRepository = categoryRepository;   
+            _categoryRepository = categoryRepository;
             _unitOfWork = unitOfWork;
         }
 
         public async Task<RemoveSubcategoryCommandResponse> Handle(RemoveSubcategoryCommand request, CancellationToken ct)
         {
+            var subcategory = await _categoryRepository.GetSubcategoryByIdAsync(request.SubCategoryId, ct);
 
-            var subcategory = await _categoryRepository.GetSubcategoryByIdAsync(request.Id ,ct  );
-           
-            if (subcategory == null)
-                throw new CategoryNotFoundException($"Subcategory with Id '{request.Id}' not found.");
-                       
-            bool hasProducts = await _productRepository.HasProductsInSubcategoriesAsync(subcategory.Id, ct);
+            EnsureSubcategoryExists(subcategory, request.SubCategoryId);
 
-            subcategory.CheckCanBeRemoved(hasProducts);
+            await CheckAndApplyRemovalRules(subcategory!, ct);
 
-            _categoryRepository.RemoveSubcategory(subcategory);
+            var category = await _categoryRepository.GetCategoryBySubcategoryId(request.SubCategoryId,ct);
+
+            category!.RemoveSubcategory(request.SubCategoryId);
+
             await _unitOfWork.Commit(ct);
 
             return new RemoveSubcategoryCommandResponse
             {
-                Id = subcategory.Id
+                Id = subcategory!.Id
             };
         }
+
+        private void EnsureSubcategoryExists(Subcategory? subcategory, Guid subcategoryId)
+        {
+            if (subcategory is null)
+                throw new CategoryNotFoundException($"Subcategory with Id '{subcategoryId}' not found.");
+        }
+
+        private async Task CheckAndApplyRemovalRules(Subcategory subcategory, CancellationToken ct)
+        {
+            bool hasProducts = await _productRepository.HasProductsInSubcategoriesAsync(subcategory.Id, ct);
+            subcategory.CheckCanBeRemoved(hasProducts);
+        }
     }
-    }
+}

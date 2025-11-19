@@ -7,7 +7,7 @@ namespace MakFood.Kitchen.Application.Command.SubcategoryCommands.UpdateSubcateg
     {
         public UpdateSubcategoryCommandValidator()
         {
-            RuleFor(x => x.Id)
+            RuleFor(x => x.SubCategoryId)
                 .NotEmpty()
                 .WithMessage("Subcategory Id cannot be empty");
 

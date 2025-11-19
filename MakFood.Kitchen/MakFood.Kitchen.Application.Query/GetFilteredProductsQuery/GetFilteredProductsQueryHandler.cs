@@ -31,8 +31,8 @@ namespace MakFood.Kitchen.Application.Query.GetFilteredProductsQuery
 
             var productDtos = products
                 .Select(p => new ProductDto(
-                    p.Id,
-                    p.Name,
+                    p.ProductId,
+                    p.ProductName,
                     p.Price,
                     p.SubCategoryName
                 ))

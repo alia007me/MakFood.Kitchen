@@ -14,7 +14,7 @@ namespace MakFood.Kitchen.Domain.Entities.CategoryAggrigate.Contracts
         Task<bool> IsSubcategoryNameExistAsync(Guid subcategoryId, string newName, CancellationToken ct);
         void Add(Category category);
         void RemoveCategory(Category category);
-        void RemoveSubcategory(Subcategory subcategory);
+        Task<Category?> GetCategoryBySubcategoryId(Guid subcategoryId, CancellationToken ct);
 
     }
 

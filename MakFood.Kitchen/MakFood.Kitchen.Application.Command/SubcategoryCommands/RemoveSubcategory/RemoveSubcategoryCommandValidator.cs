@@ -6,7 +6,7 @@ namespace MakFood.Kitchen.Application.Command.SubcategoryCommands.RemoveSubcateg
     {
         public RemoveSubcategoryCommandValidator()
         {
-            RuleFor(x => x.Id)
+            RuleFor(x => x.SubCategoryId)
                 .NotEmpty()
                 .WithMessage("Subcategory Id cannot be empty");
         }

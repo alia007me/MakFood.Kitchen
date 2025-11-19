@@ -4,7 +4,7 @@ using MakFood.Kitchen.Infrastructure.Persistence.Context;
 using MakFood.Kitchen.Infrastructure.Substructure.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
-namespace MakFood.Kitchen.Infrastructure.Persistence.Repository
+namespace MakFood.Kitchen.Infrastructure.Persistence.Repository.Repository
 {
     public class CategoriesRepository : ICategoryRepository
     {
@@ -55,19 +55,14 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Repository
             _context.Categories.Remove(category);
         }
 
-        public void RemoveSubcategory(Subcategory subcategory)
+        public async Task<Category?> GetCategoryBySubcategoryId(Guid subcategoryId,CancellationToken ct)
         {
-            var category = _context.Categories
+            return await _context.Categories
                 .Include(c => c.Subcategories)
-                .FirstOrDefault(c => c.Subcategories.Any(sc => sc.Id == subcategory.Id));
-
-            if (category == null)
-                throw new CategoryNotFoundException($"Category for Subcategory '{subcategory.Id}' not found.");
-
-            category.RemoveSubcategory(subcategory.Id);
-
-           
+                .FirstOrDefaultAsync(c => c.Subcategories.Any(sc => sc.Id == subcategoryId),ct);
         }
+
+        
 
     }
 }

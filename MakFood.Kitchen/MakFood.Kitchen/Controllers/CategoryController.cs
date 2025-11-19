@@ -31,8 +31,9 @@ namespace MakFood.Kitchen.Controllers
         
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateCategory([FromBody] UpdateCategoryCommand command , CancellationToken ct )
+        public async Task<IActionResult> UpdateCategory([FromRoute] Guid id,string newName, CancellationToken ct )
         {
+            var command = new UpdateCategoryCommand() { Id = id,NewName = newName};
             var result = await _mediator.Send(command);
             return Ok(result);
         }
@@ -60,19 +61,25 @@ namespace MakFood.Kitchen.Controllers
         }
 
         [HttpPut("{categoryId}/subcategory/{id}")]
-        public async Task<IActionResult> UpdateSubcategory(Guid categoryId, Guid id, [FromBody] UpdateSubcategoryCommand command, CancellationToken ct)
+        public async Task<IActionResult> UpdateSubcategory(Guid categoryId, Guid subcategoryId, [FromBody] string newName, CancellationToken ct)
         {
+            var command = new UpdateSubcategoryCommand()
+            {
+                SubCategoryId = subcategoryId,
+                CategoryId = categoryId,
+                NewName = newName
+            };
+
             var result = await _mediator.Send(command, ct);
             return Ok(result);
         }
 
         [HttpDelete("{categoryId}/subcategory/{id}")]
-        public async Task<IActionResult> RemoveSubcategory(Guid categoryId, Guid id, CancellationToken ct)
+        public async Task<IActionResult> RemoveSubcategory(Guid subcategoryId, CancellationToken ct)
         {
             var command = new RemoveSubcategoryCommand
             {
-                Id = id,
-                
+                SubCategoryId = subcategoryId
             };
 
             var result = await _mediator.Send(command, ct);

@@ -1,4 +1,5 @@
-﻿using MakFood.Kitchen.Domain.Entities.CategoryAggrigate;
+﻿using Azure.Core;
+using MakFood.Kitchen.Domain.Entities.CategoryAggrigate;
 using MakFood.Kitchen.Domain.Entities.CategoryAggrigate.Contracts;
 using MakFood.Kitchen.Infrastructure.Persistence.Context.Transactions;
 using MakFood.Kitchen.Infrastructure.Substructure.Exceptions;
@@ -20,10 +21,10 @@ namespace MakFood.Kitchen.Application.Command.CategoriesCommand.CreateCategory
 
         public async Task<CreateCategoryCommandResponse> Handle(CreateCategoryCommand request, CancellationToken ct)
         {
-            bool exists = await _categoryRepository.IsCategoryNameExistAsync(request.Name, ct);
-            if (exists)
-                throw new IsAlreadyExistException($"Category with name '{request.Name}' already exists.");
-                      
+            
+            CheckIsCategoryExist(request.Name,ct);
+
+
             var category = new Category(request.Name);
                      
              _categoryRepository.Add(category);
@@ -34,6 +35,13 @@ namespace MakFood.Kitchen.Application.Command.CategoriesCommand.CreateCategory
             {
                 Id = category.Id
             };
+        }
+
+        private async void CheckIsCategoryExist(string name, CancellationToken ct)
+        {
+            bool exists = await _categoryRepository.IsCategoryNameExistAsync(name, ct);
+            if (exists)
+                throw new IsAlreadyExistException($"Category with name '{name}' already exists.");
         }
     }
 

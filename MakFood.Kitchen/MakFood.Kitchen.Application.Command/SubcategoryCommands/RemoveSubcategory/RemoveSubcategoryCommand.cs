@@ -4,7 +4,6 @@ namespace MakFood.Kitchen.Application.Command.SubcategoryCommands.RemoveSubcateg
 {
     public class RemoveSubcategoryCommand : IRequest<RemoveSubcategoryCommandResponse>
     {
-        public Guid Id { get; set; }
-        public Guid CategoryId { get; set; }  
+        public Guid SubCategoryId { get; set; }
     }
-    }
+}

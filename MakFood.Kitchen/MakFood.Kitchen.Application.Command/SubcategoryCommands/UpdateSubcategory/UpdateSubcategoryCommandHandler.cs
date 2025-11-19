@@ -1,4 +1,4 @@
-﻿using MakFood.Kitchen.Domain.BussinesRules.Exceptions;
+﻿using MakFood.Kitchen.Domain.Entities.CategoryAggrigate;
 using MakFood.Kitchen.Domain.Entities.CategoryAggrigate.Contracts;
 using MakFood.Kitchen.Infrastructure.Persistence.Context.Transactions;
 using MakFood.Kitchen.Infrastructure.Substructure.Exceptions;
@@ -22,16 +22,11 @@ namespace MakFood.Kitchen.Application.Command.SubcategoryCommands.UpdateSubcateg
 
             public async Task<UpdateSubcategoryCommandResponse> Handle(UpdateSubcategoryCommand request, CancellationToken ct)
             {
-                var subcategory = await _categoryRepository.GetSubcategoryByIdAsync(request.Id, ct);
+                var subcategory = await _categoryRepository.GetSubcategoryByIdAsync(request.SubCategoryId, ct);
 
-                if (subcategory == null)
-                    throw new SubcategoryNotFoundException($"Subcategory with Id '{request.Id}' not found.");
-                
-                // بررسی نام تکراری در همان Category
-                bool nameExists = await _categoryRepository.IsSubcategoryNameExistAsync(subcategory.Id, request.NewName, ct);
-                
-                if (nameExists)
-                    throw new IsAlreadyExistException($"Subcategory with name '{request.NewName}' already exists in the same category.");
+                EnsureSubcategoryExists(subcategory,request.SubCategoryId);
+
+                await ValidateUniqueName(subcategory!,subcategory!.Name,ct);
 
                 subcategory.updateSubcategoryName(request.NewName);
                
@@ -41,6 +36,20 @@ namespace MakFood.Kitchen.Application.Command.SubcategoryCommands.UpdateSubcateg
                 {
                     Id = subcategory.Id
                 };
+            }
+
+            private void EnsureSubcategoryExists(Subcategory? subcategory, Guid subcategoryId)
+            {
+                if (subcategory is null)
+                    throw new SubcategoryNotFoundException($"Subcategory with Id '{subcategoryId}' not found.");
+            }
+
+            private async Task ValidateUniqueName(Subcategory subcategory, string newName, CancellationToken ct)
+            {
+                bool nameExists = await _categoryRepository.IsSubcategoryNameExistAsync(subcategory.Id, newName, ct);
+
+                if (nameExists)
+                    throw new IsAlreadyExistException($"Subcategory with name '{newName}' already exists in the same category.");
             }
         }
 

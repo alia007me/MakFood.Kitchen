@@ -14,23 +14,22 @@ namespace MakFood.Kitchen.Application.Command.CategoriesCommand.RemoveCategory
         private readonly IUnitOfWork _unitOfWork;
         private readonly IProductRepository _productRepository;
 
-        
 
-        public RemoveCategoryCommandHandler(ICategoryRepository categoryRepository, IUnitOfWork unitOfWork ,IProductRepository productRepository)
+
+        public RemoveCategoryCommandHandler(ICategoryRepository categoryRepository, IUnitOfWork unitOfWork, IProductRepository productRepository)
         {
             _categoryRepository = categoryRepository;
             _unitOfWork = unitOfWork;
             _productRepository = productRepository;
         }
-         
-        public async Task<RemoveCategoryCommandResponse> Handle (RemoveCategoryCommand request , CancellationToken ct)
-        {
-            var Category = await _categoryRepository.GetCategoryByIdAsync(request.Id ,ct);
 
-            if (Category == null)
-                throw new CategoryNotFoundException($"Category with Id '{request.Id}' not found.");
-           
-            bool hasProducts = await _productRepository.HasProductsInCategoryAsync(Category.Id, ct);
+        public async Task<RemoveCategoryCommandResponse> Handle(RemoveCategoryCommand request, CancellationToken ct)
+        {
+            var Category = await _categoryRepository.GetCategoryByIdAsync(request.Id, ct);
+
+            EnsureCategoryExists(Category, request.Id);
+
+            bool hasProducts = await _productRepository.HasProductsInCategoryAsync(Category!.Id, ct);
 
             Category.CheckCanBeRemoved(hasProducts);
 
@@ -42,6 +41,12 @@ namespace MakFood.Kitchen.Application.Command.CategoriesCommand.RemoveCategory
             {
                 Id = Category.Id,
             };
+        }
+        private void EnsureCategoryExists(Category? category, Guid categoryId)
+        {
+            if (category is null)
+                throw new CategoryNotFoundException($"Category with Id '{categoryId}' not found.");
+            
         }
     }
 }
