@@ -1,5 +1,5 @@
 ﻿using MakFood.Kitchen.Application.Command.CancelOrder;
-using MakFood.Kitchen.Application.Query.GetAllMiseOnPlaceOrderByDateRange;
+using MakFood.Kitchen.Application.Query.GetAllMiseOnPlaceOrdersByDateRange;
 using MakFood.Kitchen.Application.Query.GetProductOrderCountsByDateRange;
 using MakFood.Kitchen.Application.Query.GetTotalSalesByDateRange;
 using MediatR;

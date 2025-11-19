@@ -33,7 +33,10 @@ public class Cart : BaseEntity<Guid>
         Check(new TheCartItemMustExistInTheCartToBeDeletedBR(_cartItems, cartItem.Id));
         _cartItems.Remove(cartItem);
     }
-
+    public CartItem GetCartItemByID(Guid id)
+    {
+        return CartItems.SingleOrDefault(x => x.ProductId == id);
+    }
 
     #endregion
 

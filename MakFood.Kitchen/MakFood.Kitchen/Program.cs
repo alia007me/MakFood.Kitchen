@@ -1,22 +1,15 @@
 using FluentValidation;
-using FluentValidation;
-using MakFood.Kitchen.Application.Command.CancelOrder;
-using MakFood.Kitchen.Application.Query.Behavior;
-using MakFood.Kitchen.Application.Query.GetAllMiseOnPlaceOrderByDateRange;
 using MakFood.Kitchen.Application.Query.GetTotalSalesByDateRange;
-using MakFood.Kitchen.Domain.Entities.CategoryAggrigate.Contracts;
-using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.Contract;
-using MakFood.Kitchen.Domain.Entities.ProductAggrigate.Contract;
 using MakFood.Kitchen.Infrastructure.Persistence.Context;
-using MakFood.Kitchen.Infrastructure.Persistence.Context.Transactions;
-using MakFood.Kitchen.Infrastructure.Persistence.Context.Transactions;
-using MakFood.Kitchen.Infrastructure.Persistence.Repository;
-using MakFood.Kitchen.Infrastructure.Persistence.Repository;
-using MakFood.Kitchen.Infrastructure.Repositories;
 using MakFood.Kitchen.Infrastructure.Substructure.Settings;
 using MediatR;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using MakFood.Kitchen.Infrastructure.DI;
+using MakFood.Kitchen.Application.Command.CancelOrder;
+using MakFood.Kitchen.Application.Query.GetAllMiseOnPlaceOrdersByDateRange;
+using MakFood.Kitchen.Infrastructure.Substructure.Behavior;
+
 
 
 
@@ -27,7 +20,7 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionStringConfiguration = builder.Configuration.GetSection(nameof(ConnectionStrings));
 
 builder.Services.Configure<ConnectionStrings>(connectionStringConfiguration);
-
+builder.Services.ConfigureDI();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     var connectionString = connectionStringConfiguration.Get<ConnectionStrings>();
@@ -42,25 +35,11 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 }
 );
 
-builder.Services.AddControllers();
 
 builder.Services.AddSwaggerGen();
 builder.Services.AddEndpointsApiExplorer();
 
-builder.Services.AddMediatR(cfg =>
-{
-    cfg.RegisterServicesFromAssembly(typeof(CancelOrderCommandHandler).Assembly);
-});
-
-builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-builder.Services.AddScoped<ICategoryRepository,CategoriesRepository>();
-builder.Services.AddScoped<IProductRepository, ProductRepository>();
-builder.Services.AddScoped<IOrderRepository, OrderRepository>();
-builder.Services.AddMediatR(cfg =>
-{
-    cfg.RegisterServicesFromAssembly(typeof(GetAllMiseOnPlaceOrdersByDateRangeHandler).Assembly);
-    cfg.RegisterServicesFromAssembly(typeof(CancelOrderCommandHandler).Assembly);
-});
+builder.Services.AddControllers();
 
 builder.Services.AddValidatorsFromAssemblies(new[]
 {
@@ -72,28 +51,17 @@ builder.Services.AddValidatorsFromAssemblies(new[]
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
 
-
-
-
 var app = builder.Build();
-app.UseRouting();
-
-if (app.Environment.IsDevelopment())
-{
+if (app.Environment.IsDevelopment()) {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(options =>
+    {
+        options.EnableTryItOutByDefault();
+    });
 }
-
-
 // Configure the HTTP request pipeline.
 
 app.UseAuthorization();
-
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
 
 
 app.MapControllers();
