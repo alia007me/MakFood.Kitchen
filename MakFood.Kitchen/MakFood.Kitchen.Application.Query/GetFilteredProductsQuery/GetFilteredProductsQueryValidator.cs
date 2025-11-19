@@ -8,17 +8,16 @@ namespace MakFood.Kitchen.Application.Query.GetFilteredProductsQuery
         {
             RuleFor(x => x.Name)
                 .MaximumLength(100)
+                  .When(x => !string.IsNullOrWhiteSpace(x.Name))
                 .WithMessage("Name cannot exceed 100 characters.");
 
             RuleFor(x => x.CategoryId)
-                .NotEmpty()
-                .When(x => x.CategoryId.HasValue)
-                .WithMessage("CategoryId cannot be empty Guid.");
+                .Must(id => !id.HasValue || id.Value != Guid.Empty)
+                .WithMessage("CategoryId cannot be an empty Guid.");
 
             RuleFor(x => x.SubcategoryId)
-                .NotEmpty()
-                .When(x => x.SubcategoryId.HasValue)
-                .WithMessage("SubcategoryId cannot be empty Guid.");
+                .Must(id => !id.HasValue || id.Value != Guid.Empty)
+                .WithMessage("SubcategoryId cannot be an empty Guid.");
         }
     }
 
