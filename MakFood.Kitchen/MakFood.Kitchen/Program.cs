@@ -12,6 +12,7 @@ using MakFood.Kitchen.Infrastructure.Substructure.Behavior;
 
 
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -35,9 +36,10 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 );
 
 
+builder.Services.AddSwaggerGen();
+builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddControllers();
-builder.Services.AddSwaggerGen();
 
 builder.Services.AddValidatorsFromAssemblies(new[]
 {
@@ -60,12 +62,6 @@ if (app.Environment.IsDevelopment()) {
 // Configure the HTTP request pipeline.
 
 app.UseAuthorization();
-
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
 
 
 app.MapControllers();

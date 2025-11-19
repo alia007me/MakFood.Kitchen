@@ -1,16 +1,16 @@
 ﻿namespace MakFood.Kitchen.Infrastructure.Substructure.Exceptions
 {
-    public class ApplicationException : Exception
+    public class ApplicationBaseException : Exception
     {
-        public ApplicationException()
+        public ApplicationBaseException()
         {
         }
 
-        public ApplicationException(string? message) : base(message)
+        public ApplicationBaseException(string? message) : base(message)
         {
         }
 
-        public ApplicationException(string? message, Exception? innerException) : base(message, innerException)
+        public ApplicationBaseException(string? message, Exception? innerException) : base(message, innerException)
         {
         }
     }
