@@ -21,7 +21,7 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Repository
         }
 
         public async Task<IEnumerable<GetAggregatedFoodRequestsReadModel>> GetFoodRequestsFoodCountByDateRangeAsync(DateOnly fromDate, DateOnly toDate, CancellationToken ct)
-        {
+         {
             return await _context.FoodRequests
                             .Where(c => c.TargetDate >= fromDate && c.TargetDate <= toDate)
                             .GroupBy(c => c.ProductId)

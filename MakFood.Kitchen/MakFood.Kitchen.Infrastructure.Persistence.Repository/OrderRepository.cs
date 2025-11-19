@@ -1,11 +1,8 @@
-﻿using MakFood.Kitchen.Domain.BussinesRules;
-using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate;
+﻿using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate;
 using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.Contract;
 using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.OrederState;
 using MakFood.Kitchen.Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
-using static MakFood.Kitchen.Domain.Entities.ProductAggrigate.Contract.IProductRepository;
-using OrderStatus = MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.OrederState.OrderStatus;
 
 namespace MakFood.Kitchen.Infrastructure.Persistence.Repository
 {
@@ -50,23 +47,6 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Repository
 
         }
 
-        public async Task<IEnumerable<GetProductOrderCountsReadModel>> GetProductOrderCountsByDateRange(DateOnly FromDate, DateOnly ToDate, CancellationToken ct)
-        {
-            var startDateTime = FromDate.ToDateTime(TimeOnly.MinValue);
-            var endDateTime = ToDate.ToDateTime(TimeOnly.MaxValue);
-
-            return await _context.Orders.Where(x => x.CreationDateTime >= startDateTime
-                                          && x.CreationDateTime <= endDateTime)
-                .SelectMany(p => p.Consistencies)
-                                          .GroupBy(g => new { g.ProductId, g.Name })
-                                          .Select(x => new GetProductOrderCountsReadModel
-                                          {
-                                              ProductId = x.Key.ProductId,
-                                              ProductName = x.Key.Name,
-                                              Count = x.Sum(k => k.Quantity)
-                                          }).ToListAsync(ct);
-        }
-
         public async Task<decimal> GetTotalSalesByDate(DateOnly FromDate, DateOnly ToDate, CancellationToken ct)
         {
             var startDateTime = FromDate.ToDateTime(TimeOnly.MinValue);
@@ -82,7 +62,24 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Repository
                                  .ThenInclude(p => p.DiscountPolicy)
                                  .Include(x => x.Payment)
                                  .ThenInclude(p => p.PaymentLog)
-                                 .Where(c => c.StateHistory.OfType<MiseOnPlaceOrderState>().Any()).SumAsync(x => x.Payable,ct);
+                                 .Where(c => c.StateHistory.OfType<MiseOnPlaceOrderState>().Any()).SumAsync(x => x.Payable, ct);
+        }
+
+        public async Task<IEnumerable<IOrderRepository.GetProductOrderCountsReadModel>> GetProductOrderCountsByDateRange(DateOnly FromDate, DateOnly ToDate, CancellationToken ct)
+        {
+            var startDateTime = FromDate.ToDateTime(TimeOnly.MinValue);
+            var endDateTime = ToDate.ToDateTime(TimeOnly.MaxValue);
+
+            return await _context.Orders.Where(x => x.CreationDateTime >= startDateTime
+                                          && x.CreationDateTime <= endDateTime)
+                .SelectMany(p => p.Consistencies)
+                                          .GroupBy(g => new { g.ProductId, g.Name })
+                                          .Select(x => new IOrderRepository.GetProductOrderCountsReadModel
+                                          {
+                                              ProductId = x.Key.ProductId,
+                                              ProductName = x.Key.Name,
+                                              Count = x.Sum(k => k.Quantity)
+                                          }).ToListAsync(ct);
         }
     }
 }

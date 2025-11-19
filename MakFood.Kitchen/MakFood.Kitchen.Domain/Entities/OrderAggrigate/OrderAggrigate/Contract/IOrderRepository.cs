@@ -9,5 +9,13 @@ namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.Contract
         public Task<IEnumerable<GetProductOrderCountsReadModel>> GetProductOrderCountsByDateRange(DateOnly FromDate, DateOnly ToDate, CancellationToken ct);
         public Task<decimal> GetTotalSalesByDate(DateOnly FromDate, DateOnly ToDate, CancellationToken ct);
 
+        public class GetProductOrderCountsReadModel
+        {
+            public Guid ProductId { get; set; }
+            public string ProductName { get; set; }
+            public long Count { get; set; }
+
+        };
+
     }
 }

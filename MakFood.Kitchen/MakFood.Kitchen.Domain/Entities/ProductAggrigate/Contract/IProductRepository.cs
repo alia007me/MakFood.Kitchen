@@ -14,15 +14,5 @@
         Task<bool> IsExistByIdNameThumbnailPathAsync(Guid productId, string productName, string productThumbnailPath, CancellationToken ct);
         Task<bool> IsExistByIdNamePriceAsync(Guid productId, string productName, decimal price, CancellationToken ct);
         Task<Product?> GetProductByIdAsync(Guid productId, CancellationToken ct);
-
-
-
-        public class GetProductOrderCountsReadModel
-        {
-            public Guid ProductId { get; set; }
-            public string ProductName { get; set; }
-            public long Count { get; set; }
-
-        };
     }
 }
