@@ -24,16 +24,15 @@ namespace MakFood.Kitchen.Application.Command.SubcategoryCommands.RemoveSubcateg
         {
 
             var subcategory = await _categoryRepository.GetSubcategoryByIdAsync(request.Id ,ct  );
+           
             if (subcategory == null)
-                throw new EntityNotFoundException($"Subcategory with Id '{request.Id}' not found.");
-
-            var subcategoryIds = new List<Guid> { subcategory.Id };
-
-            bool hasProducts = await _productRepository.ExistsBySubcategoryIdsAsync(subcategoryIds, ct);
+                throw new CategoryNotFoundException($"Subcategory with Id '{request.Id}' not found.");
+                       
+            bool hasProducts = await _productRepository.HasProductsInSubcategoriesAsync(subcategory.Id, ct);
 
             subcategory.CheckCanBeRemoved(hasProducts);
 
-            _categoryRepository.Remove(subcategory);
+            _categoryRepository.RemoveSubcategory(subcategory);
             await _unitOfWork.Commit(ct);
 
             return new RemoveSubcategoryCommandResponse

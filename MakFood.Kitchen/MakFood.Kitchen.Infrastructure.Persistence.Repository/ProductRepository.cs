@@ -70,6 +70,25 @@ namespace MakFood.Kitchen.Infrastructure.Repositories
 
            
             return await query .ToListAsync(ct);
+         }
+
+        public async Task<bool> HasProductsInSubcategoriesAsync(Guid subcategoryId, CancellationToken ct)
+        {
+            return await _context.Products
+               .AnyAsync(p => p.SubCategoryId == subcategoryId, ct);
         }
+
+        public async Task<bool> HasProductsInCategoryAsync(Guid categoryId, CancellationToken ct)
+        {
+            var subcategoryIds = await _context.Categories
+                .Where(c => c.Id == categoryId)
+                .SelectMany(c => c.Subcategories)
+                .Select(sc => sc.Id)
+                .ToListAsync(ct);
+
+            return await _context.Products
+                .AnyAsync(p => subcategoryIds.Contains(p.SubCategoryId), ct);
+        }
+
     }
 }

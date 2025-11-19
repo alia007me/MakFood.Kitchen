@@ -28,15 +28,13 @@ namespace MakFood.Kitchen.Application.Command.CategoriesCommand.RemoveCategory
             var Category = await _categoryRepository.GetCategoryByIdAsync(request.Id ,ct);
 
             if (Category == null)
-                throw new EntityNotFoundException($"Category with Id '{request.Id}' not found.");
-
-            var subcategoryIds = Category.Subcategories.Select(sc => sc.Id).ToList();
-
-            bool hasProducts = await _productRepository.ExistsBySubcategoryIdsAsync(subcategoryIds, ct);
+                throw new CategoryNotFoundException($"Category with Id '{request.Id}' not found.");
+           
+            bool hasProducts = await _productRepository.HasProductsInCategoryAsync(Category.Id, ct);
 
             Category.CheckCanBeRemoved(hasProducts);
 
-            _categoryRepository.Remove(Category);
+            _categoryRepository.RemoveCategory(Category);
 
             await _unitOfWork.Commit(ct);
 

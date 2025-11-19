@@ -20,7 +20,7 @@ namespace MakFood.Kitchen.Application.Command.CategoriesCommand.CreateCategory
 
         public async Task<CreateCategoryCommandResponse> Handle(CreateCategoryCommand request, CancellationToken ct)
         {
-            bool exists = await _categoryRepository.CheckIsExistByNameAsync(request.Name, ct);
+            bool exists = await _categoryRepository.IsCategoryNameExistAsync(request.Name, ct);
             if (exists)
                 throw new IsAlreadyExistException($"Category with name '{request.Name}' already exists.");
                       

@@ -23,7 +23,7 @@ namespace MakFood.Kitchen.Controllers
 
         #region Category_Endpoints   
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateCategoryCommand command ,CancellationToken ct)
+        public async Task<IActionResult> CreateCategory([FromBody] CreateCategoryCommand command ,CancellationToken ct)
         {
             var result = await _mediator.Send(command, ct);
             return Ok (result);
@@ -31,7 +31,7 @@ namespace MakFood.Kitchen.Controllers
         
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update([FromBody] UpdateCategoryCommand command , CancellationToken ct )
+        public async Task<IActionResult> UpdateCategory([FromBody] UpdateCategoryCommand command , CancellationToken ct )
         {
             var result = await _mediator.Send(command);
             return Ok(result);
