@@ -1,4 +1,4 @@
-﻿using MakFood.Kitchen.Application.Query.GetAllMiseOnPlaceOrderByDateRange;
+﻿using MakFood.Kitchen.Application.Query.GetAllMiseOnPlaceOrdersByDateRange;
 using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.Contract;
 using MediatR;
 

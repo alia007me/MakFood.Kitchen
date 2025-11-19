@@ -4,7 +4,7 @@ using MakFood.Kitchen.Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using static MakFood.Kitchen.Domain.Entities.FoodRequestAggrigate.Contract.IFoodRequestRepository;
 
-namespace MakFood.Kitchen.Infrastructure.Persistence.Repository
+namespace MakFood.Kitchen.Infrastructure.Persistence.Repository.Repository
 {
     public class FoodRequestRepository : IFoodRequestRepository
     {

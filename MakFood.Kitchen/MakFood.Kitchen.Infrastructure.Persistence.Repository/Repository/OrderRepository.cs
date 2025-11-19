@@ -4,7 +4,7 @@ using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.OrederState;
 using MakFood.Kitchen.Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 
-namespace MakFood.Kitchen.Infrastructure.Persistence.Repository
+namespace MakFood.Kitchen.Infrastructure.Persistence.Repository.Repository
 {
     public class OrderRepository : IOrderRepository
     {

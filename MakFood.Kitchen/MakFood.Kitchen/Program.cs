@@ -1,6 +1,4 @@
 using FluentValidation;
-using MakFood.Kitchen.Application.Query.GetTotalSalesByDateRange;
-using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.Contract;
 using MakFood.Kitchen.Infrastructure.Persistence.Context;
 using MakFood.Kitchen.Infrastructure.Substructure.Settings;
 using MediatR;
@@ -36,7 +34,6 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 );
 
 
-
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
 
@@ -48,10 +45,6 @@ builder.Services.AddValidatorsFromAssemblies(new[]
 
 
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
-
-
-builder.Services.AddScoped<IOrderRepository, OrderRepository>();
-builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 
 var app = builder.Build();
