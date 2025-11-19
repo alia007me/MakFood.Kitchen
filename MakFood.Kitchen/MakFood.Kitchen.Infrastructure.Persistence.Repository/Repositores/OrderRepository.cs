@@ -17,7 +17,7 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Repository.Repositores
             _context = context;
         }
 
-        public async Task<List<Order>> GetOrderByCustomerIdAsyncs(Guid CustomerId, DateTime StartDateTime, DateTime EndDateTime)
+        public async Task<List<Order>> GetOrderByCustomerIdAsyncs(Guid CustomerId, DateTime StartDateTime, DateTime EndDateTime, CancellationToken cancellationToken)
         {
             return await _context.Orders
                 .Where(w => w.CustomerId == CustomerId)
@@ -29,7 +29,7 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Repository.Repositores
                 .Where(w=>w.StateHistory.OfType<MiseOnPlaceOrderState>().Any())
                 .OrderByDescending(w=>w.CreationDateTime)
                 .AsNoTracking()
-                .ToListAsync();
+                .ToListAsync(cancellationToken);
            
         }
     }

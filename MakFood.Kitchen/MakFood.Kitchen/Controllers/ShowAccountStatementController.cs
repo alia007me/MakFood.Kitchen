@@ -2,7 +2,7 @@
 using MediatR;
 using MakFood.Kitchen.Application.Query.ShowAccount;
 
-namespace MakFood.Kitchen.Controller
+namespace MakFood.Kitchen.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
@@ -14,15 +14,10 @@ namespace MakFood.Kitchen.Controller
             _mediator = mediator;
         }
         [HttpGet("Customer/{CustomerId}/Order/ShowOrder")]
-        public async Task<ActionResult> GetOrder(Guid CustomerId,DateTime startDateTime,DateTime endDateTime)
+        public async Task<ActionResult> GetOrder([FromBody] ShowAccountStatementQuery query) 
         {
-            var showAccountStatementQuery = new ShowAccountStatementQuery
-            {
-                CustomerId = CustomerId,
-                StartDateTime = startDateTime,
-                EndDateTime = endDateTime
-            };
-            var result = await _mediator.Send(showAccountStatementQuery);
+            
+            var result = await _mediator.Send(query);
             return Ok(result);
 
         }

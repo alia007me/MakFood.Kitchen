@@ -20,7 +20,7 @@ namespace MakFood.Kitchen.Application.Query.ShowAccountStatement
 
         public async Task<ShowAccountStatementQueryResponce> Handle(ShowAccountStatementQuery request, CancellationToken cancellationToken)
         {
-            var orders = await _orderRepository.GetOrderByCustomerIdAsyncs(request.CustomerId, request.StartDateTime, request.EndDateTime);
+            var orders = await _orderRepository.GetOrderByCustomerIdAsyncs(request.CustomerId, request.StartDateTime, request.EndDateTime, cancellationToken);
             var orderItems = orders.Select(w=> new ShowAccountStatementQueryResponce.ShowAccountStatementItem
             {
                 DiscountCode = w.DiscountCode,
