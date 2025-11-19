@@ -1,6 +1,4 @@
 using FluentValidation;
-using MakFood.Kitchen.Application.Query.Behavior;
-using MakFood.Kitchen.Application.Query.GetAllMiseOnPlaceOrderByDateRange;
 using MakFood.Kitchen.Application.Query.GetTotalSalesByDateRange;
 using MakFood.Kitchen.Infrastructure.Persistence.Context;
 using MakFood.Kitchen.Infrastructure.Substructure.Settings;
@@ -9,6 +7,8 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using MakFood.Kitchen.Infrastructure.DI;
 using MakFood.Kitchen.Application.Command.CancelOrder;
+using MakFood.Kitchen.Application.Query.GetAllMiseOnPlaceOrdersByDateRange;
+using MakFood.Kitchen.Infrastructure.Substructure.Behavior;
 
 
 

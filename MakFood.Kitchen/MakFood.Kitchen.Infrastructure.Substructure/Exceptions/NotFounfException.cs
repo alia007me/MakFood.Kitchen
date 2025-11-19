@@ -1,8 +1,7 @@
-﻿
-namespace MakFood.Kitchen.Application.Command.UpdateCart
+﻿namespace MakFood.Kitchen.Infrastructure.Substructure.Exceptions
 {
     [Serializable]
-    internal class NotFoundException : Exception
+    public class NotFoundException : Exception
     {
         public NotFoundException()
         {

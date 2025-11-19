@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using MakFood.Kitchen.Application.Query.GetAllMiseOnPlaceOrderByDateRange;
 using MakFood.Kitchen.Application.Query.GetByDateRageBase;
 
 

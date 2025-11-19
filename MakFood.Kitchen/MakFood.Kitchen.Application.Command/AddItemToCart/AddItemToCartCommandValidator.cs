@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace MakFood.Kitchen.Application.Command.UpdateCart
+namespace MakFood.Kitchen.Application.Command.AddItemToCart
 {
     public class AddItemToCartCommandValidator : AbstractValidator<AddItemToCartCommand>
     {

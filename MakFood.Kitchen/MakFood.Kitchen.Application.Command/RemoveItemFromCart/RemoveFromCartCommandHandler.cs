@@ -5,7 +5,7 @@ using MakFood.Kitchen.Domain.Entities.ProductAggrigate.Contract;
 using MakFood.Kitchen.Infrastructure.Persistence.Context.Transactions;
 using MediatR;
 
-namespace MakFood.Kitchen.Application.Command.UpdateCart
+namespace MakFood.Kitchen.Application.Command.RemoveItemFromCart
 {
     public class RemoveFromCartCommandHandler : IRequestHandler<RemoveFromCartCommand, RemoveFromCartCommandResponse>
     {
@@ -30,7 +30,7 @@ namespace MakFood.Kitchen.Application.Command.UpdateCart
         public void validate(CartItem cartItem)
         {
             if (cartItem is null)
-                throw new NotFoundException("item not found in cart (you dont have this item in your cart)");
+                throw new CartItemNotFoundException("item not found in cart (you dont have this item in your cart)");
         }
         #endregion
         #region response

@@ -1,5 +1,5 @@
 ﻿using MakFood.Kitchen.Application.Command.CancelOrder;
-using MakFood.Kitchen.Application.Query.GetAllMiseOnPlaceOrderByDateRange;
+using MakFood.Kitchen.Application.Query.GetAllMiseOnPlaceOrdersByDateRange;
 using MakFood.Kitchen.Domain.Entities.CartAggrigate.Contract;
 using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.Contract;
 using MakFood.Kitchen.Domain.Entities.ProductAggrigate.Contract;
