@@ -15,8 +15,8 @@ namespace MakFood.Kitchen.API.Controllers
             _mediator = mediator;
         }
 
-        [HttpPost("{CustomerId}/Discount/AddDiscount")]
-        public async Task<IActionResult> CreateDiscount([FromBody] CreateDiscountCommand command)
+        [HttpPost("Discount/AddDiscount")]
+        public async Task<IActionResult> CreateDiscount(CreateDiscountCommand command)
         {
             var response = await _mediator.Send(command);
 

@@ -4,7 +4,9 @@ using MakFood.Kitchen.Domain.Entities.DiscountAggrigate.Contract;
 using MakFood.Kitchen.Domain.Entities.DiscountAggrigate.DiscountPolicyAggrigate;
 using MakFood.Kitchen.Domain.Entities.DiscountAggrigate.Enum;
 using MakFood.Kitchen.Infrastructure.Persistence.Context.Transactions;
+using MakFood.Kitchen.Infrastructure.Substructure.Exceptions;
 using MediatR;
+using System.Net.WebSockets;
 
 public class CreateDiscountCommandHandler: IRequestHandler<CreateDiscountCommand,CreateDiscountCommandResponse>
 {
@@ -20,15 +22,7 @@ public class CreateDiscountCommandHandler: IRequestHandler<CreateDiscountCommand
     public async Task<CreateDiscountCommandResponse> Handle(CreateDiscountCommand request, CancellationToken cancellationToken)
     {
         CheckDiscountToExist(request.Title,cancellationToken);
-        DiscountPolicy policy = request.DiscountPolicy
-            switch
-        {
-            DiscountPolicyType.AllPermitted=>
-                new AllPermittedPolicy(),
-
-            DiscountPolicyType.SpecifiedPermision =>
-                new SpecifiedPermisionPolicy(request.CustomerIds)
-        };
+        var policy = CreateDiscountPolicy(request);
 
         await _discountRepository.GetDiscountPolicies(policy,cancellationToken);
 
@@ -53,7 +47,15 @@ public class CreateDiscountCommandHandler: IRequestHandler<CreateDiscountCommand
         var discount = _discountRepository.GetDiscountAccordingToTitle(Title, cancellationToken);
         if (discount != null)
         {
-            throw new Exception("Discount To Exist");
+            throw new DiscountToExistException("Discount To Exist");
         }
+    }
+    private DiscountPolicy CreateDiscountPolicy(CreateDiscountCommand request)
+    {
+        if(request.DiscountPolicy==DiscountPolicyType.AllPermitted)
+            return new AllPermittedPolicy();
+        if (request.DiscountPolicy == DiscountPolicyType.SpecifiedPermision)
+            return new SpecifiedPermisionPolicy(request.CustomerIds);
+        throw new NotFoundException("dfagrthey");
     }
 }
