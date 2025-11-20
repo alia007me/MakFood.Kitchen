@@ -2,6 +2,8 @@
 {
     public interface IProductRepository
     {
+        public Task<Product> GetProduct(Guid prodactId, CancellationToken ct, bool needToTrack = true);
+    
         /// <summary>
         /// برسی می کند آیا محصول وجود دارد یا خیر
         /// </summary>

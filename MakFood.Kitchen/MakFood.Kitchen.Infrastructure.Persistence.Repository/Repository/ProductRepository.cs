@@ -14,20 +14,28 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Repository.Repository
             _context = context;
         }
 
-        public async Task<IEnumerable<Product>> GetAllProductsAsync(CancellationToken ct = default)
+        public Task<IEnumerable<Product>> GetAllProductsAsync(CancellationToken ct = default)
         {
-            return await _context.Products.ToListAsync(ct);
+            throw new NotImplementedException();
+        }
+
+        public async Task<Product> GetProduct(Guid prodactId, CancellationToken ct, bool needToTrack = true)
+        {
+            var Products = _context.Products.AsQueryable();
+            Products = needToTrack ? Products : Products.AsNoTracking();
+            var Product = await Products.SingleOrDefaultAsync(x => x.Id == prodactId);
+            return Product;
         }
 
         public Task<bool> IsExistByIdAsync(Guid productId)
         {
             throw new NotImplementedException();
-        }
+    }
 
         public Task<bool> IsExistByIdNamePriceAsync(Guid productId, string productName, decimal price)
         {
             throw new NotImplementedException();
-        }
+}
 
         public Task<bool> IsExistByIdNameThumbnailPathAsync(Guid productId, string productName, string productThumbnailPath)
         {
