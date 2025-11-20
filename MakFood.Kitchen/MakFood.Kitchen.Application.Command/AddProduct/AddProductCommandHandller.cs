@@ -2,6 +2,7 @@
 using MakFood.Kitchen.Domain.Entities.ProductAggrigate;
 using MakFood.Kitchen.Domain.Entities.ProductAggrigate.Contract;
 using MakFood.Kitchen.Infrastructure.Persistence.Context.UnitOfWorks;
+using MakFood.Kitchen.Infrastructure.Substructure.Exceptions;
 using MediatR;
 namespace MakFood.Kitchen.Application.Command.AddProduct
 {
@@ -21,8 +22,8 @@ namespace MakFood.Kitchen.Application.Command.AddProduct
         public async Task<AddProductCommandResponse> Handle(AddProductCommand request, CancellationToken cancellationToken)
         {
             CheckProductsToExistAccordingToName(request.Name, cancellationToken);
-            var SubCategories = await _categoriesRepository.GetSubCategoryByIdAsync(request.SubCategoryId, cancellationToken);
             CheckForSubCategoryToExist(request.SubCategoryId, cancellationToken);
+            var SubCategories = await _categoriesRepository.GetSubCategoryByIdAsync(request.SubCategoryId, cancellationToken);
             var product = new Product
             (
                 request.Name,
@@ -48,7 +49,7 @@ namespace MakFood.Kitchen.Application.Command.AddProduct
             var productIsNull =  _productRepository.GetByNameAsync(name, cancellationToken);
             if (productIsNull != null)
             {
-                throw new Exception("this product has already been added");
+                throw new ProductsToExistException("this product has already been added");
             }
         }
        /// <summary>
@@ -62,7 +63,7 @@ namespace MakFood.Kitchen.Application.Command.AddProduct
             var SubCategories =  _categoriesRepository.GetSubCategoryByIdAsync(SubCategoryId, cancellationToken);
             if (SubCategories == null)
             {
-                throw new Exception("subcategory not found");
+                throw new SubCategoryNotFoundException("subcategory not found");
             }
         }
 

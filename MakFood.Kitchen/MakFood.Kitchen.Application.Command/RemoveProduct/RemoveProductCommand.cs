@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace MakFood.Kitchen.Application.Command.RemoveProduct
 {
-    public class RemoveProductCommand : CommandBase , IRequest<bool>
+    public class RemoveProductCommand : CommandBase , IRequest<RemoveProductCommandResponse>
     {
        
         public Guid ProductId { get; set; }

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace MakFood.Kitchen.Application.Command.UpdateProduct
 {
-    public class UpdateProductCommand : CommandBase, IRequest<bool>
+    public class UpdateProductCommand : CommandBase, IRequest<UpdateProductCommandResponse>
     {
         public Guid ProductId { get; set; }
         public string Name { get; set; }

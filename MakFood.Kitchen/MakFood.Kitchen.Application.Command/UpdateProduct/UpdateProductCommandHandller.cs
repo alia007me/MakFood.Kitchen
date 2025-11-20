@@ -2,12 +2,13 @@
 using MakFood.Kitchen.Domain.Entities.ProductAggrigate;
 using MakFood.Kitchen.Domain.Entities.ProductAggrigate.Contract;
 using MakFood.Kitchen.Infrastructure.Persistence.Context.UnitOfWorks;
+using MakFood.Kitchen.Infrastructure.Substructure.Exceptions;
 using MediatR;
 
 namespace MakFood.Kitchen.Application.Command.UpdateProduct
 {
 
-    public class UpdateProductCommandHandller : IRequestHandler<UpdateProductCommand, bool>
+    public class UpdateProductCommandHandller : IRequestHandler<UpdateProductCommand, UpdateProductCommandResponse>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IProductRepository _productRepository;
@@ -20,11 +21,11 @@ namespace MakFood.Kitchen.Application.Command.UpdateProduct
             this._categoriesRepository = categoryRepository;
         }
 
-        public async Task<bool> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
+        public async Task<UpdateProductCommandResponse> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
         {
+            CheckProductsToExistAccordingToId(request.ProductId, cancellationToken);
             var subCategoryName = await _categoriesRepository.GetSubCategoryByIdAsync(request.SubCategoryId, cancellationToken);
             var product = await _productRepository.GetByIdAsync(request.ProductId, cancellationToken);
-            CheckProductsToExistAccordingToId(request.ProductId, cancellationToken);
             if (request.Name != null)
                 product.UpdateProductName(request.Name);
             if (request.Description != null)
@@ -40,7 +41,7 @@ namespace MakFood.Kitchen.Application.Command.UpdateProduct
             if (request.QuantityToDecrease.ToString() != null)
                 product.DecreaseAvailableQuantity(request.QuantityToIncrease);
             await _unitOfWork.Commit(cancellationToken);
-            return true;
+            return new UpdateProductCommandResponse(true);
         }
         /// <summary>
         /// چک میکنه پروداکت وجود داره یا نه بر حسب ایدی پروداکت
@@ -53,7 +54,7 @@ namespace MakFood.Kitchen.Application.Command.UpdateProduct
             var productIsNull = _productRepository.GetByIdAsync(productId, cancellationToken);
             if (productIsNull == null)
             {
-                throw new Exception("product not found");
+                throw new ProductsToExistException("product not found");
             }
         }
     }

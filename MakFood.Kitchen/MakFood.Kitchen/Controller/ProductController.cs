@@ -31,8 +31,8 @@ namespace MakFood.Kitchen.Controller
         [HttpPut("Kitchen/{CastomerId}/Product/UpdateProduct")]
         public async Task<IActionResult> UpdateProduct(UpdateProductCommand command)
         {
-            var cammands = await _mediator.Send(command);
-            return Ok(cammands);
+            var commands = await _mediator.Send(command);
+            return Ok(commands);
         }
     }
 }

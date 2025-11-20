@@ -1,5 +1,6 @@
 ﻿using MakFood.Kitchen.Domain.Entities.ProductAggrigate.Contract;
 using MakFood.Kitchen.Infrastructure.Persistence.Context.UnitOfWorks;
+using MakFood.Kitchen.Infrastructure.Substructure.Exceptions;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace MakFood.Kitchen.Application.Command.RemoveProduct
 {
-    public class RemoveProductCommandHandller : IRequestHandler<RemoveProductCommand,bool>
+    public class RemoveProductCommandHandller : IRequestHandler<RemoveProductCommand, RemoveProductCommandResponse>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IProductRepository _productRepository;
@@ -20,13 +21,13 @@ namespace MakFood.Kitchen.Application.Command.RemoveProduct
             this._productRepository = productRepository;
         }
 
-        public async Task<bool> Handle(RemoveProductCommand request, CancellationToken cancellationToken)
+        public async Task<RemoveProductCommandResponse> Handle(RemoveProductCommand request, CancellationToken cancellationToken)
         {
             CheckProductsToExistAccordingToId(request.ProductId, cancellationToken);
             var products = await _productRepository.GetByIdAsync(request.ProductId, cancellationToken);
              _productRepository.RemoveProduct(products);
             await _unitOfWork.Commit(cancellationToken);
-            return true;
+            return new RemoveProductCommandResponse(true);
         }
         /// <summary>
         /// چک میکنه پروداکت وجود داره یا نه بر حسب ایدی پروداکت
@@ -39,7 +40,7 @@ namespace MakFood.Kitchen.Application.Command.RemoveProduct
             var productIsNull = _productRepository.GetByIdAsync(productId, cancellationToken);
             if (productIsNull == null)
             {
-                throw new Exception("product not found");
+                throw new ProductsToExistException("product not found");
             }
         }
     }
