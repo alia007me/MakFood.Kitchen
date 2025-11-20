@@ -1,5 +1,4 @@
 using FluentValidation;
-using MakFood.Kitchen.Application.Query.GetTotalSalesByDateRange;
 using MakFood.Kitchen.Infrastructure.Persistence.Context;
 using MakFood.Kitchen.Infrastructure.Substructure.Settings;
 using MediatR;
@@ -33,7 +32,6 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionBuilder.ConnectionString);
 }
 );
-
 
 
 builder.Services.AddControllers();

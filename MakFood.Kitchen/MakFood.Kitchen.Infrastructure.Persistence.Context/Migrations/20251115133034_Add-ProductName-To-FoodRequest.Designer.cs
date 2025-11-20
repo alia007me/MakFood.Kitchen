@@ -4,6 +4,7 @@ using MakFood.Kitchen.Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MakFood.Kitchen.Infrastructure.Persistence.Context.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251115133034_Add-ProductName-To-FoodRequest")]
+    partial class AddProductNameToFoodRequest
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -40,7 +43,7 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Context.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("CartId")
+                    b.Property<Guid?>("CartId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreationDateTime")
@@ -488,8 +491,7 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Context.Migrations
                     b.HasOne("Cart", null)
                         .WithMany("CartItems")
                         .HasForeignKey("CartId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("MakFood.Kitchen.Domain.Entities.CategoryAggrigate.Subcategory", b =>
