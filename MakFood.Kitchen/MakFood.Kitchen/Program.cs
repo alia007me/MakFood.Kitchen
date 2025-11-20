@@ -8,6 +8,7 @@ using MakFood.Kitchen.Infrastructure.DI;
 using MakFood.Kitchen.Application.Command.CancelOrder;
 using MakFood.Kitchen.Application.Query.GetAllMiseOnPlaceOrdersByDateRange;
 using MakFood.Kitchen.Infrastructure.Substructure.Behavior;
+using MakFood.Kitchen.Application.Command.LiveProductQuantity;
 
 
 
@@ -32,6 +33,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionBuilder.ConnectionString);
 }
 );
+builder.Services.AddSignalR();
 
 
 builder.Services.AddControllers();
@@ -65,6 +67,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.MapHub<LiveProductQuantity>("/lpq");
 
 app.MapControllers();
 

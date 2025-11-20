@@ -1,5 +1,4 @@
-﻿
-using MakFood.Kitchen.Application.Command.AddItemToCart;
+﻿using MakFood.Kitchen.Application.Command.AddItemToCart;
 using MakFood.Kitchen.Application.Command.RemoveItemFromCart;
 using MakFood.Kitchen.Application.Query.GetCart;
 using MediatR;

@@ -40,6 +40,12 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Repository.Repository
                 .AsNoTracking()
                 .AnyAsync(x => x.Id == productId && x.Name == productName && x.ThumbnailPath == productThumbnailPath, ct);
         }
+
+        public async Task<IEnumerable<Product>> GetAllProductsAsync(CancellationToken ct = default)
+        {
+            return await _context.Products.ToListAsync(ct);
+        }
+
         public async Task<Product> GetProduct(Guid prodactId, CancellationToken ct, bool needToTrack = true)
         {
             var Products = _context.Products.AsQueryable();
@@ -47,5 +53,6 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Repository.Repository
             var Product = await Products.SingleOrDefaultAsync(x => x.Id == prodactId);
             return Product;
         }
+
     }
 }

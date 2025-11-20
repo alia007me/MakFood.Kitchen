@@ -3,6 +3,7 @@ using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.Contract;
 using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.OrederState;
 using MakFood.Kitchen.Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
+using OrderStatus = MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.OrederState.OrderStatus;
 
 namespace MakFood.Kitchen.Infrastructure.Persistence.Repository.Repository
 {

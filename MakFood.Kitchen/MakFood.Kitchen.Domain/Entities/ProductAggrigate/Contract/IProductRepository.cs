@@ -14,7 +14,7 @@
         Task<bool> IsExistByIdNameThumbnailPathAsync(Guid productId, string productName, string productThumbnailPath, CancellationToken ct);
         Task<bool> IsExistByIdNamePriceAsync(Guid productId, string productName, decimal price, CancellationToken ct);
         Task<Product?> GetProductByIdAsync(Guid productId, CancellationToken ct);
-
-        public Task<Product> GetProduct(Guid prodactId, CancellationToken ct, bool needToTrack = true);
-    }
+        Task<Product> GetProduct(Guid prodactId, CancellationToken ct, bool needToTrack = true);
+        Task<IEnumerable<Product>> GetAllProductsAsync(CancellationToken ct = default);
+    } 
 }
