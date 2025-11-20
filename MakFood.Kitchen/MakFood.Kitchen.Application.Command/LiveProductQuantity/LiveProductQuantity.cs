@@ -17,7 +17,7 @@ namespace MakFood.Kitchen.Application.Command.LiveProductQuantity
 
         public async Task ChangeAmountOfProduct(Order order)
         {
-            await Clients.Clients(Context.ConnectionId).SendAsync(JsonSerializer.Serialize(order));
+            await Clients.Clients(Context.ConnectionId).SendAsync("ChangeAmountOfProduct", JsonSerializer.Serialize(order));
         }
 
         public override async Task OnConnectedAsync()
@@ -30,7 +30,7 @@ namespace MakFood.Kitchen.Application.Command.LiveProductQuantity
 
             foreach (var order in allOrders)
             {
-                await Clients.Client(Context.ConnectionId).SendAsync(JsonSerializer.Serialize(order));
+                await Clients.Client(Context.ConnectionId).SendAsync("OnConnect",JsonSerializer.Serialize(order));
             }
         }
     }
