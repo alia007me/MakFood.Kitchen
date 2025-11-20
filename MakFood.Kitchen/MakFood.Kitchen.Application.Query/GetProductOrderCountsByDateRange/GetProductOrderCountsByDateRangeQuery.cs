@@ -3,7 +3,7 @@ using MediatR;
 
 namespace MakFood.Kitchen.Application.Query.GetProductOrderCountsByDateRange
 {
-    public class GetProductOrderCountsByDateRangeQuery : GetByDateRangeQueryBase, IRequest<List<GetProductOrderCountsByDateRangeDto>>
+    public class GetProductOrderCountsByDateRangeQuery : GetByDateRangeQueryBase, IRequest<GetProductOrderCountsByDateRangeResponse>
     {
     }
 

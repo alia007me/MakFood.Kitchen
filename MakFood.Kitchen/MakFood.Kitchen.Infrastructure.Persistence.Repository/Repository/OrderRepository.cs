@@ -22,6 +22,7 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Repository.Repository
             var endDateTime = ToDate.ToDateTime(TimeOnly.MaxValue);
 
             return await _context.Orders
+                                 .AsNoTracking()
                                  .Where(x => x.CreationDateTime >= startDateTime
                                           && x.CreationDateTime <= endDateTime)
                                  .Include(x => x.StateHistory)
@@ -45,6 +46,41 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Repository.Repository
                     .ThenInclude(p => p.PaymentLog)
                 .FirstOrDefaultAsync(x => x.Id == orderId, ct);
 
+        }
+
+        public async Task<decimal> GetTotalSalesByDate(DateOnly FromDate, DateOnly ToDate, CancellationToken ct)
+        {
+            var startDateTime = FromDate.ToDateTime(TimeOnly.MinValue);
+            var endDateTime = ToDate.ToDateTime(TimeOnly.MaxValue);
+
+            return await _context.Orders
+                                 .AsNoTracking()
+                                 .Where(x => x.CreationDateTime >= startDateTime
+                                          && x.CreationDateTime <= endDateTime)
+                                 .Include(x => x.StateHistory)
+                                 .Include(x => x.Consistencies)
+                                 .Include(x => x.DiscountCode)
+                                 .ThenInclude(p => p.DiscountPolicy)
+                                 .Include(x => x.Payment)
+                                 .ThenInclude(p => p.PaymentLog)
+                                 .Where(c => c.StateHistory.OfType<MiseOnPlaceOrderState>().Any()).SumAsync(x => x.Payable, ct);
+        }
+
+        public async Task<IEnumerable<IOrderRepository.GetProductOrderCountsReadModel>> GetProductOrderCountsByDateRange(DateOnly FromDate, DateOnly ToDate, CancellationToken ct)
+        {
+            var startDateTime = FromDate.ToDateTime(TimeOnly.MinValue);
+            var endDateTime = ToDate.ToDateTime(TimeOnly.MaxValue);
+
+            return await _context.Orders.Where(x => x.CreationDateTime >= startDateTime
+                                          && x.CreationDateTime <= endDateTime)
+                .SelectMany(p => p.Consistencies)
+                                          .GroupBy(g => new { g.ProductId, g.Name })
+                                          .Select(x => new IOrderRepository.GetProductOrderCountsReadModel
+                                          {
+                                              ProductId = x.Key.ProductId,
+                                              ProductName = x.Key.Name,
+                                              Count = x.Sum(k => k.Quantity)
+                                          }).ToListAsync(ct);
         }
     }
 }

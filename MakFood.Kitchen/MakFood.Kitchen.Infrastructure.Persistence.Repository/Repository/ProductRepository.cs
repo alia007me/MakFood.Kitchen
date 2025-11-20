@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MakFood.Kitchen.Infrastructure.Persistence.Repository.Repository
 {
+
     public class ProductRepository : IProductRepository
     {
         private readonly ApplicationDbContext _context;
@@ -14,9 +15,35 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Repository.Repository
             _context = context;
         }
 
-        public Task<IEnumerable<Product>> GetAllProductsAsync(CancellationToken ct = default)
+        public async Task<Product?> GetProductByIdAsync(Guid productId, CancellationToken ct)
         {
-            throw new NotImplementedException();
+            return await _context.Products.SingleOrDefaultAsync(x => x.Id == productId,ct);
+        }
+
+        public async Task<bool> IsExistByIdAsync(Guid productId, CancellationToken ct)
+        {
+            return await _context.Products
+                .AsNoTracking()
+                .AnyAsync(x => x.Id == productId, ct);
+        }
+
+        public async Task<bool> IsExistByIdNamePriceAsync(Guid productId, string productName, decimal price, CancellationToken ct)
+        {
+            return await _context.Products
+                .AsNoTracking()
+                .AnyAsync(x => x.Id == productId && x.Name == productName && x.Price == price, ct);
+        }
+
+        public async Task<bool> IsExistByIdNameThumbnailPathAsync(Guid productId, string productName, string productThumbnailPath, CancellationToken ct)
+        {
+            return await _context.Products
+                .AsNoTracking()
+                .AnyAsync(x => x.Id == productId && x.Name == productName && x.ThumbnailPath == productThumbnailPath, ct);
+        }
+
+        public async Task<IEnumerable<Product>> GetAllProductsAsync(CancellationToken ct = default)
+        {
+            return await _context.Products.ToListAsync(ct);
         }
 
         public async Task<Product> GetProduct(Guid prodactId, CancellationToken ct, bool needToTrack = true)
@@ -27,19 +54,5 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Repository.Repository
             return Product;
         }
 
-        public Task<bool> IsExistByIdAsync(Guid productId)
-        {
-            throw new NotImplementedException();
-    }
-
-        public Task<bool> IsExistByIdNamePriceAsync(Guid productId, string productName, decimal price)
-        {
-            throw new NotImplementedException();
-}
-
-        public Task<bool> IsExistByIdNameThumbnailPathAsync(Guid productId, string productName, string productThumbnailPath)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
