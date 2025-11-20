@@ -2,6 +2,13 @@
 {
     public interface IProductRepository
     {
-        public Task<Product> GetProduct(Guid prodactId, CancellationToken ct, bool needToTrack = true);
-    }
+        Task<Product> GetProduct(Guid prodactId, CancellationToken ct, bool needToTrack = true);
+        Task<bool> HasProductsInSubcategoriesAsync(Guid subcategoryId, CancellationToken ct);
+        Task<bool> HasProductsInCategoryAsync(Guid categoryId, CancellationToken ct);
+
+       
+
+        
+    
+}
 }

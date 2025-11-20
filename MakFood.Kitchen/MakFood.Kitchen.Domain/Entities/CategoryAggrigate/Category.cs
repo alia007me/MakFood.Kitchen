@@ -73,6 +73,20 @@ namespace MakFood.Kitchen.Domain.Entities.CategoryAggrigate
         {
             var target = _subcategories.FirstOrDefault(x => x.Id == subcategoryId);
             _subcategories.Remove(target);
+            if (target == null)
+                throw new SubcategoryNotFoundException($"Subcategory with Id '{subcategoryId}' not found.");
+        }
+
+        /// <summary>
+        /// قانون کسب و کار: اگر محصولی در این دسته بندی وجود داشته باشد، امکان حذف ندارد.
+        /// </summary>
+        /// <param name="hasProducts">وضعیت وجود محصول در این دسته بندی</param>
+        public void CheckCanBeRemoved(bool hasProducts)
+        {
+            if (hasProducts)
+                throw new EntityHasRelatedItemsException(
+            $"Category '{this.Name}' (ID: {this.Id}) cannot be removed because it has related products.");
+
         }
 
 

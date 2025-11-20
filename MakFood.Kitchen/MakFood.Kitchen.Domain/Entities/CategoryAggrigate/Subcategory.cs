@@ -1,5 +1,6 @@
 ﻿using MakFood.Kitchen.Domain.BussinesRules;
 using MakFood.Kitchen.Domain.Entities.Base;
+using MakFood.Kitchen.Infrastructure.Substructure.Exceptions;
 
 namespace MakFood.Kitchen.Domain.Entities.CategoryAggrigate
 {
@@ -35,6 +36,18 @@ namespace MakFood.Kitchen.Domain.Entities.CategoryAggrigate
         {
             Check(new NameMustContainOnlyValidCharactersBR(newName));
             Name = newName;
+        }
+
+        /// <summary>
+        /// قانون کسب و کار: اگر محصولی در این دسته بندی وجود داشته باشد، امکان حذف ندارد.
+        /// </summary>
+        /// <param name="hasProducts">وضعیت وجود محصول در این دسته بندی</param>
+        public void CheckCanBeRemoved(bool hasProducts)
+        {
+            if (hasProducts)
+                throw new EntityHasRelatedItemsException(
+            $"Subcategory '{this.Name}' (ID: {this.Id}) cannot be removed because it has related products.");
+
         }
         #endregion
     }
