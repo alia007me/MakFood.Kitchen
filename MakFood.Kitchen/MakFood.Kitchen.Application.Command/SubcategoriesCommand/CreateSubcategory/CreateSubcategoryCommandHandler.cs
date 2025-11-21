@@ -40,7 +40,7 @@ namespace MakFood.Kitchen.Application.Command.SubcategoriesCommand.CreateSubcate
         private void EnsureCategoryExists(Category? category, Guid categoryId)
         {
             if (category == null)
-                throw new CategoryNotFoundException($"Category with Id '{categoryId}' not found.");
+                throw new SubcategoryNotFoundException($"Category with Id '{categoryId}' not found.");
         }
 
         private void ValidateSubcategoryNameIsUnique(Category category, string subcategoryName)

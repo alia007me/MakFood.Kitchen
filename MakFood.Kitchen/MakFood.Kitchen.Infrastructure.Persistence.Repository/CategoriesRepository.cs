@@ -58,7 +58,10 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Repository
         {
             _context.Categories.Remove(category);
         }
-
+        public void RemoveSubcategory(Subcategory subcategory)
+        {
+            _context.Set<Subcategory>().Remove(subcategory);
+        }
         public async Task<Category?> GetCategoryBySubcategoryId(Guid subcategoryId, CancellationToken ct)
         {
             return await _context.Categories
