@@ -52,5 +52,9 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Repository.Repository
                     .ThenInclude(p => p.PaymentLog)
                 .FirstOrDefaultAsync(x => x.Id == orderId, ct);
         }
+        public async Task<long> GetTotalOrdersCountAsync(CancellationToken ct)
+        {
+            return await _context.Orders.LongCountAsync(ct);
+        }
     }
 }

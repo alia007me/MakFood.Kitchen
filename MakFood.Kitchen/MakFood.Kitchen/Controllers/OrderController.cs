@@ -23,9 +23,9 @@ namespace MakFood.Kitchen.Controllers
         }
 
         [HttpGet("State/Mise-On-Place")]
-        public async Task<IActionResult> GetAllMiseOnPlaceOrdersByDateRange(DateOnly fromDate,DateOnly ToDate)
+        public async Task<IActionResult> GetAllMiseOnPlaceOrdersByDateRange(DateOnly fromDate, DateOnly ToDate)
         {
-            var getAllMiseOnPlaceOrdersByDateRangeQuery = new GetAllMiseOnPlaceOrdersByDateRangeQuery{FromDate = fromDate,ToDate = ToDate };
+            var getAllMiseOnPlaceOrdersByDateRangeQuery = new GetAllMiseOnPlaceOrdersByDateRangeQuery { FromDate = fromDate, ToDate = ToDate };
 
             var result = await _mediator.Send(getAllMiseOnPlaceOrdersByDateRangeQuery);
 
@@ -55,7 +55,7 @@ namespace MakFood.Kitchen.Controllers
         [HttpPatch("{orderId}/Cancel")]
         public async Task<IActionResult> CancelOrder(Guid orderId, Guid customerId)
         {
-            var CancelOrderCommand = new CancelOrderCommand(customerId,orderId);
+            var CancelOrderCommand = new CancelOrderCommand(customerId, orderId);
 
             var result = await _mediator.Send(CancelOrderCommand);
 
@@ -78,7 +78,7 @@ namespace MakFood.Kitchen.Controllers
             return Ok(result);
         }
 
-        [HttpPatch]
+        [HttpPatch("{orderId}/Pay/Cash")]//
         public async Task<IActionResult> PayOrderByCash([FromBody] PayByCashCommand command)
         {
             var result = await _mediator.Send(command);

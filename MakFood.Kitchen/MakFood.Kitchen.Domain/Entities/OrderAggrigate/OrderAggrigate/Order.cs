@@ -53,6 +53,8 @@ namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate
         public IEnumerable<Constituent> Consistencies => _constituents.AsEnumerable();
         public Payment Payment { get; private set; }
 
+        public bool OwnedBy(Guid userId)
+            => Payment.NeedToPay(Id);
 
         #region State
         public void Created()

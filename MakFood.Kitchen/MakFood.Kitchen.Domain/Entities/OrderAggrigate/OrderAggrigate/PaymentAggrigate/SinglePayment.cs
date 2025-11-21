@@ -1,5 +1,6 @@
 ﻿using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentAggrigate.Enum;
 using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentAggrigate.PaymentBase;
+using MakFood.Kitchen.Infrastructure.Substructure.Exceptions;
 
 namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentAggrigate
 {
@@ -15,9 +16,21 @@ namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentA
             PaymentType = PaymentType.Single;
         }
         #region overRides
-        public override bool checkUser(Guid customerId)
+        public override bool NeedToPay(Guid customerId)
         {
             return (this.OwnerId == customerId) ? true : false;
+        }
+        public override void Pay(Guid id)
+        {
+            if (id == this.OwnerId) {
+                OwnerPaidAmount = OwnerAmount;
+                OwnerPaidTime = DateTime.Now;
+                Paid();
+            }
+            else {
+                throw new ThisIsNotYourOrderException();
+            }
+
         }
         #endregion
     }

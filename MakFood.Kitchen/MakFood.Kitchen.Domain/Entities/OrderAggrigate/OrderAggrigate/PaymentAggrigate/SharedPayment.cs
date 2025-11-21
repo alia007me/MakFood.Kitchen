@@ -1,6 +1,7 @@
 ﻿using MakFood.Kitchen.Domain.BussinesRules;
 using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentAggrigate.Enum;
 using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentAggrigate.PaymentBase;
+using MakFood.Kitchen.Infrastructure.Substructure.Exceptions;
 
 namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentAggrigate
 {
@@ -10,7 +11,7 @@ namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentA
         private SharedPayment() { }//ef
         public SharedPayment(decimal totalAmount, PaymentMathods ownerPaymentMethod,
             Guid ownerId, Guid partnerId)
-            : base(totalAmount, ownerPaymentMethod , ownerId)
+            : base(totalAmount, ownerPaymentMethod, ownerId)
         {
             TotalAmount = totalAmount;
             ReminingAmount = totalAmount;
@@ -24,7 +25,8 @@ namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentA
 
             PaymentType = PaymentType.Shared;
         }
-
+        public PaymentStatus OwnerPaymentStatus { get; protected set; }
+        public PaymentStatus PartnerPaymentStatus { get; protected set; }
         public decimal PartnerAmount { get; private set; }
         public Guid PartnerId { get; private set; }
         public decimal PartnerPaidAmount { get; private set; }
@@ -59,9 +61,29 @@ namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentA
         }
         #endregion
         #region overRides
-        public override bool checkUser(Guid customerId)
+        public override bool NeedToPay(Guid customerId)
         {
             return (this.PartnerId == customerId || this.OwnerId == customerId) ? true : false;
+        }
+        public override void Paid()
+        {
+            if (OwnerPaymentStatus == Enum.PaymentStatus.Paid && PartnerPaymentStatus == Enum.PaymentStatus.Paid)
+                base.Paid();
+        }
+        public override void Pay(Guid id)
+        {
+            if (id == this.OwnerId) {
+                OwnerPaidAmount = OwnerAmount;
+                OwnerPaymentStatus = Enum.PaymentStatus.Paid;
+                OwnerPaidTime = DateTime.Now;
+            }
+            else if (id == this.PartnerId) {
+                PartnerPaidAmount = PartnerAmount;
+                PartnerPaymentStatus = Enum.PaymentStatus.Paid;
+            }
+            else {
+                throw new ThisIsNotYourOrderException();
+            }
         }
         #endregion
     }

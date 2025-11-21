@@ -20,12 +20,11 @@ namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentA
             OwnerPaidAmount = Decimal.Zero;
             _PaymentHistory.Add(new CreatedPaymentState());
         }
-        public Guid OwnerId { get;protected init; }
+        public Guid OwnerId { get; protected init; }
         public decimal TotalAmount { get; protected set; }
-        public PaymentState CurrentState => _PaymentHistory.OrderByDescending(c => c.CreationDateTime).First();
         public decimal ReminingAmount { get; protected set; }
         public PaymentMathods OwnerPaymentMethod { get; protected set; }
-        public PaymentStatus PaymentStatus { get; protected set; }
+        public PaymentState PaymentStatus => _PaymentHistory.OrderByDescending(c => c.CreationDateTime).First();
         public PaymentType PaymentType { get; protected set; }
         public decimal OwnerAmount { get; protected set; }
         public decimal OwnerPaidAmount { get; protected set; }
@@ -37,7 +36,7 @@ namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentA
         {
             _PaymentHistory.Add(new CancelledPaymentState());
         }
-        public void Paid()
+        public virtual void Paid()
         {
             _PaymentHistory.Add(new PaidPaymentState());
         }
@@ -63,7 +62,8 @@ namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentA
         }
         #endregion
         #region abstractMethods
-        public abstract bool checkUser(Guid id);
+        public abstract bool NeedToPay(Guid id);
+        public abstract void Pay(Guid id);
         #endregion
     }
 }

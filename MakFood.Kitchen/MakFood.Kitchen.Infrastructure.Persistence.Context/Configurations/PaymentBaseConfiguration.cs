@@ -37,15 +37,11 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Context.Configurations
             builder.Property(p => p.OwnerPaidTime)
                     .IsRequired(false);
 
-            builder.Property(p => p.PaymentStatus)
-                    .IsRequired();
-
             builder.Property(p => p.PaymentType)
                     .IsRequired();
 
             builder.Property(p => p.OwnerId)
                     .IsRequired();
-
 
             builder.HasDiscriminator<string>("PaymentDiscriminator")
                 .HasValue<SinglePayment>(nameof(PaymentType.Single))
