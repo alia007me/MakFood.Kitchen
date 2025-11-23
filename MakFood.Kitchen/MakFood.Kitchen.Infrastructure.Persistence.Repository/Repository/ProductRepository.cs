@@ -14,21 +14,21 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Repository.Repository
 
     public class ProductRepository : IProductRepository
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ApplicationDbContext _applicationDbContext;
         public ProductRepository(ApplicationDbContext context)
         {
-            _context = context;
+            _applicationDbContext = context;
 
         }
         public async Task<bool> IsExistByIdAsync(Guid productId)
         {
-            return await _context.Products
+            return await _applicationDbContext.Products
                 .AnyAsync(x => x.Id == productId);
         }
 
         public async Task<bool> IsExistByIdNameThumbnailPathAsync(Guid productId, string productName, string productThumbnailPath)
         {
-            return await _context.Products
+            return await _applicationDbContext.Products
                 .AnyAsync(x =>
                     x.Id == productId &&
                     x.Name == productName &&
@@ -37,7 +37,7 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Repository.Repository
 
         public async Task<bool> IsExistByIdNamePriceAsync(Guid productId, string productName, decimal price)
         {
-            return await _context.Products
+            return await _applicationDbContext.Products
                 .AnyAsync(x =>
                     x.Id == productId &&
                     x.Name == productName &&
@@ -46,7 +46,7 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Repository.Repository
 
         public async Task<IEnumerable<IProductRepository.GetFilteredProductsReadModel>> FilterAsync(string? name, Guid? categoryId, Guid? subcategoryId, CancellationToken ct)
         {
-            var query = _context.Products.AsNoTracking().AsQueryable();
+            var query = _applicationDbContext.Products.AsNoTracking().AsQueryable();
 
             // فیلتر بر اساس نام غذا
             if (!string.IsNullOrWhiteSpace(name))
@@ -59,7 +59,7 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Repository.Repository
             // فیلتر بر اساس دسته‌بندی
             if (categoryId.HasValue)
             {
-                var subcategoryIds = await _context.Categories
+                var subcategoryIds = await _applicationDbContext.Categories
                     .Where(c => c.Id == categoryId.Value)
                     .SelectMany(c => c.Subcategories)
                     .Select(sc => sc.Id)
@@ -81,7 +81,7 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Repository.Repository
         }
         public async Task<Product> GetProduct(Guid prodactId, CancellationToken ct, bool needToTrack = true)
         {
-            var Products = _context.Products.AsQueryable();
+            var Products = _applicationDbContext.Products.AsQueryable();
             Products = needToTrack ? Products : Products.AsNoTracking();
             var Product = await Products.SingleOrDefaultAsync(x => x.Id == prodactId);
             return Product!;
