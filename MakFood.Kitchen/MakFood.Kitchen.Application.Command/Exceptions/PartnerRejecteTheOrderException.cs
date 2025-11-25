@@ -1,5 +1,4 @@
-﻿
-namespace MakFood.Kitchen.Application.Command.Pay
+﻿namespace MakFood.Kitchen.Application.Command.Exceptions
 {
     [Serializable]
     internal class PartnerRejecteTheOrderException : Exception
