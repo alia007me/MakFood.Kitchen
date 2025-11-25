@@ -14,39 +14,47 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Repository.Repository
 
     public class ProductRepository : IProductRepository
     {
-        private readonly ApplicationDbContext _applicationDbContext;
+        private readonly ApplicationDbContext _context;
         public ProductRepository(ApplicationDbContext context)
         {
-            _applicationDbContext = context;
+            _context = context;
 
         }
-        public async Task<bool> IsExistByIdAsync(Guid productId)
+        public async Task<bool> IsExistByIdAsync(Guid productId, CancellationToken ct)
         {
-            return await _applicationDbContext.Products
+            return await _context.Products
+                .AsNoTracking ()
                 .AnyAsync(x => x.Id == productId);
         }
 
-        public async Task<bool> IsExistByIdNameThumbnailPathAsync(Guid productId, string productName, string productThumbnailPath)
+        public async Task<bool> IsExistByIdNameThumbnailPathAsync(Guid productId, string productName, string productThumbnailPath, CancellationToken ct)
         {
-            return await _applicationDbContext.Products
+            return await _context.Products
                 .AnyAsync(x =>
                     x.Id == productId &&
                     x.Name == productName &&
                     x.ThumbnailPath == productThumbnailPath);
         }
 
-        public async Task<bool> IsExistByIdNamePriceAsync(Guid productId, string productName, decimal price)
+        public async Task<bool> IsExistByIdNamePriceAsync(Guid productId, string productName, decimal price, CancellationToken ct )
         {
-            return await _applicationDbContext.Products
+            return await _context.Products
                 .AnyAsync(x =>
                     x.Id == productId &&
                     x.Name == productName &&
                     x.Price == price);
         }
+        public async Task<Product> GetProduct(Guid prodactId, CancellationToken ct, bool needToTrack = true)
+        {
+            var Products = _context.Products.AsQueryable();
+            Products = needToTrack ? Products : Products.AsNoTracking();
+            var Product = await Products.SingleOrDefaultAsync(x => x.Id == prodactId);
+            return Product!;
+        }
 
         public async Task<IEnumerable<IProductRepository.GetFilteredProductsReadModel>> FilterAsync(string? name, Guid? categoryId, Guid? subcategoryId, CancellationToken ct)
         {
-            var query = _applicationDbContext.Products.AsNoTracking().AsQueryable();
+            var query = _context.Products.AsNoTracking().AsQueryable();
 
             // فیلتر بر اساس نام غذا
             if (!string.IsNullOrWhiteSpace(name))
@@ -59,7 +67,7 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Repository.Repository
             // فیلتر بر اساس دسته‌بندی
             if (categoryId.HasValue)
             {
-                var subcategoryIds = await _applicationDbContext.Categories
+                var subcategoryIds = await _context.Categories
                     .Where(c => c.Id == categoryId.Value)
                     .SelectMany(c => c.Subcategories)
                     .Select(sc => sc.Id)
@@ -78,13 +86,6 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Repository.Repository
 
             }).ToListAsync(ct);
 
-        }
-        public async Task<Product> GetProduct(Guid prodactId, CancellationToken ct, bool needToTrack = true)
-        {
-            var Products = _applicationDbContext.Products.AsQueryable();
-            Products = needToTrack ? Products : Products.AsNoTracking();
-            var Product = await Products.SingleOrDefaultAsync(x => x.Id == prodactId);
-            return Product!;
         }
     }
 }
