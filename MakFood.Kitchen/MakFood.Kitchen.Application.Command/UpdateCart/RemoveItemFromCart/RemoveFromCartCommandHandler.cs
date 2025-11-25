@@ -3,6 +3,7 @@ using MakFood.Kitchen.Domain.Entities.CartAggrigate;
 using MakFood.Kitchen.Domain.Entities.CartAggrigate.Contract;
 using MakFood.Kitchen.Domain.Entities.ProductAggrigate.Contract;
 using MakFood.Kitchen.Infrastructure.Persistence.Context.Transactions;
+using MakFood.Kitchen.Infrastructure.Substructure.Exceptions;
 using MediatR;
 
 namespace MakFood.Kitchen.Application.Command.UpdateCart.RemoveItemFromCart

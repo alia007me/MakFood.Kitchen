@@ -45,7 +45,7 @@ namespace MakFood.Kitchen.Application.Command.AddOrder.SharedPayment
             var Constituents = new List<Constituent>();
 
             for (int i = 0; i < Items.Count(); i++) {
-                Constituents.Add(new Constituent(await _productRepository.GetProductById(Items[i].ProductId, ct), Items[i]));
+                Constituents.Add(new Constituent(await _productRepository.GetProductByIdAsync(Items[i].ProductId, ct), Items[i]));
             }
 
             cart.RemoveAllItems();

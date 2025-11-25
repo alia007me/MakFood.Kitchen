@@ -1,12 +1,8 @@
-﻿using MakFood.Kitchen.Domain.Entities.DiscountAggrigate;
-using MakFood.Kitchen.Domain.Entities.OrderAggrigate;
-using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate;
+﻿using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate;
 using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.Contract;
 using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.OrederState;
-using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentAggrigate.PaymentBase;
 using MakFood.Kitchen.Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 
 namespace MakFood.Kitchen.Infrastructure.Persistence.Repository.Repository
 {

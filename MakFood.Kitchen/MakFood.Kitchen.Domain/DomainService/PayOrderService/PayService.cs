@@ -17,7 +17,7 @@ namespace MakFood.Kitchen.Domain.DomainService.PayOrderService
             order.Payment.Pay(userId);
             var productsId = order.Consistencies.Select(c => c.ProductId);
             foreach (var productId in productsId) {
-                var product = await _productRepository.GetProductById(productId, ct);
+                var product = await _productRepository.GetProductByIdAsync(productId, ct);
                 DecreaseQuantity(order, product);
             }
         }

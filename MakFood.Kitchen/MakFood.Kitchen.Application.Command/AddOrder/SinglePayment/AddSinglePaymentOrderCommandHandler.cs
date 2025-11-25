@@ -8,12 +8,10 @@ using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate;
 using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.Contract;
 using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentAggrigate.Enum;
 using MakFood.Kitchen.Domain.Entities.ProductAggrigate.Contract;
-using SinglePaymentState = MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentAggrigate;
 using MakFood.Kitchen.Infrastructure.Persistence.Context.Transactions;
 using MediatR;
-using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentAggrigate.PaymentBase;
 using PaymentTypes = MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentAggrigate;
-using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentAggrigate;
+using SinglePaymentState = MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentAggrigate;
 
 namespace MakFood.Kitchen.Application.Command.AddOrder.SinglePayment
 {
@@ -43,9 +41,8 @@ namespace MakFood.Kitchen.Application.Command.AddOrder.SinglePayment
             var Items = cart.CartItems.ToList();
             var Constituents = new List<Constituent>();
 
-            for (int i = 0; i < Items.Count(); i++)
-            {
-                Constituents.Add(new Constituent(await _productRepository.GetProductById(Items[i].ProductId, ct), Items[i]));
+            for (int i = 0; i < Items.Count(); i++) {
+                Constituents.Add(new Constituent(await _productRepository.GetProductByIdAsync(Items[i].ProductId, ct), Items[i]));
             }
 
             cart.RemoveAllItems();
@@ -57,7 +54,7 @@ namespace MakFood.Kitchen.Application.Command.AddOrder.SinglePayment
             var totalAmount = Constituents.Sum(x => x.Price * x.Quantity);
 
             //ایجاد پیمنت
-            var payment = CreatePayment(PaymentType.Single,command.OwnerPaymentMethod,Discount,totalAmount,command.CartId);
+            var payment = CreatePayment(PaymentType.Single, command.OwnerPaymentMethod, Discount, totalAmount, command.CartId);
 
             //ایجاد اوردر
 
@@ -76,21 +73,19 @@ namespace MakFood.Kitchen.Application.Command.AddOrder.SinglePayment
         private Order CreateOrder(Guid customerId, Discount? discountCode, PaymentTypes.SinglePayment payment, List<Constituent> constituents)
         {
             Order order;
-            if (discountCode != null)
-            {
+            if (discountCode != null) {
                 order = new Order(customerId, discountCode, payment, constituents);
             }
-            else
-            {
-                order = new Order(customerId,null, payment, constituents);
+            else {
+                order = new Order(customerId, null, payment, constituents);
             }
             return order;
         }
         private SinglePaymentState.SinglePayment CreatePayment(PaymentType paymentType, PaymentMathods ownerPaymentMethod, Discount? discount, decimal totalAmount, Guid cartId)
         {
-            var payable = DiscountCalculatorHelper.AmountCalculator(totalAmount, discount,cartId);
+            var payable = DiscountCalculatorHelper.AmountCalculator(totalAmount, discount, cartId);
 
-            var payment = new PaymentTypes.SinglePayment(payable,ownerPaymentMethod,cartId);
+            var payment = new PaymentTypes.SinglePayment(payable, ownerPaymentMethod, cartId);
 
             return payment;
         }

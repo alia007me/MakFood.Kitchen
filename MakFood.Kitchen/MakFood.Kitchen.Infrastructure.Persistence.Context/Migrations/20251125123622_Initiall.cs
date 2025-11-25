@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace MakFood.Kitchen.Infrastructure.Persistence.Context.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class Initiall : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -71,20 +71,22 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Context.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    OwnerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     TotalAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     ReminingAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    OwnerPaymentMethod = table.Column<int>(type: "int", nullable: false),
-                    PaymentStatus = table.Column<int>(type: "int", nullable: false),
+                    OwnerPaymentMethod = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PaymentType = table.Column<int>(type: "int", nullable: false),
                     OwnerAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     OwnerPaidAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     OwnerPaidTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    PaymentDiscriminator = table.Column<string>(type: "nvarchar(8)", maxLength: 8, nullable: false),
+                    OwnerPaymentStatus = table.Column<int>(type: "int", nullable: true),
+                    PartnerPaymentStatus = table.Column<int>(type: "int", nullable: true),
                     PartnerAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    PartnerApproved = table.Column<bool>(type: "bit", nullable: true),
                     PartnerId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     PartnerPaidAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    PartnerPaymentMethod = table.Column<int>(type: "int", nullable: true),
-                    PaymentDiscriminator = table.Column<string>(type: "nvarchar(8)", maxLength: 8, nullable: false),
+                    PartnerPaymentMethod = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PartnerApproved = table.Column<bool>(type: "bit", nullable: true),
                     CreationDateTime = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
@@ -218,7 +220,8 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Context.Migrations
                         name: "FK_Orders_Discounts_DiscountCodeId",
                         column: x => x.DiscountCodeId,
                         principalTable: "Discounts",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Orders_Payments_PaymentId",
                         column: x => x.PaymentId,
@@ -289,9 +292,7 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Context.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Orders_DiscountCodeId",
                 table: "Orders",
-                column: "DiscountCodeId",
-                unique: true,
-                filter: "[DiscountCodeId] IS NOT NULL");
+                column: "DiscountCodeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Orders_PaymentId",
