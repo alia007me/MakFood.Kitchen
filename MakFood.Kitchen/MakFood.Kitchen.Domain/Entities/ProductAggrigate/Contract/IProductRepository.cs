@@ -17,7 +17,7 @@ namespace MakFood.Kitchen.Domain.Entities.ProductAggrigate.Contract
         Task<Product?> GetProductByIdAsync(Guid productId, CancellationToken ct);
         Task<Product> GetProduct(Guid prodactId, CancellationToken ct, bool needToTrack = true);
         Task<IEnumerable<Product>> GetAllProductsAsync(CancellationToken ct = default);
-    } 
+    
       
         Task<IEnumerable<GetFilteredProductsReadModel>> FilterAsync(string? name, Guid? categoryId, Guid? subcategoryId, CancellationToken ct);
 
