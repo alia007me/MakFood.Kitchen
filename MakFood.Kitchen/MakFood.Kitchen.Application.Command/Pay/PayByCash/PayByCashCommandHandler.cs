@@ -1,6 +1,7 @@
 ﻿using MakFood.Kitchen.Application.Command.Exceptions;
 using MakFood.Kitchen.Application.Command.Helper.ChainValidator;
 using MakFood.Kitchen.Application.Command.Helper.OrderHelper;
+using MakFood.Kitchen.Domain.DomainService.PayOrderService;
 using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate;
 using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.Contract;
 using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentAggrigate;
@@ -14,8 +15,10 @@ namespace MakFood.Kitchen.Application.Command.Pay.PayByCash
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IOrderRepository _orderRepository;
-        public PayByCashCommandHandler(IUnitOfWork unitOfWork, IOrderRepository orderRepository)
+        private readonly IPayService _payService;
+        public PayByCashCommandHandler(IUnitOfWork unitOfWork, IOrderRepository orderRepository, IPayService payService)
         {
+            _payService = payService;
             _unitOfWork = unitOfWork;
             _orderRepository = orderRepository;
         }
@@ -23,7 +26,7 @@ namespace MakFood.Kitchen.Application.Command.Pay.PayByCash
         {
             var order = await _orderRepository.GetOrderByIdAsync(request.OrderId, ct);
             validate(order, request);
-            order.Payment.Pay(request.CustomerId);
+            await _payService.payOrder(order, request.CustomerId, ct);
             await _unitOfWork.Commit(ct);
             return response(order, request.CustomerId);
 

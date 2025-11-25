@@ -1,6 +1,7 @@
 ﻿using MakFood.Kitchen.Application.Command.Exceptions;
 using MakFood.Kitchen.Application.Command.Helper.ChainValidator;
 using MakFood.Kitchen.Application.Command.Helper.OrderHelper;
+using MakFood.Kitchen.Domain.DomainService.PayOrderService;
 using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate;
 using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.Contract;
 using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentAggrigate;
@@ -12,19 +13,21 @@ namespace MakFood.Kitchen.Application.Command.Pay.PayByWallet.ResivePaiedOrderFr
 {
     public class ResivePaiedOrderFromWalletCommandHandler : IRequestHandler<ResivePaiedOrderFromWalletCommand, ResivePaiedOrderFromWalletResponse>
     {
+        private readonly IPayService _payService;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IOrderRepository _orderRepository;
-        public ResivePaiedOrderFromWalletCommandHandler(IUnitOfWork unitOfWork, IOrderRepository orderRepository)
+        public ResivePaiedOrderFromWalletCommandHandler(IUnitOfWork unitOfWork, IOrderRepository orderRepository, IPayService payService)
         {
             _unitOfWork = unitOfWork;
             _orderRepository = orderRepository;
+            _payService = payService;
         }
         public async Task<ResivePaiedOrderFromWalletResponse> Handle(ResivePaiedOrderFromWalletCommand request, CancellationToken ct)
         {
             var order = await _orderRepository.GetOrderByIdAsync(request.OrderId, ct);
             validate(order, request);
             if (request.IsPaied) {
-                order.Payment.Pay(request.UserId);
+                await _payService.payOrder(order, request.UserId, ct);
                 await _unitOfWork.Commit(ct);
             }
             return response(order, request.UserId);

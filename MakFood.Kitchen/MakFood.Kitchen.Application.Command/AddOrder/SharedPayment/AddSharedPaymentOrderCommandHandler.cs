@@ -48,7 +48,7 @@ namespace MakFood.Kitchen.Application.Command.AddOrder.SharedPayment
                 Constituents.Add(new Constituent(await _productRepository.GetProductById(Items[i].ProductId, ct), Items[i]));
             }
 
-            //cart.RemoveAllItems();
+            cart.RemoveAllItems();
 
 
             // دریافت کد تخفیف
@@ -83,6 +83,9 @@ namespace MakFood.Kitchen.Application.Command.AddOrder.SharedPayment
                 order = new Order(customerId, null, payment, constituents);
             }
             return order;
+            for (var i = 0; i < constituents.Count; i++) {
+
+            }
         }
         private PaymentStates.SharedPayment CreatePayment(PaymentType paymentType, PaymentMathods ownerPaymentMethod, Discount? discount, decimal totalAmount, Guid cartId/*this is owner id*/, Guid partnerId)
         {

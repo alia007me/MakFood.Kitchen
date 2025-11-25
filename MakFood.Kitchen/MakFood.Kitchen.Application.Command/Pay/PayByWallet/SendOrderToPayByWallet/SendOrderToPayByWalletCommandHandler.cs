@@ -31,9 +31,6 @@ namespace MakFood.Kitchen.Application.Command.Pay.PayByWallet.SendOrderToPayByWa
             order.Payment.Pay(request.CustomerId);
             await _unitOfWork.Commit(ct);
             return await response(order, request.CustomerId);
-
-
-
         }
         #region
         private async Task validate(Order order, SendOrderToPayByWalletCommand request)
