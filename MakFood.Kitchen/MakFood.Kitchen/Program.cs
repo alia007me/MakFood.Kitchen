@@ -12,6 +12,7 @@ using MakFood.Kitchen.Application.Command.LiveProductQuantity;
 
 
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -37,7 +38,6 @@ builder.Services.AddSignalR();
 
 
 builder.Services.AddControllers();
-builder.Services.AddSwaggerGen();
 
 builder.Services.AddValidatorsFromAssemblies(new[]
 {
