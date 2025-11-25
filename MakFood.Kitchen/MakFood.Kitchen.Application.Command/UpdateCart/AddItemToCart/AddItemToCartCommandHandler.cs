@@ -11,33 +11,36 @@ namespace MakFood.Kitchen.Application.Command.UpdateCart.AddItemToCart
     {
         private readonly IProductRepository _productRepository;
         private readonly ICartRepository _cartRepository;
-        private readonly IUnitOfWork _UnitOfWork;
+        private readonly IUnitOfWork _unitOfWork;
         public AddItemToCartCommandHandler(ICartRepository cartRepository, IUnitOfWork unitOfWork
             , IProductRepository productRepository)
         {
             _cartRepository = cartRepository;
             _productRepository = productRepository;
-            _UnitOfWork = unitOfWork;
+            _unitOfWork = unitOfWork;
         }
         public async Task<AddItemToCartCommandRespnse> Handle(AddItemToCartCommand cartCommand, CancellationToken ct)
         {
             var cart = await _cartRepository.GetCartById(cartCommand.CartId, ct);
-            var CartItem = cart.GetCartItemByID(cartCommand.ItemId);
-            if (CartItem is not null)
-                CartItem.IncreaseQuantity();
-            else
-                await addCartItem(cart, cartCommand, ct);
-
-            await _UnitOfWork.Commit(ct);
+            var cartItem = cart.GetCartItemByID(cartCommand.ItemId);
+            await IncreaseQuantity(cart, cartItem, cartCommand, ct);
+            await _unitOfWork.Commit(ct);
 
             return cart.CartItems.ToDto();
         }
         #region AddCartItem
         private async Task addCartItem(Cart cart, AddItemToCartCommand cartCommand, CancellationToken ct)
         {
-
-            var cartItem = new CartItem(await _productRepository.GetProductById(cartCommand.ItemId, ct, false));
+            var cartItem = new CartItem(await _productRepository.GetProduct(cartCommand.ItemId, ct, false));
             cart.AddCartItem(cartItem);
+        }
+        private async Task IncreaseQuantity(Cart cart,CartItem cartItem ,AddItemToCartCommand cartCommand, CancellationToken ct)
+        {
+            if (cartItem is not null)
+                cartItem.IncreaseQuantity();
+            else
+                await addCartItem(cart, cartCommand, ct);
+
         }
         #endregion
 

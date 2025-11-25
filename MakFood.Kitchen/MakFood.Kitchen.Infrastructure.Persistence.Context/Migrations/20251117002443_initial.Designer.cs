@@ -12,8 +12,13 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MakFood.Kitchen.Infrastructure.Persistence.Context.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251117002443_initial")]
-    partial class initial
+    [Migration("20251114143420_MakeCartIdRequaierdinCartItem")]
+    partial class MakeCartIdRequaierdinCartItem
+    partial class MakeCartIdRequaierdinCartItem
+==========
+    [Migration("20251115133034_Add-ProductName-To-FoodRequest")]
+    partial class AddProductNameToFoodRequest
+>>>>>>>>>> Temporary merge branch 2:MakFood.Kitchen/MakFood.Kitchen.Infrastructure.Persistence.Context/Migrations/20251115133034_Add-ProductName-To-FoodRequest.Designer.cs
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -184,10 +189,6 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Context.Migrations
 
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("ProductName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateOnly>("TargetDate")
                         .HasColumnType("date");

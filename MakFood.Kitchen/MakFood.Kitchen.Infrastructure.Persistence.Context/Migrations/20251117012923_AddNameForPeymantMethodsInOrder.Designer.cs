@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MakFood.Kitchen.Infrastructure.Persistence.Context.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251117012923_AddNameForPeymantMethodsInOrder")]
-    partial class AddNameForPeymantMethodsInOrder
+    [Migration("20251115133034_Add-ProductName-To-FoodRequest")]
+    partial class AddProductNameToFoodRequest
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -43,7 +43,7 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Context.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("CartId")
+                    b.Property<Guid?>("CartId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreationDateTime")
@@ -501,8 +501,7 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Context.Migrations
                     b.HasOne("Cart", null)
                         .WithMany("CartItems")
                         .HasForeignKey("CartId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("MakFood.Kitchen.Domain.Entities.CategoryAggrigate.Subcategory", b =>

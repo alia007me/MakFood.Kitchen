@@ -1,5 +1,5 @@
-﻿using MakFood.Kitchen.Application.Command.UpdateCart.AddItemToCart;
-using MakFood.Kitchen.Application.Command.UpdateCart.RemoveItemFromCart;
+﻿using MakFood.Kitchen.Application.Command.AddItemToCart;
+using MakFood.Kitchen.Application.Command.RemoveItemFromCart;
 using MakFood.Kitchen.Application.Query.GetCart;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -23,14 +23,14 @@ namespace MakFood.Kitchen.Controllers
             var result = await _mediator.Send(query);
             return Ok(result);
         }
-        [HttpPut("{userId}/Product/{ProductId}/Add")]
+        [HttpPatch("{userId}/Product/{ProductId}/Increase")]
         public async Task<IActionResult> AddCartItem([FromRoute] Guid userId, [FromRoute] Guid ProductId)
         {
             var command = new AddItemToCartCommand { ItemId = ProductId, CartId = userId };
             var result = await _mediator.Send(command);
             return Ok(result);
         }
-        [HttpPut("{userId}/Product/{ProductId}/Remove")]
+        [HttpPatch("{userId}/Product/{ProductId}/Decrease")]
         public async Task<IActionResult> RemoveCartItem([FromRoute] Guid userId, [FromRoute] Guid ProductId)
         {
             var command = new RemoveFromCartCommand { ItemId = ProductId, CartId = userId };

@@ -1,4 +1,5 @@
-﻿namespace MakFood.Kitchen.Domain.Entities.ProductAggrigate.Contract
+﻿
+namespace MakFood.Kitchen.Domain.Entities.ProductAggrigate.Contract
 {
     public interface IProductRepository
     {
@@ -11,8 +12,22 @@
         /// نادرست => در صورتی که محصول وجود نداشته باشد
         /// </returns>
         Task<bool> IsExistByIdAsync(Guid productId, CancellationToken ct);
-        Task<bool> IsExistByIdNameThumbnailPathAsync(Guid productId,string productName,string productThumbnailPath,CancellationToken ct);
-        Task<bool> IsExistByIdNamePriceAsync(Guid productId, string productName, decimal price,CancellationToken ct);
-        Task<Product?> GetProductById(Guid productId, CancellationToken ct, bool needToTrack = true);
-    } 
+        Task<bool> IsExistByIdNameThumbnailPathAsync(Guid productId, string productName, string productThumbnailPath, CancellationToken ct);
+        Task<bool> IsExistByIdNamePriceAsync(Guid productId, string productName, decimal price, CancellationToken ct);
+        Task<Product?> GetProductByIdAsync(Guid productId, CancellationToken ct);
+        Task<Product> GetProduct(Guid prodactId, CancellationToken ct, bool needToTrack = true);
+        Task<IEnumerable<Product>> GetAllProductsAsync(CancellationToken ct = default);
+    
+      
+        Task<IEnumerable<GetFilteredProductsReadModel>> FilterAsync(string? name, Guid? categoryId, Guid? subcategoryId, CancellationToken ct);
+
+
+        public class GetFilteredProductsReadModel
+        {
+            public Guid ProductId { get; set; }
+            public string ProductName { get; set; }
+            public decimal Price { get; set; }
+            public string SubCategoryName { get; set; }
+        }
+    }
 }

@@ -15,9 +15,7 @@ namespace MakFood.Kitchen.Application.Query.GetTotalSalesByDateRange
 
         public async Task<GetTotalSalesByDateRangeDto> Handle(GetTotalSalesByDateRangeQuery request, CancellationToken ct)
         {
-            var miseOnPlaceOrdersFromDateRange = await _orderRepository.GetOrderByDateRangeAsync(request.FromDate, request.ToDate, ct);
-
-            decimal result = miseOnPlaceOrdersFromDateRange.Sum(x => x.Payable);
+            var result = await _orderRepository.GetTotalSalesByDate(request.FromDate, request.ToDate, ct);
 
             GetTotalSalesByDateRangeDto finalResult = new GetTotalSalesByDateRangeDto(result);
             
