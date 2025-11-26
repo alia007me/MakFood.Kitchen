@@ -1,9 +1,10 @@
-﻿using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.Contract;
+﻿using MakFood.Kitchen.Application.Query.GetAllMiseOnPlaceOrdersByDateRange;
+using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.Contract;
 using MediatR;
 
 namespace MakFood.Kitchen.Application.Query.GetAllMiseOnPlaceOrdersByDateRange
 {
-    public class GetAllMiseOnPlaceOrdersByDateRangeHandler : IRequestHandler<GetAllMiseOnPlaceOrdersByDateRangeQuery, List<GetAllMiseOnPlaceOrdersByDateRangeDto>>
+    public class GetAllMiseOnPlaceOrdersByDateRangeHandler : IRequestHandler<GetAllMiseOnPlaceOrdersByDateRangeQuery, IEnumerable<GetAllMiseOnPlaceOrdersByDateRangeDto>>
     {
         private readonly IOrderRepository _orderRepository;
 
@@ -12,7 +13,7 @@ namespace MakFood.Kitchen.Application.Query.GetAllMiseOnPlaceOrdersByDateRange
             _orderRepository = orderRepository;
         }
 
-        public async Task<List<GetAllMiseOnPlaceOrdersByDateRangeDto>> Handle(GetAllMiseOnPlaceOrdersByDateRangeQuery request, CancellationToken ct)
+        public async Task<IEnumerable<GetAllMiseOnPlaceOrdersByDateRangeDto>> Handle(GetAllMiseOnPlaceOrdersByDateRangeQuery request, CancellationToken ct)
         {
            var ordersFromTargetRange = await _orderRepository.GetOrderByDateRangeAsync(request.FromDate, request.ToDate, ct);
 

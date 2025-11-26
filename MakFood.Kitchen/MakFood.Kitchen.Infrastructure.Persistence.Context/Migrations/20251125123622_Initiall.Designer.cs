@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MakFood.Kitchen.Infrastructure.Persistence.Context.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251119135709_AddSharedPaymentConfiguration")]
-    partial class AddSharedPaymentConfiguration
+    [Migration("20251125123622_Initiall")]
+    partial class Initiall
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -324,9 +324,6 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Context.Migrations
                         .HasMaxLength(8)
                         .HasColumnType("nvarchar(8)");
 
-                    b.Property<int>("PaymentStatus")
-                        .HasColumnType("int");
-
                     b.Property<int>("PaymentType")
                         .HasColumnType("int");
 
@@ -451,6 +448,9 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Context.Migrations
                 {
                     b.HasBaseType("MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentAggrigate.PaymentBase.Payment");
 
+                    b.Property<int>("OwnerPaymentStatus")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("PartnerAmount")
                         .HasColumnType("decimal(18,2)");
 
@@ -465,6 +465,9 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Context.Migrations
 
                     b.Property<string>("PartnerPaymentMethod")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PartnerPaymentStatus")
+                        .HasColumnType("int");
 
                     b.HasDiscriminator().HasValue("Shared");
                 });

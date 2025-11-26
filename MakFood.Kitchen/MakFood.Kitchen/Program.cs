@@ -1,5 +1,6 @@
 using FluentValidation;
 using MakFood.Kitchen.Application.Command.CancelOrder;
+using MakFood.Kitchen.Application.Command.LiveProductQuantity;
 using MakFood.Kitchen.Application.Command.UpdateCart.AddItemToCart;
 using MakFood.Kitchen.Application.Query.GetAllMiseOnPlaceOrdersByDateRange;
 using MakFood.Kitchen.Application.Query.GetCart;
@@ -13,74 +14,82 @@ using Microsoft.EntityFrameworkCore;
 
 
 
-internal class Program
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddSignalR();
+
+var connectionStringConfiguration = builder.Configuration.GetSection(nameof(ConnectionStrings));
+
+builder.Services.Configure<ConnectionStrings>(connectionStringConfiguration);
+builder.Services.ConfigureDI();
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
-    private static void Main(string[] args)
+    var connectionString = connectionStringConfiguration.Get<ConnectionStrings>();
+    var connectionBuilder = new SqlConnectionStringBuilder
     {
-        var builder = WebApplication.CreateBuilder(args);
+        DataSource = connectionString.Server,
+        InitialCatalog = connectionString.InitialCatalog,
+        TrustServerCertificate = true,
+        IntegratedSecurity = true
+    };
+    options.UseSqlServer(connectionBuilder.ConnectionString);
+}
+);
 
 
-        var connectionStringConfiguration = builder.Configuration.GetSection(nameof(ConnectionStrings));
 
-        builder.Services.Configure<ConnectionStrings>(connectionStringConfiguration);
-        builder.Services.ConfigureDI();
+builder.Services.AddControllers();
 
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(GetCartQueryHandler).Assembly));
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(AddItemToCartCommandHandler).Assembly));
 
-        builder.Services.AddControllers();
+builder.Services.AddSwaggerGen();
 
-        builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(GetCartQueryHandler).Assembly));
-        builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(AddItemToCartCommandHandler).Assembly));
+builder.Services.AddMediatR(cfg =>
+{
+    cfg.RegisterServicesFromAssembly(typeof(GetAllMiseOnPlaceOrdersByDateRangeHandler).Assembly);
+    cfg.RegisterServicesFromAssembly(typeof(CancelOrderCommandHandler).Assembly);
+});
 
-        builder.Services.AddSwaggerGen();
-
-        builder.Services.AddMediatR(cfg =>
-        {
-            cfg.RegisterServicesFromAssembly(typeof(GetAllMiseOnPlaceOrdersByDateRangeHandler).Assembly);
-            cfg.RegisterServicesFromAssembly(typeof(CancelOrderCommandHandler).Assembly);
-        });
-
-        builder.Services.AddValidatorsFromAssemblies(new[]
-        {
+builder.Services.AddValidatorsFromAssemblies(new[]
+{
     typeof(GetAllMiseOnPlaceOrdersByDateRangeValidation).Assembly,
     typeof(CancelOrderValidation).Assembly
 });
-        builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
-        builder.Services.AddDbContext<ApplicationDbContext>(options =>
-        {
-            var connectionString = connectionStringConfiguration.Get<ConnectionStrings>()!;
-            var connectionBuilder = new SqlConnectionStringBuilder
-            {
-                DataSource = connectionString.Server,
-                InitialCatalog = connectionString.InitialCatalog,
-                TrustServerCertificate = true,
-                IntegratedSecurity = true
-            };
-            options.UseSqlServer(connectionBuilder.ConnectionString);
-        });
-
-
-        var app = builder.Build();
-        if (app.Environment.IsDevelopment())
-        {
-            app.UseSwagger();
-            app.UseSwaggerUI(options =>
-            {
-                options.EnableTryItOutByDefault();
-            });
-        }
-
-        app.UseAuthorization();
-
-        if (app.Environment.IsDevelopment())
-        {
-            app.UseSwagger();
-            app.UseSwaggerUI();
-        }
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+{
+    var connectionString = connectionStringConfiguration.Get<ConnectionStrings>()!;
+    var connectionBuilder = new SqlConnectionStringBuilder
+    {
+        DataSource = connectionString.Server,
+        InitialCatalog = connectionString.InitialCatalog,
+        TrustServerCertificate = true,
+        IntegratedSecurity = true
+    };
+    options.UseSqlServer(connectionBuilder.ConnectionString);
+});
 
 
-        app.MapControllers();
-
-        app.Run();
-    }
+var app = builder.Build();
+if (app.Environment.IsDevelopment()) {
+    app.UseSwagger();
+    app.UseSwaggerUI(options =>
+    {
+        options.EnableTryItOutByDefault();
+    });
 }
+
+app.UseAuthorization();
+
+if (app.Environment.IsDevelopment()) {
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+app.MapHub<LiveProductQuantity>("/lpq");
+
+app.MapControllers();
+
+app.Run();

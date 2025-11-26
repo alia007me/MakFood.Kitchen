@@ -1,7 +1,9 @@
 ﻿using MakFood.Kitchen.Application.Command.AddOrder.SharedPayment;
 using MakFood.Kitchen.Application.Command.AddOrder.SinglePayment;
 using MakFood.Kitchen.Application.Command.CancelOrder;
-using MakFood.Kitchen.Application.Command.Pay;
+using MakFood.Kitchen.Application.Command.Pay.PayByCash;
+using MakFood.Kitchen.Application.Command.Pay.PayByWallet.ResivePaiedOrderFromWallet;
+using MakFood.Kitchen.Application.Command.Pay.PayByWallet.SendOrderToPayByWallet;
 using MakFood.Kitchen.Application.Query.GetAllMiseOnPlaceOrdersByDateRange;
 using MakFood.Kitchen.Application.Query.GetProductOrderCountsByDateRange;
 using MakFood.Kitchen.Application.Query.GetTotalSalesByDateRange;
@@ -51,6 +53,12 @@ namespace MakFood.Kitchen.Controllers
 
             return Ok(result);
         }
+        [HttpGet("getSendForWallet")]//this is for twst it should write with rabbit
+        public async Task<IActionResult> GetSendForWallet(Guid orderId, Guid customerId)
+        {
+            var result = await _mediator.Send(new SendOrderToPayByWalletCommand() { CustomerId = customerId, OrderId = orderId });
+            return Ok(result);
+        }
 
         [HttpPatch("{orderId}/Cancel")]
         public async Task<IActionResult> CancelOrder(Guid orderId, Guid customerId)
@@ -77,11 +85,20 @@ namespace MakFood.Kitchen.Controllers
 
             return Ok(result);
         }
-
-        [HttpPatch("{orderId}/Pay/Cash")]//
-        public async Task<IActionResult> PayOrderByCash([FromBody] PayByCashCommand command)
+        [HttpPost("/ResivePaiedOrderFromWalletCommand")]//this is for twst it should write with rabbit
+        public async Task<IActionResult> ResiveOrderFromWalletCommand(Guid orderId, Guid customerId, [FromBody] decimal Amount, bool IsPaied)
         {
-            var result = await _mediator.Send(command);
+            var result = await _mediator.Send(new ResivePaiedOrderFromWalletCommand { OrderId = orderId, Amount = Amount, IsPaied = IsPaied, UserId = customerId });
+            var response = result.result;
+            return Ok(response);
+        }
+
+        [HttpPatch("{orderId}/Pay/Cash/Customer/{cusyomerId}")]
+        public async Task<IActionResult> PayOrderByCash([FromRoute] Guid orderId, [FromRoute] Guid cusyomerId)
+        {
+            var command = new PayByCashCommand() { OrderId = orderId, CustomerId = cusyomerId };
+            var respnse = await _mediator.Send(command);
+            var result = respnse.result;
             return Ok(result);
 
         }

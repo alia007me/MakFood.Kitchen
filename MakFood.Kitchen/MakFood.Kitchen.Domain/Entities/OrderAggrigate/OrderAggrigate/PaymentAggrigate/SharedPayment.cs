@@ -39,6 +39,14 @@ namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentA
         {
             return reminingAmount / 2;
         }
+        public decimal getPaymentAmountById(Guid id)
+        {
+            if (id == OwnerId)
+                return OwnerAmount;
+            else if (id == PartnerId)
+                return PartnerAmount;
+            else throw new ThisIsNotYourOrderException();
+        }
 
         public void SetPartnerPaymentMethod(PaymentMathods partnerPaymentMethod)
         {
@@ -73,11 +81,15 @@ namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentA
         public override void Pay(Guid id)
         {
             if (id == this.OwnerId) {
+                if (OwnerPaymentStatus == Enum.PaymentStatus.Paid)
+                    throw new YouPaidThisOrderException();
                 OwnerPaidAmount = OwnerAmount;
                 OwnerPaymentStatus = Enum.PaymentStatus.Paid;
                 OwnerPaidTime = DateTime.Now;
             }
             else if (id == this.PartnerId) {
+                if (PartnerPaymentStatus == Enum.PaymentStatus.Paid)
+                    throw new YouPaidThisOrderException();
                 PartnerPaidAmount = PartnerAmount;
                 PartnerPaymentStatus = Enum.PaymentStatus.Paid;
             }
