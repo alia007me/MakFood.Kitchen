@@ -6,16 +6,16 @@ namespace MakFood.Kitchen.Domain.BussinesRules
 {
     public class PaymentMethodMustBeSetBeforeUpdateBR : IBaseBusinessRule
     {
-        private readonly PaymentMathods? _paymentMathods;
+        private readonly PaymentMathod? _paymentMathod;
 
-        public PaymentMethodMustBeSetBeforeUpdateBR(PaymentMathods? paymentMathods)
+        public PaymentMethodMustBeSetBeforeUpdateBR(PaymentMathod? paymentMathod)
         {
-            _paymentMathods = paymentMathods;
+            _paymentMathod = paymentMathod;
         }
 
         public bool Check()
         {
-            if(_paymentMathods.HasValue) return true;
+            if (_paymentMathod.HasValue) return true;
             return false;
         }
 

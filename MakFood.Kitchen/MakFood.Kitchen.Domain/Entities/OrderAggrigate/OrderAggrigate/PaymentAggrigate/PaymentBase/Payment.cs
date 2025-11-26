@@ -9,12 +9,12 @@ namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentA
     {
         protected Payment() { } //ef
         protected List<PaymentState> _PaymentHistory = new List<PaymentState>();
-        protected Payment(decimal totalAmount, PaymentMathods ownerPaymentMethod, Guid ownerId)
+        protected Payment(decimal totalAmount, PaymentMathod ownerPaymentMethod, Guid ownerId)
         {
             Id = Guid.NewGuid();
 
             TotalAmount = totalAmount;
-            ReminingAmount = totalAmount;
+            RemainingAmount = totalAmount;
             OwnerPaymentMethod = ownerPaymentMethod;
             OwnerId = ownerId;
             OwnerPaidAmount = Decimal.Zero;
@@ -22,8 +22,8 @@ namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentA
         }
         public Guid OwnerId { get; protected init; }
         public decimal TotalAmount { get; protected set; }
-        public decimal ReminingAmount { get; protected set; }
-        public PaymentMathods OwnerPaymentMethod { get; protected set; }
+        public decimal RemainingAmount { get; protected set; }
+        public PaymentMathod OwnerPaymentMethod { get; protected set; }
         public PaymentState PaymentStatus => _PaymentHistory.OrderByDescending(c => c.CreationDateTime).First();
         public PaymentType PaymentType { get; protected set; }
         public decimal OwnerAmount { get; protected set; }
@@ -41,13 +41,13 @@ namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentA
             _PaymentHistory.Add(new PaidPaymentState());
         }
 
-        public void SetOwnerPaymentMethod(PaymentMathods ownerPaymentMethod)
+        public void SetOwnerPaymentMethod(PaymentMathod ownerPaymentMethod)
         {
             Check(new PaymentMethodShouldNotBeSelectedMoreThanOnceBR(OwnerPaymentMethod));
             OwnerPaymentMethod = ownerPaymentMethod;
         }
 
-        public void UpdateOwnerPaymentMethod(PaymentMathods ownerPaymentMethod)
+        public void UpdateOwnerPaymentMethod(PaymentMathod ownerPaymentMethod)
         {
             Check(new PaymentMethodMustBeSetBeforeUpdateBR(OwnerPaymentMethod));
             Check(new PaymentMethodMustNotBeChangedAfterPaymentStartedBR(OwnerPaidAmount));

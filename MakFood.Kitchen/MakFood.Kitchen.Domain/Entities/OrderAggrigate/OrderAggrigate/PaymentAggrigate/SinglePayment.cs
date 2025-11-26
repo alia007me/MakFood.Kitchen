@@ -7,10 +7,10 @@ namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentA
     public class SinglePayment : Payment
     {
         private SinglePayment() { } //ef
-        public SinglePayment(decimal totalAmount, PaymentMathods ownerPaymentMethod, Guid ownerId) : base(totalAmount, ownerPaymentMethod, ownerId)
+        public SinglePayment(decimal totalAmount, PaymentMathod ownerPaymentMethod, Guid ownerId) : base(totalAmount, ownerPaymentMethod, ownerId)
         {
             TotalAmount = totalAmount;
-            ReminingAmount = totalAmount;
+            RemainingAmount = totalAmount;
             OwnerPaymentMethod = ownerPaymentMethod;
             OwnerAmount = totalAmount;
             PaymentType = PaymentType.Single;

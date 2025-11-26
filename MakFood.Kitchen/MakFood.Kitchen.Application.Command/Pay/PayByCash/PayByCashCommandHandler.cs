@@ -39,11 +39,11 @@ namespace MakFood.Kitchen.Application.Command.Pay.PayByCash
                 result = new SharedPayOrderDTO(customerId, sharedPayment.OwnerId, sharedPayment.PartnerId, sharedPayment.OwnerPaidAmount,
                                                    sharedPayment.PartnerPaidAmount, sharedPayment.PaymentStatus.CreationDateTime,
                                                    sharedPayment.PaymentStatus.Status, sharedPayment.OwnerPaymentStatus,
-                                                   sharedPayment.PartnerPaymentStatus, sharedPayment.TotalAmount, sharedPayment.ReminingAmount);
+                                                   sharedPayment.PartnerPaymentStatus, sharedPayment.TotalAmount, sharedPayment.RemainingAmount);
             }
             else if (order.Payment is SinglePayment singlePayment) {
                 result = new SinglePaymentDTO(singlePayment.OwnerId, singlePayment.OwnerPaidAmount, singlePayment.PaymentStatus.CreationDateTime,
-                                                  singlePayment.PaymentStatus.Status, singlePayment.TotalAmount, singlePayment.ReminingAmount);
+                                                  singlePayment.PaymentStatus.Status, singlePayment.TotalAmount, singlePayment.RemainingAmount);
             }
             else throw new InvalidPaymentTypeException();
 

@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -73,7 +72,7 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Context.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     OwnerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     TotalAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    ReminingAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    RemainingAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     OwnerPaymentMethod = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PaymentType = table.Column<int>(type: "int", nullable: false),
                     OwnerAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),

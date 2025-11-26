@@ -9,7 +9,7 @@ namespace MakFood.Kitchen.Application.Command.AddOrder.SinglePayment
     {
         public Guid CartId { get; set; }
         public string? DiscountCodeTitle { get; set; }
-        public PaymentMathods OwnerPaymentMethod { get; set; }
+        public PaymentMathod OwnerPaymentMethod { get; set; }
 
         public override void Validate()
         {

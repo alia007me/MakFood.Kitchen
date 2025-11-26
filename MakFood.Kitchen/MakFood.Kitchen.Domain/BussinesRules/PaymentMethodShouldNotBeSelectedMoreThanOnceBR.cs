@@ -6,16 +6,16 @@ namespace MakFood.Kitchen.Domain.BussinesRules
 {
     public class PaymentMethodShouldNotBeSelectedMoreThanOnceBR : IBaseBusinessRule
     {
-        private readonly PaymentMathods? _paymentMathods;
+        private readonly PaymentMathod? _paymentMathod;
 
-        public PaymentMethodShouldNotBeSelectedMoreThanOnceBR(PaymentMathods? paymentMathods)
+        public PaymentMethodShouldNotBeSelectedMoreThanOnceBR(PaymentMathod? paymentMathod)
         {
-            _paymentMathods = paymentMathods;
+            _paymentMathod = paymentMathod;
         }
 
         public bool Check()
         {
-            if(_paymentMathods.HasValue) return false;
+            if (_paymentMathod.HasValue) return false;
             return true;
         }
 

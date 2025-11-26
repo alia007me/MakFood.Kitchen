@@ -18,7 +18,7 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Context.Configurations
                     .HasColumnType("decimal(18,2)")
                     .IsRequired();
 
-            builder.Property(p => p.ReminingAmount)
+            builder.Property(p => p.RemainingAmount)
                     .HasColumnType("decimal(18,2)")
                     .IsRequired();
 

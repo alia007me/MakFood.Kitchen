@@ -48,7 +48,7 @@ namespace MakFood.Kitchen.Application.Command.AddOrder.SinglePayment
             cart.RemoveAllItems();
 
             // دریافت کد تخفیف
-            var Discount = await _discountCodeRepository.GetDiscountByTitleTracked(command.DiscountCodeTitle);
+            var Discount = await _discountCodeRepository.GetDiscountByTitleTracked(command.DiscountCodeTitle, ct);
 
             //مبلغ کل سفارش
             var totalAmount = Constituents.Sum(x => x.Price * x.Quantity);
@@ -81,7 +81,7 @@ namespace MakFood.Kitchen.Application.Command.AddOrder.SinglePayment
             }
             return order;
         }
-        private SinglePaymentState.SinglePayment CreatePayment(PaymentType paymentType, PaymentMathods ownerPaymentMethod, Discount? discount, decimal totalAmount, Guid cartId)
+        private SinglePaymentState.SinglePayment CreatePayment(PaymentType paymentType, PaymentMathod ownerPaymentMethod, Discount? discount, decimal totalAmount, Guid cartId)
         {
             var payable = DiscountCalculatorHelper.AmountCalculator(totalAmount, discount, cartId);
 

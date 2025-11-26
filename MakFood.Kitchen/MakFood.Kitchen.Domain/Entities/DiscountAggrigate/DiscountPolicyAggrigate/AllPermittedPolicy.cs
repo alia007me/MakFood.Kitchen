@@ -11,15 +11,15 @@ namespace MakFood.Kitchen.Domain.Entities.DiscountAggrigate.DiscountPolicyAggrig
         }
 
 
-        public override bool IsPermitted(Guid CamtomerId)
+        public override bool IsPermitted(Guid CumtomerId)
         {
-            CustomeridValidator(CamtomerId);
-            return (!_used.Contains(CamtomerId)); // return false if guid was in list and true if it wasent
+            CustomeridValidator(CumtomerId);
+            return (!_used.Contains(CumtomerId)); // return false if guid was in list and true if it wasent
         }
-        public override void UseDiscount(Guid CastomerId)
+        public override void UseDiscount(Guid CustomerId)
         {
-            CustomeridValidator(CastomerId);
-            _used.Add(CastomerId);
+            CustomeridValidator(CustomerId);
+            _used.Add(CustomerId);
         }
         private void CustomeridValidator(Guid customerId)
         {

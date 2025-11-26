@@ -1,5 +1,4 @@
-﻿
-namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentAggrigate
+﻿namespace MakFood.Kitchen.Domain.BussinesRules.Exceptions
 {
     [Serializable]
     internal class YouPaidThisOrderException : Exception

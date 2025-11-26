@@ -1,6 +1,6 @@
 ﻿namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentAggrigate.Enum
 {
-    public enum PaymentMathods
+    public enum PaymentMathod
     {
         Cash,
         Wallet

@@ -49,7 +49,7 @@ namespace MakFood.Kitchen.Application.Command.Pay.PayByWallet.SendOrderToPayByWa
         {
             decimal amount;
             if (order.Payment is SharedPayment sharedPayment) {
-                amount = sharedPayment.getPaymentAmountById(Customerid);
+                amount = sharedPayment.GetPaymentAmountById(Customerid);
             }
             else if (order.Payment is SinglePayment singlePayment) {
                 amount = singlePayment.OwnerAmount;

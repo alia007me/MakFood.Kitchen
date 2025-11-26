@@ -52,7 +52,7 @@ namespace MakFood.Kitchen.Application.Command.AddOrder.SharedPayment
 
 
             // دریافت کد تخفیف
-            var Discount = await _discountCodeRepository.GetDiscountByTitleTracked(command.DiscountCodeTitle);
+            var Discount = await _discountCodeRepository.GetDiscountByTitleTracked(command.DiscountCodeTitle, ct);
 
             //مبلغ کل سفارش
             var totalAmount = Constituents.Sum(x => x.Price * x.Quantity);
@@ -87,7 +87,7 @@ namespace MakFood.Kitchen.Application.Command.AddOrder.SharedPayment
 
             }
         }
-        private PaymentStates.SharedPayment CreatePayment(PaymentType paymentType, PaymentMathods ownerPaymentMethod, Discount? discount, decimal totalAmount, Guid cartId/*this is owner id*/, Guid partnerId)
+        private PaymentStates.SharedPayment CreatePayment(PaymentType paymentType, PaymentMathod ownerPaymentMethod, Discount? discount, decimal totalAmount, Guid cartId/*this is owner id*/, Guid partnerId)
         {
             var payable = DiscountCalculatorHelper.AmountCalculator(totalAmount, discount, cartId);
             PaymentStates.SharedPayment payment = new PaymentStates.SharedPayment(payable, ownerPaymentMethod, cartId, partnerId);

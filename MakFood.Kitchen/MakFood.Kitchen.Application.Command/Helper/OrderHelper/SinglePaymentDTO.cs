@@ -7,7 +7,7 @@ namespace MakFood.Kitchen.Application.Command.Helper.OrderHelper
                                    DateTime PaidTime,
                                    PaymentStatus OwnerPaymentStatus,
                                    decimal TotalAmount,
-                                   decimal ReminingAmount
+                                   decimal RemainingAmount
                                    ) : PayOrderDTO;
 }
 

@@ -12,15 +12,15 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Repository.Repository
         {
             _context = context;
         }
-        public async Task<Discount?> GetDiscountTracked(Guid id)
+        public async Task<Discount?> GetDiscountTracked(Guid id, CancellationToken ct)
         {
             return await _context.Discounts.Include(D => D.DiscountPolicy).SingleOrDefaultAsync(d => d.Id == id);
         }
-        public async Task<Discount?> GetDiscount(Guid id)
+        public async Task<Discount?> GetDiscount(Guid id, CancellationToken ct)
         {
             return await _context.Discounts.Include(D => D.DiscountPolicy).AsNoTracking().SingleOrDefaultAsync(d => d.Id == id);
         }
-        public async Task<Discount?> GetDiscountByTitleTracked(string title)
+        public async Task<Discount?> GetDiscountByTitleTracked(string title, CancellationToken ct)
         {
             return await _context.Discounts.Include(D => D.DiscountPolicy).SingleOrDefaultAsync(d => d.Title == title);
         }

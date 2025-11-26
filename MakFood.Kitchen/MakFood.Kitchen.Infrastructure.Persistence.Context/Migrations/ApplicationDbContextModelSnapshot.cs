@@ -324,7 +324,7 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Context.Migrations
                     b.Property<int>("PaymentType")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("ReminingAmount")
+                    b.Property<decimal>("RemainingAmount")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("TotalAmount")

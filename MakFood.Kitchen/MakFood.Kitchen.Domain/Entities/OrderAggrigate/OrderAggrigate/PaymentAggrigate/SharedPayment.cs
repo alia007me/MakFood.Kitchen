@@ -1,4 +1,5 @@
 ﻿using MakFood.Kitchen.Domain.BussinesRules;
+using MakFood.Kitchen.Domain.BussinesRules.Exceptions;
 using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentAggrigate.Enum;
 using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentAggrigate.PaymentBase;
 using MakFood.Kitchen.Infrastructure.Substructure.Exceptions;
@@ -9,16 +10,16 @@ namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentA
     {
 
         private SharedPayment() { }//ef
-        public SharedPayment(decimal totalAmount, PaymentMathods ownerPaymentMethod,
+        public SharedPayment(decimal totalAmount, PaymentMathod ownerPaymentMethod,
             Guid ownerId, Guid partnerId)
             : base(totalAmount, ownerPaymentMethod, ownerId)
         {
             TotalAmount = totalAmount;
-            ReminingAmount = totalAmount;
-            OwnerAmount = calculatePersonAmount(totalAmount);
+            RemainingAmount = totalAmount;
+            OwnerAmount = CalculatePersonAmount(totalAmount);
 
             PartnerId = partnerId;
-            PartnerAmount = calculatePersonAmount(totalAmount);
+            PartnerAmount = CalculatePersonAmount(totalAmount);
             PartnerPaidAmount = Decimal.Zero;
             PartnerPaymentMethod = null;
             PartnerApproved = null;
@@ -30,16 +31,16 @@ namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentA
         public decimal PartnerAmount { get; private set; }
         public Guid PartnerId { get; private set; }
         public decimal PartnerPaidAmount { get; private set; }
-        public PaymentMathods? PartnerPaymentMethod { get; private set; }
+        public PaymentMathod? PartnerPaymentMethod { get; private set; }
         public bool? PartnerApproved { get; set; }
 
 
         #region Behaviors
-        private decimal calculatePersonAmount(decimal reminingAmount)
+        private decimal CalculatePersonAmount(decimal RemainingAmount)
         {
-            return reminingAmount / 2;
+            return RemainingAmount / 2;
         }
-        public decimal getPaymentAmountById(Guid id)
+        public decimal GetPaymentAmountById(Guid id)
         {
             if (id == OwnerId)
                 return OwnerAmount;
@@ -47,14 +48,20 @@ namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentA
                 return PartnerAmount;
             else throw new ThisIsNotYourOrderException();
         }
-
-        public void SetPartnerPaymentMethod(PaymentMathods partnerPaymentMethod)
+        public void AproveOrder(bool partnerApproved, PaymentMathod? paymentMathod)
+        {
+            this.PartnerPaymentMethod = paymentMathod;
+            this.PartnerApproved = partnerApproved;
+            if (!partnerApproved)
+                this.Cancelled();
+        }
+        public void SetPartnerPaymentMethod(PaymentMathod partnerPaymentMethod)
         {
             Check(new PaymentMethodShouldNotBeSelectedMoreThanOnceBR(PartnerPaymentMethod));
             PartnerPaymentMethod = partnerPaymentMethod;
         }
 
-        public void UpdatePartnerPaymentMethod(PaymentMathods partnerPaymentMethod)
+        public void UpdatePartnerPaymentMethod(PaymentMathod partnerPaymentMethod)
         {
             Check(new PaymentMethodMustBeSetBeforeUpdateBR(PartnerPaymentMethod));
             Check(new PaymentMethodMustNotBeChangedAfterPaymentStartedBR(PartnerPaidAmount));
