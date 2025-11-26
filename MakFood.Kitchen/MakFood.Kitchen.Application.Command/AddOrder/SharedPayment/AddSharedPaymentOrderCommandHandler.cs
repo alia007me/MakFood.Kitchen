@@ -32,38 +32,21 @@ namespace MakFood.Kitchen.Application.Command.AddOrder.SharedPayment
         }
         public async Task<AddSharedPaymentOrderCommandResponse> Handle(AddSharedPaymentOrderCommand command, CancellationToken ct)
         {
-            //سبد خرید
             var cart = await _cartRepository.GetCartById(command.CartId, ct);
+            await ValidatePartnerExistence(command.PartnerId, ct);
+            ValidateCartItems(cart);
 
-            //برسی وجود پارتنر
-            var partner = await _cartRepository.GetCartById(command.PartnerId, ct, false);
-            if (partner is null) throw new PartnerNotFoundException();
-
-            //ایجاد محتویات سفارش از آیتم های سبد خرید
-            if (!cart.CartItems.Any()) throw new ThereIsNoCartItemInCartException();
-            var Items = cart.CartItems.ToList();
-            var Constituents = new List<Constituent>();
-
-            for (int i = 0; i < Items.Count(); i++) {
-                Constituents.Add(new Constituent(await _productRepository.GetProductByIdAsync(Items[i].ProductId, ct), Items[i]));
-            }
+            var constituents = await CreateOrderConstituents(cart, ct);
 
             cart.RemoveAllItems();
 
+            var discount = await _discountCodeRepository.GetDiscountByTitleTracked(command.DiscountCodeTitle);
 
-            // دریافت کد تخفیف
-            var Discount = await _discountCodeRepository.GetDiscountByTitleTracked(command.DiscountCodeTitle, ct);
+            var totalAmount = CalculateTotalAmount(constituents);
+            var payment = CreateSharedPayment(command.OwnerPaymentMethod, discount, totalAmount, command.CartId, command.PartnerId);
 
-            //مبلغ کل سفارش
-            var totalAmount = Constituents.Sum(x => x.Price * x.Quantity);
-
-            //ایجاد پیمنت
-            var payment = CreatePayment(PaymentType.Shared, command.OwnerPaymentMethod, Discount, totalAmount, command.CartId, command.PartnerId);
-
-            //ایجاد اوردر
-            var order = CreateOrder(cart.Id, Discount, payment, Constituents);
+            var order = CreateOrder(cart.Id, discount, payment, constituents);
             _orderRepository.AddOrder(order);
-
 
             await _unitOfWork.Commit(ct);
 
@@ -72,27 +55,78 @@ namespace MakFood.Kitchen.Application.Command.AddOrder.SharedPayment
                 OrderId = order.Id
             };
         }
-        #region methodes
-        private Order CreateOrder(Guid customerId, Discount? discountCode, PaymentStates.SharedPayment payment, List<Constituent> constituents)
-        {
-            Order order;
-            if (discountCode != null) {
-                order = new Order(customerId, discountCode, payment, constituents);
-            }
-            else {
-                order = new Order(customerId, null, payment, constituents);
-            }
-            return order;
-            for (var i = 0; i < constituents.Count; i++) {
 
+        #region Private Methods for SRP
+
+        /// <summary>
+        /// بررسی می‌کند که آیا پارتنر وجود دارد یا خیر.
+        /// </summary>
+        private async Task ValidatePartnerExistence(Guid partnerId, CancellationToken ct)
+        {
+            var partner = await _cartRepository.GetCartById(partnerId, ct, false);
+            if (partner is null)
+            {
+                throw new PartnerNotFoundException();
             }
         }
-        private PaymentStates.SharedPayment CreatePayment(PaymentType paymentType, PaymentMathod ownerPaymentMethod, Discount? discount, decimal totalAmount, Guid cartId/*this is owner id*/, Guid partnerId)
+
+        /// <summary>
+        /// بررسی می‌کند که آیا سبد خرید حاوی آیتم است یا خیر.
+        /// </summary>
+        private void ValidateCartItems(Cart cart)
+        {
+            if (!cart.CartItems.Any())
+            {
+                throw new ThereIsNoCartItemInCartException();
+            }
+        }
+
+        /// <summary>
+        /// محتویات (Constituents) سفارش را بر اساس آیتم‌های سبد خرید ایجاد می‌کند.
+        /// </summary>
+        private async Task<List<Constituent>> CreateOrderConstituents(Cart cart, CancellationToken ct)
+        {
+            var constituents = new List<Constituent>();
+            foreach (var cartItem in cart.CartItems)
+            {
+                var product = await _productRepository.GetProductById(cartItem.ProductId, ct);
+                constituents.Add(new Constituent(product!, cartItem));
+            }
+            return constituents;
+        }
+
+        /// <summary>
+        /// مبلغ کل سفارش را از محتویات محاسبه می‌کند.
+        /// </summary>
+        private decimal CalculateTotalAmount(List<Constituent> constituents)
+        {
+            return constituents.Sum(x => x.Price * x.Quantity);
+        }
+
+        /// <summary>
+        /// موجودیت SharedPayment را ایجاد می‌کند.
+        /// </summary>
+        private PaymentStates.SharedPayment CreateSharedPayment(PaymentMathods ownerPaymentMethod, Discount? discount, decimal totalAmount, Guid cartId, Guid partnerId)
         {
             var payable = DiscountCalculatorHelper.AmountCalculator(totalAmount, discount, cartId);
-            PaymentStates.SharedPayment payment = new PaymentStates.SharedPayment(payable, ownerPaymentMethod, cartId, partnerId);
-            return payment;
+            return new PaymentStates.SharedPayment(payable, ownerPaymentMethod, cartId, partnerId);
         }
+
+        /// <summary>
+        /// موجودیت Order را ایجاد می‌کند.
+        /// </summary>
+        private Order CreateOrder(Guid customerId, Discount? discountCode, PaymentStates.SharedPayment payment, List<Constituent> constituents)
+        {
+            if (discountCode != null)
+            {
+                return new Order(customerId, discountCode, payment, constituents);
+            }
+            else
+            {
+                return new Order(customerId, null, payment, constituents);
+            }
+        }
+
         #endregion
     }
 }

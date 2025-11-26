@@ -20,7 +20,7 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Repository.Repository
         {
             return await _context.Discounts.Include(D => D.DiscountPolicy).AsNoTracking().SingleOrDefaultAsync(d => d.Id == id);
         }
-        public async Task<Discount?> GetDiscountByTitleTracked(string title, CancellationToken ct)
+        public async Task<Discount?> GetDiscountByTitleTracked(string? title, CancellationToken ct)
         {
             return await _context.Discounts.Include(D => D.DiscountPolicy).SingleOrDefaultAsync(d => d.Title == title);
         }
