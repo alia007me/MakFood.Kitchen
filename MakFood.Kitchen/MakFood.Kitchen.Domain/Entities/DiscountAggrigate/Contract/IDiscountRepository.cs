@@ -4,6 +4,6 @@
     {
         public Task<Discount?> GetDiscountTracked(Guid id);
         public Task<Discount?> GetDiscount(Guid id);
-        public Task<Discount?> GetDiscountByTitleTracked(string title);
+        public Task<Discount?> GetDiscountByTitleTracked(string? title);
     }
 }
