@@ -31,7 +31,7 @@ namespace MakFood.Kitchen.Application.Command.SubcategoriesCommand.RemoveSubcate
             await CheckAndApplyRemovalRules(subcategory, ct);
 
 
-            category!.RemoveSubcategory(request.SubCategoryId);
+            category.RemoveSubcategory(request.SubCategoryId);
             _categoryRepository.RemoveSubcategory(subcategory);
 
             await _unitOfWork.Commit(ct);
@@ -45,7 +45,7 @@ namespace MakFood.Kitchen.Application.Command.SubcategoriesCommand.RemoveSubcate
         private void EnsureSubcategoryExists(Subcategory? subcategory, Guid subcategoryId)
         {
             if (subcategory is null)
-                throw new SubcategoryNotFoundException($"Subcategory with Id '{subcategoryId}' not found.");
+                throw new SubcategoryNotFoundException(subcategoryId);
         }
 
         private async Task CheckAndApplyRemovalRules(Subcategory subcategory, CancellationToken ct)

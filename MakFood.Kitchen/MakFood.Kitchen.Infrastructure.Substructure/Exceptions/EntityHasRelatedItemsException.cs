@@ -6,7 +6,7 @@
         {
         }
 
-        public EntityHasRelatedItemsException(string? message) : base(message)
+        public EntityHasRelatedItemsException(string entityName, Guid id) : base($"{entityName} with Id '{id}' cannot be removed because it has related items.")
         {
         }
 

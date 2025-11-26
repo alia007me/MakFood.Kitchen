@@ -74,7 +74,7 @@ namespace MakFood.Kitchen.Domain.Entities.CategoryAggrigate
             var target = _subcategories.FirstOrDefault(x => x.Id == subcategoryId);
             _subcategories.Remove(target);
             if (target == null)
-                throw new SubcategoryNotFoundException($"Subcategory with Id '{subcategoryId}' not found.");
+                throw new SubcategoryNotFoundException(subcategoryId);
         }
 
         /// <summary>
@@ -84,9 +84,7 @@ namespace MakFood.Kitchen.Domain.Entities.CategoryAggrigate
         public void CheckCanBeRemoved(bool hasProducts)
         {
             if (hasProducts)
-                throw new EntityHasRelatedItemsException(
-            $"Category '{this.Name}' (ID: {this.Id}) cannot be removed because it has related products.");
-
+                throw new EntityHasRelatedItemsException(this.Name,this.Id);
         }
 
 

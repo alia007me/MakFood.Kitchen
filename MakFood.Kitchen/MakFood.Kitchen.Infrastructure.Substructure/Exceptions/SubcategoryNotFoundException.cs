@@ -12,7 +12,7 @@ namespace MakFood.Kitchen.Infrastructure.Substructure.Exceptions
         {
         }
 
-        public SubcategoryNotFoundException(string? message) : base(message)
+        public SubcategoryNotFoundException(Guid id) : base($"Subcategory with Id '{id}' was not found.")
         {
         }
 

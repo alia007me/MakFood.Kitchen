@@ -38,7 +38,7 @@ namespace MakFood.Kitchen.Application.Command.SubcategoriesCommand.UpdateSubcate
         private void EnsureSubcategoryExists(Subcategory? subcategory, Guid subcategoryId)
         {
             if (subcategory is null)
-                throw new SubcategoryNotFoundException($"Subcategory with Id '{subcategoryId}' not found.");
+                throw new SubcategoryNotFoundException(subcategoryId);
         }
 
         private async Task ValidateUniqueName(Subcategory subcategory, string newName, CancellationToken ct)
@@ -46,7 +46,7 @@ namespace MakFood.Kitchen.Application.Command.SubcategoriesCommand.UpdateSubcate
             bool nameExists = await _categoryRepository.IsSubcategoryNameExistAsync(subcategory.Id, newName, ct);
 
             if (nameExists)
-                throw new IsAlreadyExistException($"Subcategory with name '{newName}' already exists in the same category.");
+                throw new IsAlreadyExistException(newName);
         }
     }
 

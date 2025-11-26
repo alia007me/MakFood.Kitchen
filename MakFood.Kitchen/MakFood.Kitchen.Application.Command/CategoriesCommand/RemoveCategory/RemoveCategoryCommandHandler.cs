@@ -24,27 +24,27 @@ namespace MakFood.Kitchen.Application.Command.CategoriesCommand.RemoveCategory
 
         public async Task<RemoveCategoryCommandResponse> Handle(RemoveCategoryCommand request, CancellationToken ct)
         {
-            var Category = await _categoryRepository.GetCategoryByIdAsync(request.Id, ct);
+            var category = await _categoryRepository.GetCategoryByIdAsync(request.Id, ct);
 
-            EnsureCategoryExists(Category, request.Id);
+            EnsureCategoryExists(category, request.Id);
 
-            bool hasProducts = await _productRepository.HasProductsInCategoryAsync(Category!.Id, ct);
+            bool hasProducts = await _productRepository.HasProductsInCategoryAsync(category!.Id, ct);
 
-            Category.CheckCanBeRemoved(hasProducts);
+            category.CheckCanBeRemoved(hasProducts);
 
-            _categoryRepository.RemoveCategory(Category);
+            _categoryRepository.RemoveCategory(category);
 
             await _unitOfWork.Commit(ct);
 
             return new RemoveCategoryCommandResponse()
             {
-                Id = Category.Id,
+                Id = category.Id,
             };
         }
         private void EnsureCategoryExists(Category? category, Guid categoryId)
         {
             if (category is null)
-                throw new CategoryNotFoundException($"Category with Id '{categoryId}' not found.");
+                throw new CategoryNotFoundException(categoryId);
 
         }
     }

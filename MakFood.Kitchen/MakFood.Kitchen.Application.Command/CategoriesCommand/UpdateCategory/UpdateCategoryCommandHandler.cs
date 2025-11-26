@@ -39,7 +39,7 @@ namespace MakFood.Kitchen.Application.Command.CategoriesCommand.UpdateCategory
         private void EnsureCategoryExists(Category? category, Guid categoryId)
         {
             if (category == null)
-                throw new CategoryNotFoundException($"Category with Id '{categoryId}' not found.");
+                throw new CategoryNotFoundException(categoryId);
         }
 
         private async Task ValidateUniqueName(string newName, CancellationToken ct)
@@ -47,7 +47,7 @@ namespace MakFood.Kitchen.Application.Command.CategoriesCommand.UpdateCategory
             bool exists = await _categoryRepository.IsCategoryNameExistAsync(newName, ct);
 
             if (exists)
-                throw new IsAlreadyExistException($"Category with name '{newName}' already exists.");
+                throw new IsAlreadyExistException(newName);
         }
     }
 }

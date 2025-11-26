@@ -38,15 +38,11 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Repository
         }
         public async Task<bool> IsSubcategoryNameExistAsync(Guid subcategoryId, string newName, CancellationToken ct)
         {
-            var category = await _context.Categories
-                .Include(c => c.Subcategories)
-                .FirstOrDefaultAsync(c => c.Subcategories.Any(sc => sc.Id == subcategoryId), ct);
-
-            if (category == null)
-                return false;
-
-            return category.Subcategories
-                .Any(sc => sc.Name == newName && sc.Id != subcategoryId);
+            return await _context.Categories
+                 .Where(c => c.Subcategories
+                 .Any(sc => sc.Id == subcategoryId)) 
+                 .SelectMany(c => c.Subcategories) 
+                 .AnyAsync(sc => sc.Name == newName && sc.Id != subcategoryId, ct);
         }
 
         public void Add(Category category)

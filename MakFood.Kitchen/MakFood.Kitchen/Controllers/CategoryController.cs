@@ -30,10 +30,10 @@ namespace MakFood.Kitchen.Controllers
 
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateCategory([FromRoute] Guid id, string newName, CancellationToken ct)
+        public async Task<IActionResult> UpdateCategory([FromRoute] Guid id, [FromBody] UpdateCategoryCommand command,CancellationToken ct)
         {
-            var command = new UpdateCategoryCommand() { Id = id, NewName = newName };
-            var result = await _mediator.Send(command);
+            command.Id = id;
+            var result = await _mediator.Send(command, ct);
             return Ok(result);
         }
 

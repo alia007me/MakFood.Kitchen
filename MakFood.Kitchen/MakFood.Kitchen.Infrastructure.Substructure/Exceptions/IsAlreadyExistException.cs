@@ -6,7 +6,7 @@
         {
         }
 
-        public IsAlreadyExistException(string? message) : base(message)
+        public IsAlreadyExistException(string value) : base($"'{value}' already exists.")
         {
         }
 

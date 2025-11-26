@@ -6,7 +6,7 @@
         {
         }
 
-        public CategoryNotFoundException(string? message) : base(message)
+        public CategoryNotFoundException(Guid categoryId) : base($"Category with Id '{categoryId}' not found.")
         {
         }
 

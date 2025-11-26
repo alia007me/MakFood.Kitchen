@@ -20,7 +20,7 @@ namespace MakFood.Kitchen.Application.Command.CategoriesCommand.CreateCategory
         public async Task<CreateCategoryCommandResponse> Handle(CreateCategoryCommand request, CancellationToken ct)
         {
 
-            CheckIsCategoryExist(request.Name, ct);
+           await CheckIsCategoryExist(request.Name, ct);
 
 
             var category = new Category(request.Name);
@@ -35,11 +35,11 @@ namespace MakFood.Kitchen.Application.Command.CategoriesCommand.CreateCategory
             };
         }
 
-        private async void CheckIsCategoryExist(string name, CancellationToken ct)
+        private async Task CheckIsCategoryExist(string name, CancellationToken ct)
         {
             bool exists = await _categoryRepository.IsCategoryNameExistAsync(name, ct);
             if (exists)
-                throw new IsAlreadyExistException($"Category with name '{name}' already exists.");
+                throw new IsAlreadyExistException(name);
         }
     }
 }
