@@ -50,8 +50,8 @@ namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentA
         }
         public void AproveOrder(bool partnerApproved, PaymentMathod? paymentMathod)
         {
-            this.PartnerPaymentMethod = paymentMathod;
-            this.PartnerApproved = partnerApproved;
+            PartnerPaymentMethod = paymentMathod;
+            PartnerApproved = partnerApproved;
             if (!partnerApproved)
                 this.Cancelled();
         }

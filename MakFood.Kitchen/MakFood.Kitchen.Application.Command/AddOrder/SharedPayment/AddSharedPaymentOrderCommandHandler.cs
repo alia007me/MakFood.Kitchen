@@ -40,7 +40,7 @@ namespace MakFood.Kitchen.Application.Command.AddOrder.SharedPayment
 
             cart.RemoveAllItems();
 
-            var discount = await _discountCodeRepository.GetDiscountByTitleTracked(command.DiscountCodeTitle);
+            var discount = await _discountCodeRepository.GetDiscountByTitleTracked(command.DiscountCodeTitle, ct);
 
             var totalAmount = CalculateTotalAmount(constituents);
             var payment = CreateSharedPayment(command.OwnerPaymentMethod, discount, totalAmount, command.CartId, command.PartnerId);
@@ -64,8 +64,7 @@ namespace MakFood.Kitchen.Application.Command.AddOrder.SharedPayment
         private async Task ValidatePartnerExistence(Guid partnerId, CancellationToken ct)
         {
             var partner = await _cartRepository.GetCartById(partnerId, ct, false);
-            if (partner is null)
-            {
+            if (partner is null) {
                 throw new PartnerNotFoundException();
             }
         }
@@ -75,8 +74,7 @@ namespace MakFood.Kitchen.Application.Command.AddOrder.SharedPayment
         /// </summary>
         private void ValidateCartItems(Cart cart)
         {
-            if (!cart.CartItems.Any())
-            {
+            if (!cart.CartItems.Any()) {
                 throw new ThereIsNoCartItemInCartException();
             }
         }
@@ -87,9 +85,8 @@ namespace MakFood.Kitchen.Application.Command.AddOrder.SharedPayment
         private async Task<List<Constituent>> CreateOrderConstituents(Cart cart, CancellationToken ct)
         {
             var constituents = new List<Constituent>();
-            foreach (var cartItem in cart.CartItems)
-            {
-                var product = await _productRepository.GetProductById(cartItem.ProductId, ct);
+            foreach (var cartItem in cart.CartItems) {
+                var product = await _productRepository.GetProductByIdAsync(cartItem.ProductId, ct);
                 constituents.Add(new Constituent(product!, cartItem));
             }
             return constituents;
@@ -106,7 +103,7 @@ namespace MakFood.Kitchen.Application.Command.AddOrder.SharedPayment
         /// <summary>
         /// موجودیت SharedPayment را ایجاد می‌کند.
         /// </summary>
-        private PaymentStates.SharedPayment CreateSharedPayment(PaymentMathods ownerPaymentMethod, Discount? discount, decimal totalAmount, Guid cartId, Guid partnerId)
+        private PaymentStates.SharedPayment CreateSharedPayment(PaymentMathod ownerPaymentMethod, Discount? discount, decimal totalAmount, Guid cartId, Guid partnerId)
         {
             var payable = DiscountCalculatorHelper.AmountCalculator(totalAmount, discount, cartId);
             return new PaymentStates.SharedPayment(payable, ownerPaymentMethod, cartId, partnerId);
@@ -117,12 +114,10 @@ namespace MakFood.Kitchen.Application.Command.AddOrder.SharedPayment
         /// </summary>
         private Order CreateOrder(Guid customerId, Discount? discountCode, PaymentStates.SharedPayment payment, List<Constituent> constituents)
         {
-            if (discountCode != null)
-            {
+            if (discountCode != null) {
                 return new Order(customerId, discountCode, payment, constituents);
             }
-            else
-            {
+            else {
                 return new Order(customerId, null, payment, constituents);
             }
         }

@@ -34,7 +34,7 @@ namespace MakFood.Kitchen.Application.Command.UpdateCart.AddItemToCart
             var cartItem = new CartItem(await _productRepository.GetProduct(cartCommand.ItemId, ct, false));
             cart.AddCartItem(cartItem);
         }
-        private async Task IncreaseQuantity(Cart cart,CartItem cartItem ,AddItemToCartCommand cartCommand, CancellationToken ct)
+        private async Task IncreaseQuantity(Cart cart, CartItem cartItem, AddItemToCartCommand cartCommand, CancellationToken ct)
         {
             if (cartItem is not null)
                 cartItem.IncreaseQuantity();

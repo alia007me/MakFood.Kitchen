@@ -1,4 +1,5 @@
-﻿using MakFood.Kitchen.Application.Command.AddOrder.SharedPayment;
+﻿using MakFood.Kitchen.Application.Command.AcceptOrder;
+using MakFood.Kitchen.Application.Command.AddOrder.SharedPayment;
 using MakFood.Kitchen.Application.Command.AddOrder.SinglePayment;
 using MakFood.Kitchen.Application.Command.CancelOrder;
 using MakFood.Kitchen.Application.Command.Pay.PayByCash;
@@ -69,7 +70,12 @@ namespace MakFood.Kitchen.Controllers
 
             return Ok(result);
         }
-
+        [HttpPatch("{orderId}/AprovePartnership1")]
+        public async Task<IActionResult> AprovePartnership([FromBody] AcceptOrderCommand command)
+        {
+            var result = await _mediator.Send(command);
+            return Ok(result);
+        }
         [HttpPost("/SinglePayment")]
         public async Task<IActionResult> AddSinglePaymentOrder([FromBody] AddSinglePaymentOrderCommand command)
         {
