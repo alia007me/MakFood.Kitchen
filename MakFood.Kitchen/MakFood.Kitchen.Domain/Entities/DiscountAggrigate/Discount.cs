@@ -1,7 +1,6 @@
 ﻿using MakFood.Kitchen.Domain.BussinesRules;
 using MakFood.Kitchen.Domain.Entities.Base;
 using MakFood.Kitchen.Domain.Entities.DiscountAggrigate.DiscountPolicyAggrigate;
-using System.Text.RegularExpressions;
 
 
 namespace MakFood.Kitchen.Domain.Entities.DiscountAggrigate
@@ -13,7 +12,7 @@ namespace MakFood.Kitchen.Domain.Entities.DiscountAggrigate
     {
         private Discount()
         {
-            
+
         }
         /// <summary>
         /// کانستراکتور کلاس دیسکانت کد با ورودی نام کد تخفیف برای 
@@ -22,7 +21,7 @@ namespace MakFood.Kitchen.Domain.Entities.DiscountAggrigate
         /// <param name="expiryDate">تاریخ انقضا کد تخفیف</param>
         /// <param name="maximumBalance">ماکسیموم حق کد تخفیف</param>
         /// <param name="minimumBalance">مینیموم حق کد تخفیف</param>
-        public Discount(string title,uint discountPercentage, DiscountPolicy policy,
+        public Discount(string title, uint discountPercentage, DiscountPolicy policy,
                             DateOnly expiryDate, decimal maximumBalance,
                             decimal minimumBalance)
         {
@@ -32,7 +31,7 @@ namespace MakFood.Kitchen.Domain.Entities.DiscountAggrigate
             LimitBalanceValibation(maximumBalance, minimumBalance);
 
             Id = Guid.NewGuid();
-            this.Title = title;         
+            this.Title = title;
             DiscountPolicy = policy;
             ExpiryDate = expiryDate;
             MaximumBalance = maximumBalance;
@@ -42,7 +41,7 @@ namespace MakFood.Kitchen.Domain.Entities.DiscountAggrigate
         }
 
         public string Title { get; private set; }
-        public decimal Percent { get;private set; }
+        public decimal Percent { get; private set; }
         public DateOnly ExpiryDate { get; private set; }
         public decimal MaximumBalance { get; private set; }
         public decimal MinimumBalance { get; private set; }
@@ -79,7 +78,6 @@ namespace MakFood.Kitchen.Domain.Entities.DiscountAggrigate
         {
             return DiscountPolicy.IsPermitted(CustomerId);
         }
-
         #endregion
 
 

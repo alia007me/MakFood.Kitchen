@@ -1,21 +1,37 @@
-﻿using MakFood.Kitchen.Domain.Entities.DiscountAggrigate.Enum;
-using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentAggrigate.Enum;
+﻿using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentAggrigate.Enum;
 using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentAggrigate.PaymentBase;
-using System.Runtime.Intrinsics.Arm;
+using MakFood.Kitchen.Infrastructure.Substructure.Exceptions;
 
 namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.PaymentAggrigate
 {
     public class SinglePayment : Payment
     {
         private SinglePayment() { } //ef
-        public SinglePayment(decimal totalAmount, decimal reminingAmount, PaymentMathods ownerPaymentMethod, decimal ownerAmount,
-            decimal ownerPaidAmount) : base(totalAmount, reminingAmount, ownerPaymentMethod, ownerAmount, ownerPaidAmount)
+        public SinglePayment(decimal totalAmount, PaymentMathod ownerPaymentMethod, Guid ownerId) : base(totalAmount, ownerPaymentMethod, ownerId)
         {
             TotalAmount = totalAmount;
-            ReminingAmount = reminingAmount;
+            RemainingAmount = totalAmount;
             OwnerPaymentMethod = ownerPaymentMethod;
-            OwnerAmount = ownerAmount;
-            OwnerPaidAmount = ownerPaidAmount;
+            OwnerAmount = totalAmount;
+            PaymentType = PaymentType.Single;
         }
+        #region overRides
+        public override bool NeedToPay(Guid customerId)
+        {
+            return (this.OwnerId == customerId) ? true : false;
+        }
+        public override void Pay(Guid id)
+        {
+            if (id == this.OwnerId) {
+                OwnerPaidAmount = OwnerAmount;
+                OwnerPaidTime = DateTime.Now;
+                Paid();
+            }
+            else {
+                throw new ThisIsNotYourOrderException();
+            }
+
+        }
+        #endregion
     }
 }

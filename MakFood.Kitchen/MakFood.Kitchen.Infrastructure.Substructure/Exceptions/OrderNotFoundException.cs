@@ -1,16 +1,16 @@
 ﻿namespace MakFood.Kitchen.Infrastructure.Substructure.Exceptions
 {
-    public class OrderNotFoundException : Exception
+    public class CustomerOrderMismatchException : Exception
     {
-        public OrderNotFoundException()
+        public CustomerOrderMismatchException()
         {
         }
 
-        public OrderNotFoundException(string? message) : base(message)
+        public CustomerOrderMismatchException(string? message) : base(message)
         {
         }
 
-        public OrderNotFoundException(string? message, Exception? innerException) : base(message, innerException)
+        public CustomerOrderMismatchException(string? message, Exception? innerException) : base(message, innerException)
         {
         }
     }

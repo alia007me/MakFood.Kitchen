@@ -44,7 +44,7 @@ namespace MakFood.Kitchen.Application.Command.CancelOrder
 
         private void ValidateOrderExists(Order? targetOrder)
         {
-            if (targetOrder == null) throw new OrderNotFoundException();
+            if (targetOrder == null) throw new CustomerOrderMismatchException();
         }
 
         private void ValidateCancelableOrder(Order targetOrder)
