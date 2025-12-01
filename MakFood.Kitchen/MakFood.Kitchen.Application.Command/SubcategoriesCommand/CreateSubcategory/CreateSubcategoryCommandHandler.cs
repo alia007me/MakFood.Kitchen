@@ -46,7 +46,7 @@ namespace MakFood.Kitchen.Application.Command.SubcategoriesCommand.CreateSubcate
         private void ValidateSubcategoryNameIsUnique(Category category, string subcategoryName)
         {
             if (category.Subcategories.Any(s => s.Name == subcategoryName))
-                throw new IsAlreadyExistException(subcategoryName);
+                throw new SubCategoryIsExistException();
         }
     }
 }

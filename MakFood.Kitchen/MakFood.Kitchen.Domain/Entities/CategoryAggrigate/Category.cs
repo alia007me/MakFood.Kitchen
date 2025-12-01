@@ -38,7 +38,7 @@ namespace MakFood.Kitchen.Domain.Entities.CategoryAggrigate
 
         private void CheckSubcategoryExist(Subcategory subcategory)
         {
-            if (_subcategories.Contains(subcategory)) throw new IsAlreadyExistException();
+            if (_subcategories.Contains(subcategory)) throw new SubCategoryIsExistException();
         }
 
         #endregion
@@ -84,7 +84,7 @@ namespace MakFood.Kitchen.Domain.Entities.CategoryAggrigate
         public void CheckCanBeRemoved(bool hasProducts)
         {
             if (hasProducts)
-                throw new EntityHasRelatedItemsException(this.Name,this.Id);
+                throw new CategoryHasProductException(this.Name,this.Id);
         }
 
 

@@ -38,9 +38,9 @@ namespace MakFood.Kitchen.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(Guid id)
+        public async Task<IActionResult> Delete([FromRoute] Guid Id ,[FromBody] RemoveCategoryCommand command , CancellationToken ct)
         {
-            var command = new RemoveCategoryCommand { Id = id };
+            command.Id = Id;
             var result = await _mediator.Send(command);
             return Ok(result);
         }
@@ -52,35 +52,27 @@ namespace MakFood.Kitchen.Controllers
         #region Subcategory Endpoints
 
         [HttpPost("{categoryId}/subcategory")]
-        public async Task<IActionResult> CreateSubcategory([FromBody] CreateSubcategoryCommand command, CancellationToken ct)
+        public async Task<IActionResult> CreateSubcategory([FromRoute] Guid categoryId,[FromBody] CreateSubcategoryCommand command, CancellationToken ct)
         {
-
+            command.CategoryId = categoryId;
             var result = await _mediator.Send(command, ct);
             return Ok(result);
         }
 
-        [HttpPut("{categoryId}/subcategory/{id}")]
-        public async Task<IActionResult> UpdateSubcategory(Guid categoryId, Guid subcategoryId, [FromBody] string newName, CancellationToken ct)
+        [HttpPut("/subcategory/{subcategoryId}")]
+        public async Task<IActionResult> UpdateSubcategory([FromRoute] Guid subcategoryId ,[FromBody] UpdateSubcategoryCommand command, CancellationToken ct)
         {
-            var command = new UpdateSubcategoryCommand()
-            {
-                SubCategoryId = subcategoryId,
-                CategoryId = categoryId,
-                NewName = newName
-            };
-
+            command.SubCategoryId = subcategoryId;                                           
             var result = await _mediator.Send(command, ct);
             return Ok(result);
         }
 
-        [HttpDelete("{categoryId}/subcategory/{id}")]
-        public async Task<IActionResult> RemoveSubcategory(Guid subcategoryId, CancellationToken ct)
+        [HttpDelete("/subcategory/{subcategoryId}")]
+        public async Task<IActionResult> RemoveSubcategory([FromRoute] Guid subcategoryId, [FromBody] RemoveSubcategoryCommand command ,CancellationToken ct)
         {
-            var command = new RemoveSubcategoryCommand
-            {
-                SubCategoryId = subcategoryId
-            };
 
+            command.SubCategoryId = subcategoryId;
+            
             var result = await _mediator.Send(command, ct);
             return Ok(result);
         }

@@ -45,7 +45,7 @@ namespace MakFood.Kitchen.Domain.Entities.CategoryAggrigate
         public void CheckCanBeRemoved(bool hasProducts)
         {
             if (hasProducts)
-                throw new EntityHasRelatedItemsException(this.Name,this.Id);
+                throw new SubCategoryHasProductException(this.Name,this.Id);
             
         }
         #endregion

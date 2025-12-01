@@ -50,13 +50,13 @@ builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBeh
 
 
 var app = builder.Build();
-if (app.Environment.IsDevelopment()) {
+
     app.UseSwagger();
     app.UseSwaggerUI(options =>
     {
         options.EnableTryItOutByDefault();
     });
-}
+
 // Configure the HTTP request pipeline.
 
 app.UseAuthorization();

@@ -47,7 +47,7 @@ namespace MakFood.Kitchen.Application.Command.CategoriesCommand.UpdateCategory
             bool exists = await _categoryRepository.IsCategoryNameExistAsync(newName, ct);
 
             if (exists)
-                throw new IsAlreadyExistException(newName);
+                throw new CategoryIsExistException();
         }
     }
 }

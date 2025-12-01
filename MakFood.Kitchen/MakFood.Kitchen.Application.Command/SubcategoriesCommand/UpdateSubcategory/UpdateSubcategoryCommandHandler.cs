@@ -41,12 +41,12 @@ namespace MakFood.Kitchen.Application.Command.SubcategoriesCommand.UpdateSubcate
                 throw new SubcategoryNotFoundException(subcategoryId);
         }
 
-        private async Task ValidateUniqueName(Subcategory subcategory, string newName, CancellationToken ct)
+        private async Task ValidateUniqueName(Subcategory subCategory, string newName, CancellationToken ct)
         {
-            bool nameExists = await _categoryRepository.IsSubcategoryNameExistAsync(subcategory.Id, newName, ct);
+            bool nameExists = await _categoryRepository.IsSubcategoryNameExistAsync(subCategory.Id, newName, ct);
 
             if (nameExists)
-                throw new IsAlreadyExistException(newName);
+                throw new SubCategoryIsExistException();
         }
     }
 
