@@ -23,6 +23,7 @@ namespace MakFood.Kitchen.Domain.Entities.OrderAggrigate
 
 
 
+
         public string Name { get; private set; }
         public decimal Price { get; private set; }
         public Guid ProductId { get; private set; }

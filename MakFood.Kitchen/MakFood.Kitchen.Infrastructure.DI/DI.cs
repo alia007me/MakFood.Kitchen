@@ -1,6 +1,8 @@
 ﻿using MakFood.Kitchen.Application.Command.CancelOrder;
 using MakFood.Kitchen.Application.Query.GetAllMiseOnPlaceOrdersByDateRange;
+using MakFood.Kitchen.Domain.DomainService.PayOrderService;
 using MakFood.Kitchen.Domain.Entities.CartAggrigate.Contract;
+using MakFood.Kitchen.Domain.Entities.DiscountAggrigate.Contract;
 using MakFood.Kitchen.Domain.Entities.FoodRequestAggrigate.Contract;
 using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.Contract;
 using MakFood.Kitchen.Domain.Entities.ProductAggrigate.Contract;
@@ -19,6 +21,10 @@ namespace MakFood.Kitchen.Infrastructure.DI
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<IFoodRequestRepository, FoodRequestRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<IDiscountRepository, DiscountRepository>();
+            services.AddScoped<IFoodRequestRepository, FoodRequestRepository>();
+            services.AddScoped<IPayService, PayService>();
 
             services.AddMediatR(cfg =>
             {

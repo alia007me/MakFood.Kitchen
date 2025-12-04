@@ -3,19 +3,21 @@ using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.Contract;
 using MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.OrederState;
 using MakFood.Kitchen.Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
-using OrderStatus = MakFood.Kitchen.Domain.Entities.OrderAggrigate.OrderAggrigate.OrederState.OrderStatus;
 
 namespace MakFood.Kitchen.Infrastructure.Persistence.Repository.Repository
 {
     public class OrderRepository : IOrderRepository
+
     {
         private readonly ApplicationDbContext _context;
-
         public OrderRepository(ApplicationDbContext context)
         {
             _context = context;
         }
-
+        public void AddOrder(Order order)
+        {
+            _context.Orders.Add(order);
+        }
         public async Task<IEnumerable<Order>> GetOrderByDateRangeAsync(DateOnly FromDate, DateOnly ToDate, CancellationToken ct)
         {
             var startDateTime = FromDate.ToDateTime(TimeOnly.MinValue);
@@ -45,7 +47,10 @@ namespace MakFood.Kitchen.Infrastructure.Persistence.Repository.Repository
                 .Include(x => x.Payment)
                     .ThenInclude(p => p.PaymentLog)
                 .FirstOrDefaultAsync(x => x.Id == orderId, ct);
-
+        }
+        public async Task<long> GetTotalOrdersCountAsync(CancellationToken ct)
+        {
+            return await _context.Orders.LongCountAsync(ct);
         }
 
         public async Task<decimal> GetTotalSalesByDate(DateOnly FromDate, DateOnly ToDate, CancellationToken ct)

@@ -1,7 +1,7 @@
 ﻿
 namespace MakFood.Kitchen.Domain.BussinesRules.Exceptions
 {
-    [Serializable]
+    
     internal class PriceMustBePositiveException : Exception
     {
         public PriceMustBePositiveException()
