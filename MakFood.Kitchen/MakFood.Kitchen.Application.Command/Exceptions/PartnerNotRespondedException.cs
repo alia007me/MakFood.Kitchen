@@ -1,6 +1,6 @@
 ﻿namespace MakFood.Kitchen.Application.Command.Exceptions
 {
-    [Serializable]
+    
     internal class PartnerNotRespondedException : Exception
     {
         public PartnerNotRespondedException()

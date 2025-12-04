@@ -1,6 +1,6 @@
 ﻿namespace MakFood.Kitchen.Domain.BussinesRules.Exceptions
 {
-    [Serializable]
+    
     internal class DiscountExpiryDateMustBeInFutureException : Exception
     {
         public DiscountExpiryDateMustBeInFutureException()

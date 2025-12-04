@@ -1,6 +1,6 @@
 ﻿namespace MakFood.Kitchen.Domain.BussinesRules.Exceptions
 {
-    [Serializable]
+    
     internal class ProductDescriptionCanNotBeWhitespaceException : Exception
     {
         public ProductDescriptionCanNotBeWhitespaceException()

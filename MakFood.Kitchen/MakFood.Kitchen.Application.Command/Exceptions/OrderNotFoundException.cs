@@ -2,7 +2,7 @@
 
 namespace MakFood.Kitchen.Application.Command.Exceptions
 {
-    [Serializable]
+    
     internal class OrderNotFoundException : NotFoundException
     {
         public OrderNotFoundException()

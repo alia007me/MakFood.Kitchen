@@ -1,6 +1,6 @@
 ﻿namespace MakFood.Kitchen.Domain.BussinesRules.Exceptions
 {
-    [Serializable]
+    
     public class PaymentMethodShouldNotBeSelectedMoreThanOnceException : Exception
     {
         public PaymentMethodShouldNotBeSelectedMoreThanOnceException()

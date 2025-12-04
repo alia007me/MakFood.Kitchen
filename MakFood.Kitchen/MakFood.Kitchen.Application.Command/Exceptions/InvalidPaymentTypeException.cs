@@ -1,6 +1,6 @@
 ﻿namespace MakFood.Kitchen.Application.Command.Exceptions
 {
-    [Serializable]
+    
     internal class InvalidPaymentTypeException : ApplicationException
     {
         public InvalidPaymentTypeException()

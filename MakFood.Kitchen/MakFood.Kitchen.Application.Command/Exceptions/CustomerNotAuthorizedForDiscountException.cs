@@ -1,6 +1,5 @@
 ﻿namespace MakFood.Kitchen.Application.Command.Exceptions
 {
-    [Serializable]
     public class CustomerNotAuthorizedForDiscountException : Exception
     {
         public CustomerNotAuthorizedForDiscountException()

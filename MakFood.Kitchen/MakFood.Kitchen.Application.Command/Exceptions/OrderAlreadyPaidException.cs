@@ -1,6 +1,6 @@
 ﻿namespace MakFood.Kitchen.Application.Command.Exceptions
 {
-    [Serializable]
+    
     public class OrderAlreadyPaidException : Exception
     {
         public OrderAlreadyPaidException()

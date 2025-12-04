@@ -1,6 +1,6 @@
 ﻿namespace MakFood.Kitchen.Infrastructure.Substructure.Exceptions
 {
-    [Serializable]
+    
     public class ThisIsNotYourOrderException : Exception
     {
         public ThisIsNotYourOrderException()
